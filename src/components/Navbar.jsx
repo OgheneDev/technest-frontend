@@ -1,6 +1,5 @@
 import React from 'react'
 import { Menu, User, ShoppingBag, Search } from 'lucide-react'
-
 import logo from '../assets/images/logo.png'
 
 
@@ -20,7 +19,7 @@ const Navbar = () => {
     </nav>
 
     <div className="search-container rounded-full border shadow-sm w-fit my-[20px] p-[10px] px-[20px] flex gap-[20px] mx-auto">
-        <input type="text" placeholder='Search for Products..' className='w-[280px]' />
+        <input type="text" placeholder='Search for Products..' className='w-[280px] outline-none' />
         <button>
             <Search size={23} />
         </button>

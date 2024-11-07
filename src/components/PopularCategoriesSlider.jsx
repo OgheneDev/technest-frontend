@@ -10,7 +10,7 @@ const PopularCategoriesSlider = () => {
             <h2 className="text-lg font-semibold mb-4 pl-[20px]">Popular Categories</h2>
             <div className="slider-wrapper overflow-hidden relative">
                 <div
-                    className="slider-inner flex transition-transform duration-500 ease-in-out"
+                    className="slider-inner flex gap-[10px] transition-transform duration-500 ease-in-out"
                     style={{ transform: `translateX(-${currentSlide * 50}%)` }} // 50% to show two items at once
                 >
                     {popularCategories.map((category, index) => (
