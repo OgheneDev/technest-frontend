@@ -68,7 +68,7 @@ const FeaturedProducts = () => {
                 style={{ width: `${100 / itemsPerSlide}%` }}
               >
                 <img src={product.images[0]} alt={product.name} className="w-[100%]" />
-                <span className="uppercase text-gray">{product.category}</span>
+                <span className="uppercase text-gray-600 text-[11px]">{product.category}</span>
                 <h4 className="font-bold text-dark">{product.name}</h4>
                 <p className="font-bold text-dark">{product.price}</p>
               </div>
