@@ -51,7 +51,7 @@ export const FeatProductsProvider = ({ children }) => {
 
   // Function to advance the slide, stopping at the last full row of items
   const nextSlide = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, Math.max(0, Math.floor(products.length / itemsPerSlide) - 1)));
+    setCurrentSlide((prev) => Math.min(prev + 1, Math.max(0, Math.floor((products.length - 1) / itemsPerSlide))));
   };
 
   // Function to go back a slide, stopping at the first item
