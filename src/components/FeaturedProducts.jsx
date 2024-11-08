@@ -6,27 +6,20 @@ const FeaturedProducts = () => {
   const { products, fetchFeaturedProducts, currentSlide, itemsPerSlide, swipeHandlers, nextSlide, prevSlide } = useFeaturedProducts();
   const [selectedCategory, setSelectedCategory] = useState('cases');
 
-  // Fetch "cases" category by default on component mount
+  // Fetch products whenever the selected category changes
   useEffect(() => {
-    fetchFeaturedProducts('cases');
-  }, []);
-
-  // Fetch products when the selected category changes
-  useEffect(() => {
-    if (selectedCategory !== 'cases') {
-      fetchFeaturedProducts(selectedCategory);
-    }
+    fetchFeaturedProducts(selectedCategory);
   }, [selectedCategory]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
-  // Calculate the maximum slide index, where only a full row of items is displayed
-  const maxSlideIndex = Math.max(products.length - itemsPerSlide, 0);
+  // Calculate the maximum slide index
+  const maxSlideIndex = Math.max(Math.floor((products.length - itemsPerSlide) / itemsPerSlide), 0);
 
   return (
-    <div className="relative max-w-full mx-auto py-8 px-[20px]" {...swipeHandlers}>
+    <div className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px]" {...swipeHandlers}>
       <h2 className="text-lg font-semibold mb-4 text-center">Featured Products</h2>
       <div className="toggle-buttons flex gap-[15px] justify-center mb-6">
         <button
@@ -68,7 +61,7 @@ const FeaturedProducts = () => {
                 style={{ width: `${100 / itemsPerSlide}%` }}
               >
                 <img src={product.images[0]} alt={product.name} className="w-[100%]" />
-                <span className="uppercase text-gray-600 text-[11px]">{product.category}</span>
+                <span className="uppercase text-gray-600 text-[11px] font-bold">{product.category}</span>
                 <h4 className="font-bold text-dark">{product.name}</h4>
                 <p className="font-bold text-dark">{product.price}</p>
               </div>
@@ -79,11 +72,10 @@ const FeaturedProducts = () => {
         </div>
       </div>
 
-      {/* Navigation buttons */}
       {currentSlide > 0 && (
         <button
           onClick={prevSlide}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+          className="absolute left-2 md:left-[100px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
         >
           <ArrowLeft size={15} />
         </button>
@@ -91,7 +83,7 @@ const FeaturedProducts = () => {
       {currentSlide < maxSlideIndex && (
         <button
           onClick={nextSlide}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+          className="absolute right-2 md:right-[100px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
         >
           <ArrowRight size={15} />
         </button>

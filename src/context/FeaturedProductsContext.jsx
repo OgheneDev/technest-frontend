@@ -7,17 +7,16 @@ const FeatProductsContext = createContext(null);
 
 export const FeatProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('cases');
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [itemsPerSlide, setItemsPerSlide] = useState(2); // Default to 2 for mobile
+  const [itemsPerSlide, setItemsPerSlide] = useState(2);
 
   // Function to fetch featured products based on category
-  const fetchFeaturedProducts = async () => {
+  const fetchFeaturedProducts = async (category) => {
     try {
       const q = query(
         collection(db, "products"),
         where("featured", "==", true),
-        where("category", "==", selectedCategory)
+        where("category", "==", category)
       );
       const querySnapshot = await getDocs(q);
       const fetchedProducts = querySnapshot.docs.map(doc => ({
@@ -26,35 +25,28 @@ export const FeatProductsProvider = ({ children }) => {
       }));
       setProducts(fetchedProducts);
       setCurrentSlide(0); // Reset the slide index when new products are fetched
+      console.log("Products: ", fetchedProducts);
     } catch (error) {
       console.error("Error fetching featured products: ", error);
     }
   };
 
-  // Fetch "cases" category by default on component mount
-  useEffect(() => {
-    fetchFeaturedProducts();
-  }, [selectedCategory]);
-
   // Function to calculate items per slide based on screen width
   const calculateItemsPerSlide = () => {
-    setItemsPerSlide(window.innerWidth >= 1024 ? 6 : 2);
+    setItemsPerSlide(window.innerWidth >= 1024 ? 4 : 2);
   };
 
   // Update items per slide on initial render and when window resizes
   useEffect(() => {
-    calculateItemsPerSlide(); // Set initial value
-    window.addEventListener('resize', calculateItemsPerSlide); // Update on resize
-
-    return () => window.removeEventListener('resize', calculateItemsPerSlide); // Cleanup on unmount
+    calculateItemsPerSlide();
+    window.addEventListener('resize', calculateItemsPerSlide);
+    return () => window.removeEventListener('resize', calculateItemsPerSlide);
   }, []);
 
-  // Function to advance the slide, stopping at the last full row of items
   const nextSlide = () => {
     setCurrentSlide((prev) => Math.min(prev + 1, Math.max(0, Math.floor((products.length - 1) / itemsPerSlide))));
   };
 
-  // Function to go back a slide, stopping at the first item
   const prevSlide = () => {
     setCurrentSlide((prev) => Math.max(prev - 1, 0));
   };
@@ -66,8 +58,6 @@ export const FeatProductsProvider = ({ children }) => {
 
   const value = {
     products,
-    selectedCategory,
-    setSelectedCategory,
     swipeHandlers,
     currentSlide,
     itemsPerSlide,
