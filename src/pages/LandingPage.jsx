@@ -5,6 +5,8 @@ import PopularCategoriesSlider from '../components/PopularCategoriesSlider'
 import HurryUpDeals from '../components/HurryUpDeals'
 import { FeatProductsProvider } from '../context/FeaturedProductsContext'
 import FeaturedProducts from '../components/FeaturedProducts'
+import { LatestPostsProvider } from '../context/LatestPostContext'
+import LatestPosts from '../components/LatestPosts'
 
 const LandingPage = () => {
   return (
@@ -17,7 +19,9 @@ const LandingPage = () => {
       <FeatProductsProvider>
         <FeaturedProducts />
       </FeatProductsProvider>
- 
+      <LatestPostsProvider>
+        <LatestPosts />
+      </LatestPostsProvider>
     </>
   )
 }
