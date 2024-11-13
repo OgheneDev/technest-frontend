@@ -3,10 +3,20 @@ import { useFeaturedProducts } from '../context/FeaturedProductsContext';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const FeaturedProducts = () => {
-  const { products, fetchFeaturedProducts, currentSlide, itemsPerSlide, swipeHandlers, nextSlide, prevSlide } = useFeaturedProducts();
+  const {
+    products,
+    fetchFeaturedProducts,
+    currentSlide,
+    itemsPerSlide,
+    nextSlide,
+    prevSlide,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+  } = useFeaturedProducts();
+
   const [selectedCategory, setSelectedCategory] = useState('cases');
 
-  // Fetch products whenever the selected category changes
   useEffect(() => {
     fetchFeaturedProducts(selectedCategory);
   }, [selectedCategory]);
@@ -16,10 +26,18 @@ const FeaturedProducts = () => {
   };
 
   // Calculate the maximum slide index
-  const maxSlideIndex = Math.max(Math.floor((products.length - itemsPerSlide) / itemsPerSlide), 0);
+  const maxSlideIndex = Math.max(0, Math.ceil(products.length / itemsPerSlide) - 1);
 
   return (
-    <div className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px]" {...swipeHandlers}>
+    <div
+      className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px]"
+      onMouseDown={handleTouchStart}
+      onMouseMove={handleTouchMove}
+      onMouseUp={handleTouchEnd}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <h2 className="text-lg font-semibold mb-4 text-center">Featured Products</h2>
       <div className="toggle-buttons flex gap-[15px] justify-center mb-6">
         <button
@@ -93,4 +111,5 @@ const FeaturedProducts = () => {
 };
 
 export default FeaturedProducts;
+
 

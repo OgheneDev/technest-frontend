@@ -1,37 +1,35 @@
 import React, { useState, useEffect, useContext, createContext, useRef } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 import { db } from '../firebaseConfig';
 
-const FeatProductsContext = createContext(null);
+const TestimonialContext = createContext(null);
 
-export const FeatProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState([]);
+export const TestimonialContextProvider = ({ children }) => {
+  const [testimonials, setTestimonials] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [itemsPerSlide, setItemsPerSlide] = useState(2);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  const fetchFeaturedProducts = async (category) => {
+  // Fetch testimonials from Firestore
+  const fetchTestimonials = async () => {
     try {
-      const q = query(
-        collection(db, "products"),
-        where("featured", "==", true),
-        where("category", "==", category)
-      );
+      const q = query(collection(db, "testimonials"));
       const querySnapshot = await getDocs(q);
-      const fetchedProducts = querySnapshot.docs.map(doc => ({
+      const fetchedTestimonials = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
-      setProducts(fetchedProducts);
+      setTestimonials(fetchedTestimonials);
       setCurrentSlide(0); // Reset to the first slide
     } catch (error) {
-      console.error("Error fetching featured products: ", error);
+      console.error("Error fetching Testimonials: ", error);
     }
   };
 
+  // Determine number of items per slide based on screen width
   const calculateItemsPerSlide = () => {
-    setItemsPerSlide(window.innerWidth >= 1024 ? 4 : 2);
+    setItemsPerSlide(window.innerWidth >= 1024 ? 2 : 1);
   };
 
   useEffect(() => {
@@ -40,14 +38,18 @@ export const FeatProductsProvider = ({ children }) => {
     return () => window.removeEventListener('resize', calculateItemsPerSlide);
   }, []);
 
+  // Navigation for slides
+  const maxSlideIndex = Math.max(0, Math.ceil(testimonials.length / itemsPerSlide) - 1);
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, Math.max(0, Math.floor((products.length - 1) / itemsPerSlide))));
+    setCurrentSlide(prev => Math.min(prev + 1, maxSlideIndex));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 0));
+    setCurrentSlide(prev => Math.max(prev - 1, 0));
   };
 
+  // Handle touch events for mobile swiping
   const handleTouchStart = (e) => {
     touchStartX.current = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
   };
@@ -65,10 +67,10 @@ export const FeatProductsProvider = ({ children }) => {
   };
 
   const value = {
-    products,
+    testimonials,
     currentSlide,
     itemsPerSlide,
-    fetchFeaturedProducts,
+    fetchTestimonials,
     nextSlide,
     prevSlide,
     handleTouchStart,
@@ -77,16 +79,16 @@ export const FeatProductsProvider = ({ children }) => {
   };
 
   return (
-    <FeatProductsContext.Provider value={value}>
+    <TestimonialContext.Provider value={value}>
       {children}
-    </FeatProductsContext.Provider>
+    </TestimonialContext.Provider>
   );
 };
 
-export const useFeaturedProducts = () => {
-  const context = useContext(FeatProductsContext);
+export const useTestimonialsContext = () => {
+  const context = useContext(TestimonialContext);
   if (!context) {
-    throw new Error('useFeaturedProducts must be used within a FeatProductsProvider');
+    throw new Error("useTestimonialsContext must be used within a TestimonialContextProvider");
   }
   return context;
 };

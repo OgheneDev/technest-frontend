@@ -1,5 +1,4 @@
-import React, { useContext, createContext, useState, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable';
+import React, { useContext, createContext, useState, useEffect, useRef } from 'react';
 
 const PopularCategoriesContext = createContext(null);
 
@@ -7,33 +6,45 @@ export const PopularCategoriesProvider = ({ children }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [itemsPerSlide, setItemsPerSlide] = useState(2); // Default to 2 for mobile
 
-    // Function to calculate items per slide based on screen width
+    // Ref to store the swipe start and end positions
+    const touchStartX = useRef(0);
+    const touchEndX = useRef(0);
+
+    // Calculate items per slide based on screen width
     const calculateItemsPerSlide = () => {
         setItemsPerSlide(window.innerWidth >= 1024 ? 6 : 2);
     };
 
-    // Update items per slide on initial render and when window resizes
     useEffect(() => {
-        calculateItemsPerSlide(); // Set initial value
-        window.addEventListener('resize', calculateItemsPerSlide); // Update on resize
+        calculateItemsPerSlide();
+        window.addEventListener('resize', calculateItemsPerSlide);
 
-        return () => window.removeEventListener('resize', calculateItemsPerSlide); // Cleanup on unmount
+        return () => window.removeEventListener('resize', calculateItemsPerSlide);
     }, []);
 
-    // Function to advance the slide, stopping at the last full row of items
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev < popularCategories.length - itemsPerSlide ? prev + 1 : prev));
     };
 
-    // Function to go back a slide, stopping at the first item
     const prevSlide = () => {
         setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev));
     };
 
-    const swipeHandlers = useSwipeable({
-        onSwipedLeft: nextSlide,
-        onSwipedRight: prevSlide,
-    });
+    const handleTouchStart = (e) => {
+        touchStartX.current = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+    };
+
+    const handleTouchMove = (e) => {
+        touchEndX.current = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+    };
+
+    const handleTouchEnd = () => {
+        if (touchStartX.current - touchEndX.current > 50) {
+            nextSlide();
+        } else if (touchEndX.current - touchStartX.current > 50) {
+            prevSlide();
+        }
+    };
 
     const popularCategories = [
         { id: 1, name: 'Cases', stock: 11, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-1_mh7sca.jpg' },
@@ -49,10 +60,12 @@ export const PopularCategoriesProvider = ({ children }) => {
         currentSlide,
         itemsPerSlide,
         popularCategories,
-        swipeHandlers,
         setCurrentSlide,
         nextSlide,
         prevSlide,
+        handleTouchStart,
+        handleTouchMove,
+        handleTouchEnd,
     };
 
     return (
@@ -69,5 +82,6 @@ export const usePopularCategories = () => {
     }
     return context;
 };
+
 
 

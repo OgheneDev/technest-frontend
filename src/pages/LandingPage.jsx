@@ -7,6 +7,8 @@ import { FeatProductsProvider } from '../context/FeaturedProductsContext'
 import FeaturedProducts from '../components/FeaturedProducts'
 import { LatestPostsProvider } from '../context/LatestPostContext'
 import LatestPosts from '../components/LatestPosts'
+import Testimonials from '../components/Testimonials'
+import { TestimonialContextProvider } from '../context/TestimonialsContext'
 
 const LandingPage = () => {
   return (
@@ -22,6 +24,9 @@ const LandingPage = () => {
       <LatestPostsProvider>
         <LatestPosts />
       </LatestPostsProvider>
+      <TestimonialContextProvider>
+        <Testimonials />
+      </TestimonialContextProvider>
     </>
   )
 }
