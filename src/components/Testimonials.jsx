@@ -25,7 +25,7 @@ const Testimonials = () => {
       <Star
         key={index}
         size={14}
-        className={index < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
+        className={index < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
       />
     ));
   };
@@ -45,29 +45,32 @@ const Testimonials = () => {
       {/* Testimonials Slider */}
       <div className="slider-wrapper overflow-hidden relative">
         <div
-          className="testimonials slider-inner flex py-[30px] gap-[10px] transition-transform duration-500 ease-in-out"
-          style={{ 
-            transform: `translateX(-${currentSlide * 100}%)`, // Adjusted translate calculation
-            width: `${100 * testimonials.length / itemsPerSlide}%`, // Set overall width based on testimonials and items per slide
+          className="testimonials slider-inner flex transition-transform duration-500 ease-in-out"
+          style={{
+            transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)`,
+            width: `${(100 / itemsPerSlide) * testimonials.length}%`,
           }}
         >
           {testimonials.length > 0 ? (
             testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="testimonial flex gap-[20px] items-start"
-                style={{ 
-                  width: `${100 / itemsPerSlide}%`, // Each item takes 100% width on mobile, 50% on desktop
-                  flex: `0 0 ${100 / itemsPerSlide}%`, // Explicitly set flex-basis for proper layout
+                className="testimonial-item flex-shrink-0"
+                style={{
+                  width: `${100 / itemsPerSlide}%`,
                 }}
               >
-                <img src={testimonial.image} alt="" className="w-[70px] rounded-full" />
-                <div className="text-content flex flex-col gap-[10px] max-w-full overflow-hidden">
-                  <h3 className="font-semibold text-grey-dark text-[18px]">
-                    {testimonial.name} <span className="text-[#9d9fa3] text-[13px]">- {testimonial.date}</span>
-                  </h3>
-                  <div className="flex gap-1 mb-2">{renderStars(4)}</div>
-                  <p className="text-[#9d9fa3] text-[15px] break-words whitespace-normal">{testimonial.testimonial}</p>
+                <div className="flex gap-[20px] items-start">
+                  <img src={testimonial.image} alt="" className="w-[70px] rounded-full" />
+                  <div className="text-content flex flex-col gap-[10px] max-w-full overflow-hidden">
+                    <h3 className="font-semibold text-grey-dark text-[18px]">
+                      {testimonial.name} <span className="text-[#9d9fa3] text-[13px]">- {testimonial.date}</span>
+                    </h3>
+                    <div className="flex gap-1 mb-2">{renderStars(4)}</div>
+                    <p className="text-[#9d9fa3] text-[15px] break-words whitespace-normal">
+                      {testimonial.testimonial}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))
