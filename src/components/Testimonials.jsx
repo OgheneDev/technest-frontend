@@ -32,7 +32,7 @@ const Testimonials = () => {
 
   return (
     <div
-      className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px]"
+      className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px] pb-[30px]"
       onMouseDown={handleTouchStart}
       onMouseMove={handleTouchMove}
       onMouseUp={handleTouchEnd}
