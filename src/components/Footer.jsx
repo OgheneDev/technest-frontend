@@ -53,8 +53,8 @@ const Footer = () => {
 
         <div className="news mb-[30px]">
             <h2 className='text-xl font-semibold mb-[20px]'>Suscribe to Our Newsletter</h2>
-            <div className="sub-container flex border border-white py-[10px] px-[15px] rounded-full">
-                <input type="email" placeholder='Email Address..' className='bg-transparent outline-none placeholder:text-white' />
+            <div className="sub-container flex items-center border border-white py-[10px] px-[15px] rounded-full">
+                <input type="email" placeholder='Email Address..' className='bg-transparent outline-none placeholder:text-white w-[70%]' />
                 <button className='bg-white text-bs-blue py-[5px] px-[15px] rounded-full'>Subscribe</button>
             </div>
         </div>
