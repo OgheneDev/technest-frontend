@@ -60,7 +60,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-8 md:px-[100px]">
+    <section className="py-3 md:px-[100px]">
       <h2 className="text-grey-dark font-semibold text-xl mb-[30px] text-center">
         Customer Testimonials
       </h2>
