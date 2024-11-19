@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Menu, User, ShoppingBag, Search, X } from 'lucide-react'
 import logo from '../assets/images/logo.png'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +20,9 @@ const Navbar = () => {
       </div>
 
       <div className='flex gap-[20px]'>
-        <User size={25} className='text-white' />
+        <Link to='/account'>
+          <User size={25} className='text-white' />
+        </Link>
         <ShoppingBag size={25} className='text-white' />
       </div>
     </nav>
