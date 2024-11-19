@@ -17,10 +17,10 @@ const HurryUpDeals = () => {
             </div>
         </div>
 
-        <div className="bg-bs-light w-[90%] flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto md:items-center text-grey-dark rounded-[15px]">
+        <div className="bg-bs-light w-[90%] flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto items-center text-grey-dark rounded-[15px]">
         <div className="text-content md:w-[50%] flex flex-col md:items-start gap-[20px]">
             <h3 className='text-2xl md:text-4xl font-bold'>New 3 in 1 <br/> wireless charger</h3>
-            <p className='text-[#777]'>Save up to 50% off on new arrivals</p>
+            <p className='text-[#777] hidden md:block'>Save up to 50% off on new arrivals</p>
             <button className='bg-white text-bs-indigo rounded-full py-[5px] w-fit px-[25px]'>Shop Now</button>
             </div>
 

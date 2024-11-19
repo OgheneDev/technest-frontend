@@ -16,7 +16,9 @@ const Navbar = () => {
         >
         <Menu size={25} className='text-white md:hidden' />
         </button>
-        <img src={logo} alt="" className='w-[150px] md:w-[200px]' />
+        <Link to='/'>
+          <img src={logo} alt="" className='w-[150px] md:w-[200px]' />
+        </Link>
       </div>
 
       <div className='flex gap-[20px]'>
