@@ -29,3 +29,12 @@
 body, button, input{
   font-family: "Poppins", serif;
 }
+
+.testimonial-slider {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.testimonial-slider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

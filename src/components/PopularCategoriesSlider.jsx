@@ -19,7 +19,7 @@ const PopularCategoriesSlider = () => {
 
     return (
         <div
-            className="relative max-w-full mx-auto py-8 px-[30px]"
+            className="relative max-w-full mx-auto py-8 md:py-[50px] px-[30px] md:px-[100px]"
             onMouseDown={handleTouchStart}
             onMouseMove={handleTouchMove}
             onMouseUp={handleTouchEnd}
@@ -27,7 +27,7 @@ const PopularCategoriesSlider = () => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
-            <h2 className="text-lg font-semibold mb-4 pl-4">Popular Categories</h2>
+            <h2 className="text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4">Popular Categories</h2>
             <div className="slider-wrapper overflow-hidden relative">
                 <div
                     className="slider-inner flex gap-1 transition-transform duration-500 ease-in-out"
@@ -51,7 +51,7 @@ const PopularCategoriesSlider = () => {
             {currentSlide > 0 && (
                 <button
                     onClick={prevSlide}
-                    className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+                    className="absolute left-2 md:left-[90px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
                 >
                     <ArrowLeft size={15} />
                 </button>
@@ -59,7 +59,7 @@ const PopularCategoriesSlider = () => {
             {currentSlide < maxSlideIndex && (
                 <button
                     onClick={nextSlide}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+                    className="absolute right-2 md:right-[70px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
                 >
                     <ArrowRight size={15} />
                 </button>

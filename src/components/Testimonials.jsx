@@ -1,25 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTestimonialsContext } from '../context/TestimonialsContext';
-import { ArrowLeft, ArrowRight, Star } from 'lucide-react';
+import { Star, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const Testimonials = () => {
-  const {
-    testimonials,
-    currentSlide,
-    itemsPerSlide,
-    fetchTestimonials,
-    nextSlide,
-    prevSlide,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-  } = useTestimonialsContext();
+  const { testimonials, fetchTestimonials } = useTestimonialsContext();
 
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sliderRef = useRef(null);
+
+  // Fetch testimonials on component mount
   useEffect(() => {
     fetchTestimonials();
   }, []);
 
-  // Helper function to render rating stars
+  // Navigate to the next or previous slide
+  const handleNavigate = (direction) => {
+    const container = sliderRef.current;
+    const cardWidth = container.offsetWidth;
+
+    let nextIndex = activeIndex;
+    if (direction === 'next' && activeIndex < testimonials.length - 1) {
+      nextIndex += 1;
+    } else if (direction === 'prev' && activeIndex > 0) {
+      nextIndex -= 1;
+    }
+
+    container.scrollTo({
+      left: cardWidth * nextIndex,
+      behavior: 'smooth',
+    });
+    setActiveIndex(nextIndex);
+  };
+
+  // Update the active index based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = sliderRef.current;
+      const scrollPosition = container.scrollLeft;
+      const cardWidth = container.offsetWidth;
+      const currentIndex = Math.round(scrollPosition / cardWidth);
+      setActiveIndex(currentIndex);
+    };
+
+    const container = sliderRef.current;
+    container.addEventListener('scroll', handleScroll);
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Render stars for testimonial ratings
   const renderStars = (rating) => {
     return [...Array(5)].map((_, index) => (
       <Star
@@ -31,77 +60,63 @@ const Testimonials = () => {
   };
 
   return (
-    <div
-      className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px] pb-[30px]"
-      onMouseDown={handleTouchStart}
-      onMouseMove={handleTouchMove}
-      onMouseUp={handleTouchEnd}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <h2 className="text-grey-dark font-semibold text-xl mb-[30px]">Customer Testimonials</h2>
+    <section className="py-8">
+      <h2 className="text-grey-dark font-semibold text-xl mb-[30px] text-center">
+        Customer Testimonials
+      </h2>
 
-      {/* Testimonials Slider */}
-      <div className="slider-wrapper overflow-hidden relative">
+      {/* Slider Container */}
+      <div className="relative">
+        {/* Previous Button */}
+        {activeIndex > 0 && (
+          <button
+            onClick={() => handleNavigate('prev')}
+            className="absolute left-2 md:left-[100px] top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+            aria-label="Previous slide"
+          >
+            <ArrowLeft size={15} />
+          </button>
+        )}
+
+        {/* Testimonials Slider */}
         <div
-          className="testimonials slider-inner flex transition-transform duration-500 ease-in-out"
-          style={{
-            transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)`,
-            width: `${(100 / itemsPerSlide) * testimonials.length}%`,
-          }}
+          className="testimonial-slider flex overflow-x-auto snap-x snap-mandatory space-x-[20px] px-4"
+          ref={sliderRef}
         >
-          {testimonials.length > 0 ? (
-            testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="testimonial-item flex-shrink-0"
-                style={{
-                  width: `${100 / itemsPerSlide}%`,
-                }}
-              >
-                <div className="flex gap-[20px] items-start">
-                  <img src={testimonial.image} alt="" className="w-[70px] rounded-full" />
-                  <div className="text-content flex flex-col gap-[10px] max-w-full overflow-hidden">
-                    <h3 className="font-semibold text-grey-dark text-[18px]">
-                      {testimonial.name} <span className="text-[#9d9fa3] text-[13px]">- {testimonial.date}</span>
-                    </h3>
-                    <div className="flex gap-1 mb-2">{renderStars(4)}</div>
-                    <p className="text-[#9d9fa3] text-[15px] break-words whitespace-normal">
-                      {testimonial.testimonial}
-                    </p>
-                  </div>
+          {testimonials.map((testimonial) => (
+            <div
+              key={testimonial.id}
+              className="snap-center shrink-0 w-[100vw] md:w-[49%] p-[20px] bg-white"
+            >
+              <div className="flex gap-[20px] items-start">
+                <img src={testimonial.image} alt={testimonial.name} className="w-[70px] rounded-full" />
+                <div className="text-content flex flex-col gap-[10px] max-w-full overflow-hidden">
+                  <h3 className="font-semibold text-grey-dark text-[18px]">
+                    {testimonial.name} <span className="text-[#9d9fa3] text-[13px]">- {testimonial.date}</span>
+                  </h3>
+                  <div className="flex gap-1 mb-2">{renderStars(testimonial.rating || 4)}</div>
+                  <p className="text-[#9d9fa3] text-[15px] break-words whitespace-normal">
+                    {testimonial.testimonial}
+                  </p>
                 </div>
               </div>
-            ))
-          ) : (
-            <p>Testimonials unavailable.</p>
-          )}
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Navigation Arrows */}
-      {currentSlide > 0 && (
-        <button
-          onClick={prevSlide}
-          className="absolute left-2 md:left-[100px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
-        >
-          <ArrowLeft size={15} />
-        </button>
-      )}
-      {currentSlide < Math.max(0, Math.ceil(testimonials.length / itemsPerSlide) - 1) && (
-        <button
-          onClick={nextSlide}
-          className="absolute right-2 md:right-[100px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
-        >
-          <ArrowRight size={15} />
-        </button>
-      )}
-    </div>
+        {/* Next Button */}
+        {activeIndex < testimonials.length - 1 && (
+          <button
+            onClick={() => handleNavigate('next')}
+            className="absolute right-2 md:right-[100px] top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+            aria-label="Next slide"
+          >
+            <ArrowRight size={15} />
+          </button>
+        )}
+      </div>
+    </section>
   );
 };
 
 export default Testimonials;
-
-
-

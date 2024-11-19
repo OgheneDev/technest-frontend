@@ -11,9 +11,9 @@ const LatestPosts = () => {
   }, []);
 
   return (
-    <div className='px-[20px] pb-[50px]'>
-      <h2 className='font-bold text-xl mb-[20px] text-grey-dark'>Latest Posts</h2>
-      <div className="posts flex flex-col gap-[30px]">
+    <div className='px-[20px] md:px-[100px] pb-[50px]'>
+      <h2 className='font-bold text-xl mb-[20px] text-grey-dark md:text-3xl'>Latest Posts</h2>
+      <div className="posts flex flex-col md:flex-row gap-[30px]">
         {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post.id}>

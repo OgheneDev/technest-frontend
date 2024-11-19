@@ -38,8 +38,9 @@ const FeaturedProducts = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <h2 className="text-lg font-semibold mb-4 text-center">Featured Products</h2>
-      <div className="toggle-buttons flex gap-[15px] justify-center mb-6">
+      <div className="flex flex-col md:flex-row items-start md:justify-between mb-6">
+      <h2 className="text-lg md:text-3xl font-semibold mb-4 text-center">Featured Products</h2>
+      <div className="toggle-buttons flex gap-[15px] justify-center ">
         <button
           className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold text-[13px] ${
             selectedCategory === 'cases' ? 'bg-[#6610f2] text-white' : ''
@@ -64,6 +65,7 @@ const FeaturedProducts = () => {
         >
           Cables
         </button>
+      </div>
       </div>
 
       <div className="slider-wrapper overflow-hidden relative">

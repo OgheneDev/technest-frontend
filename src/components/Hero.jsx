@@ -12,11 +12,13 @@ const Hero = () => {
       id: 1,
       name: 'New Deals Just Dropped',
       image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730981601/slide_s36khb.png',
+      description: 'Save up to 70% off on headsets, cases, and so much more. New products added every week.'
     },
     {
       id: 2,
       name: 'Apple Watch Edition Base Station',
       image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730981600/slide2_wzedpx.png',
+      description: 'The ultimate charging hub for iPhone, Apple watch and AirPods.'
     },
   ];
 
@@ -50,7 +52,7 @@ const Hero = () => {
 
   return (
     <div>
-      <section className='hero w-[90%] mx-auto'>
+      <section className='hero w-[90%] md:mt-[40px] mx-auto md:mx-[100px] md:w-auto'>
         <div
           className="slider relative w-full overflow-hidden"
           ref={sliderRef}
@@ -68,16 +70,17 @@ const Hero = () => {
             {slider.map((card, index) => (
               <div
                 key={index}
-                className="card w-full flex-shrink-0 flex bg-[#f8f9fa] rounded-[10px] items-center p-[30px]"
+                className="card w-full flex-shrink-0 flex md:items-start md:gap-[30px] md:justify-between bg-[#f8f9fa] rounded-[10px] md:p-[100px] items-center p-[30px]"
               >
-                <div className="text-content flex flex-col gap-[20px]">
-                  <h1 className='font-bold text-xl text-[#343a40]'>{card.name}</h1>
-                  <button className='text-white bg-[#6610f2] w-fit px-[20px] py-[5px] rounded-full'>
+                <div className="text-content md:w-[50%] flex flex-col gap-[20px]">
+                  <h1 className='font-bold text-xl md:text-5xl text-[#343a40]'>{card.name}</h1>
+                  <p className='text-[#777] text-[18px] hidden md:block'>{card.description}</p>
+                  <button className='text-white bg-[#6610f2] w-fit px-[20px] md:px-[35px] py-[5px] md:py-[13px] md:font-semibold rounded-full'>
                     Shop Now
                   </button>
                 </div>
                 <div className="image-container">
-                  <img src={card.image} alt={card.name} className='w-[150px]' />
+                  <img src={card.image} alt={card.name} className='w-[150px] md:w-[500px]' />
                 </div>
               </div>
             ))}
