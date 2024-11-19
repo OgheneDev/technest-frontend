@@ -60,7 +60,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-8">
+    <section className="py-8 md:px-[100px]">
       <h2 className="text-grey-dark font-semibold text-xl mb-[30px] text-center">
         Customer Testimonials
       </h2>
@@ -71,7 +71,7 @@ const Testimonials = () => {
         {activeIndex > 0 && (
           <button
             onClick={() => handleNavigate('prev')}
-            className="absolute left-2 md:left-[100px] top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+            className="absolute left-2 md:left-0 top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
             aria-label="Previous slide"
           >
             <ArrowLeft size={15} />
@@ -108,7 +108,7 @@ const Testimonials = () => {
         {activeIndex < testimonials.length - 1 && (
           <button
             onClick={() => handleNavigate('next')}
-            className="absolute right-2 md:right-[100px] top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+            className="absolute right-2 md:right-0 top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
             aria-label="Next slide"
           >
             <ArrowRight size={15} />

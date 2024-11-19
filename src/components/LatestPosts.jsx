@@ -16,8 +16,11 @@ const LatestPosts = () => {
       <div className="posts flex flex-col md:flex-row gap-[30px]">
         {posts.length > 0 ? (
           posts.map((post) => (
-            <div key={post.id}>
-              <img src={post.images[0]} alt={post.name} className='rounded-[10px] mb-[10px]' />
+            <div
+             key={post.id}
+             className='w-[300px]'
+             >
+              <img src={post.images[0]} alt={post.name} className='rounded-[10px] mb-[10px] h-[170px]' />
               <div className="text-content flex flex-col gap-[15px] items-start">
               <span className='text-white bg-dark py-[5px] px-[20px] rounded-full uppercase text-[11px]'>{post.category}</span>
               <h2 className='dark text-xl font-semibold'>{post.name}</h2>
