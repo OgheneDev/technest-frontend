@@ -10,9 +10,11 @@ export const FeatProductsProvider = ({ children }) => {
   const [itemsPerSlide, setItemsPerSlide] = useState(2);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const [loading, setLoading] = useState(false);
 
   const fetchFeaturedProducts = async (category) => {
     try {
+      setLoading(true);
       const q = query(
         collection(db, "products"),
         where("featured", "==", true),
@@ -27,6 +29,8 @@ export const FeatProductsProvider = ({ children }) => {
       setCurrentSlide(0); // Reset to the first slide
     } catch (error) {
       console.error("Error fetching featured products: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,6 +72,7 @@ export const FeatProductsProvider = ({ children }) => {
     products,
     currentSlide,
     itemsPerSlide,
+    loading,
     fetchFeaturedProducts,
     nextSlide,
     prevSlide,

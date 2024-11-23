@@ -13,10 +13,12 @@ const FeaturedProducts = () => {
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    loading, // Fetch loading status from context
   } = useFeaturedProducts();
 
   const [selectedCategory, setSelectedCategory] = useState('cases');
 
+  // Fetch products whenever the selected category changes
   useEffect(() => {
     fetchFeaturedProducts(selectedCategory);
   }, [selectedCategory]);
@@ -25,7 +27,7 @@ const FeaturedProducts = () => {
     setSelectedCategory(category);
   };
 
-  // Calculate the maximum slide index
+  // Calculate the maximum slide index dynamically
   const maxSlideIndex = Math.max(0, Math.ceil(products.length / itemsPerSlide) - 1);
 
   return (
@@ -38,60 +40,69 @@ const FeaturedProducts = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Header and category toggle buttons */}
       <div className="flex flex-col md:flex-row items-start md:justify-between mb-6">
-      <h2 className="text-lg md:text-3xl font-semibold mb-4 text-center">Featured Products</h2>
-      <div className="toggle-buttons flex gap-[15px] justify-center ">
-        <button
-          className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold text-[13px] ${
-            selectedCategory === 'cases' ? 'bg-[#6610f2] text-white' : ''
-          }`}
-          onClick={() => handleCategoryChange('cases')}
-        >
-          Cases
-        </button>
-        <button
-          className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold text-[13px] ${
-            selectedCategory === 'chargers' ? 'bg-[#6610f2] text-white' : ''
-          }`}
-          onClick={() => handleCategoryChange('chargers')}
-        >
-          Chargers
-        </button>
-        <button
-          className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold text-[13px] ${
-            selectedCategory === 'cables' ? 'bg-[#6610f2] text-white' : ''
-          }`}
-          onClick={() => handleCategoryChange('cables')}
-        >
-          Cables
-        </button>
-      </div>
+        <h2 className="text-lg md:text-3xl font-semibold mb-4 text-center">Featured Products</h2>
+        <div className="toggle-buttons flex gap-[15px] justify-center">
+          {['cases', 'chargers', 'cables'].map((category) => (
+            <button
+              key={category}
+              className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold text-[13px] ${
+                selectedCategory === category ? 'bg-[#6610f2] text-white' : ''
+              }`}
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
+        </div>
       </div>
 
+      {/* Slider wrapper */}
       <div className="slider-wrapper overflow-hidden relative">
         <div
           className="product-list slider-inner flex py-[30px] gap-[10px] transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)` }}
         >
-          {products.length > 0 ? (
-            products.map((product) => (
-              <div
-                key={product.id}
-                className="product-item flex flex-col gap-[20px] border items-center bg-white rounded shadow-md p-4 flex-shrink-0 text-center"
-                style={{ width: `${100 / itemsPerSlide}%` }}
-              >
-                <img src={product.images[0]} alt={product.name} className="w-[100%]" />
-                <span className="uppercase text-gray-600 text-[11px] font-bold">{product.category}</span>
-                <h4 className="font-bold text-dark">{product.name}</h4>
-                <p className="font-bold text-dark">{product.price}</p>
-              </div>
-            ))
-          ) : (
-            <p>No products found for this category.</p>
-          )}
+          {/* Render skeletons if loading, or products if loaded */}
+          {loading
+            ? Array.from({ length: itemsPerSlide }).map((_, index) => (
+                <div
+                  key={index}
+                  className="skeleton-item flex flex-col gap-[20px] border items-center bg-gray-200 animate-pulse rounded shadow-md p-4 flex-shrink-0"
+                  style={{ width: `${100 / itemsPerSlide}%` }}
+                >
+                  <div className="w-[80%] h-[150px] bg-gray-300 rounded"></div>
+                  <div className="w-[60%] h-[20px] bg-gray-300 rounded"></div>
+                  <div className="w-[40%] h-[20px] bg-gray-300 rounded"></div>
+                </div>
+              ))
+            : products.length > 0
+            ? products.map((product) => (
+                <div
+                  key={product.id}
+                  className="product-item flex flex-col gap-[20px] border items-center bg-white rounded shadow-md p-4 flex-shrink-0 text-center"
+                  style={{ width: `${100 / itemsPerSlide}%` }}
+                >
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-[100%]"
+                  />
+                  <span className="uppercase text-gray-600 text-[11px] font-bold">
+                    {product.category}
+                  </span>
+                  <h4 className="font-bold text-dark">{product.name}</h4>
+                  <p className="font-bold text-dark">{product.price}</p>
+                </div>
+              ))
+            : (
+              <p>No products found for this category.</p>
+            )}
         </div>
       </div>
 
+      {/* Navigation arrows */}
       {currentSlide > 0 && (
         <button
           onClick={prevSlide}
@@ -113,5 +124,3 @@ const FeaturedProducts = () => {
 };
 
 export default FeaturedProducts;
-
-
