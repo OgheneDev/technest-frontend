@@ -35,11 +35,11 @@ const Navbar = () => {
             <span className='hidden md:block' >My account</span>
           </div>
         </Link>
-          <div className="flex items-center gap-[10px]">
+          <div className="md:flex hidden items-center gap-[10px]">
             <Heart size={25} />
             <span className='hidden md:block'>Wishlist</span>
           </div>
-          <div className="flex items-center gap-[10px]">
+          <div className="md:flex hidden items-center gap-[10px]">
             <Box size={25} />
             <span className='hidden md:block'>Track order</span>
           </div>
