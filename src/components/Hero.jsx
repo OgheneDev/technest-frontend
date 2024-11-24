@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ArrowLeft, ArrowRight, Truck } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -50,6 +51,32 @@ const Hero = () => {
     }
   };
 
+  const textVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,  // Duration for each element's animation
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,  // Delay between each child animation
+        delayChildren: 0.3,    // Initial delay before starting animations
+        duration: 0.5         // Overall container animation duration
+      }
+    }
+  };
+
   return (
     <div>
       <section className='hero w-[90%] md:mt-[40px] mx-auto md:mx-[100px] md:w-auto'>
@@ -72,13 +99,31 @@ const Hero = () => {
                 key={index}
                 className="card w-full flex-shrink-0 flex md:items-start md:gap-[30px] md:justify-between bg-[#f8f9fa] rounded-[10px] md:p-[100px] items-center p-[30px]"
               >
-                <div className="text-content md:w-[50%] flex flex-col gap-[20px]">
-                  <h1 className='font-bold text-xl md:text-5xl text-[#343a40]'>{card.name}</h1>
-                  <p className='text-[#777] text-[18px] hidden md:block'>{card.description}</p>
-                  <button className='text-white bg-[#6610f2] w-fit px-[20px] md:px-[35px] py-[5px] md:py-[13px] md:font-semibold rounded-full'>
+                <motion.div 
+                  className="text-content md:w-[50%] flex flex-col gap-[20px]"
+                  initial="hidden"
+                  animate={currentSlide === index ? "visible" : "hidden"}
+                  variants={containerVariants}
+                >
+                  <motion.h1 
+                    className='font-bold text-xl md:text-5xl text-[#343a40]'
+                    variants={textVariants}
+                  >
+                    {card.name}
+                  </motion.h1>
+                  <motion.p 
+                    className='text-[#777] text-[18px] hidden md:block'
+                    variants={textVariants}
+                  >
+                    {card.description}
+                  </motion.p>
+                  <motion.button 
+                    className='text-white bg-[#6610f2] w-fit px-[20px] md:px-[35px] py-[5px] md:py-[13px] md:font-semibold rounded-full'
+                    variants={textVariants}
+                  >
                     Shop Now
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
                 <div className="image-container">
                   <img src={card.image} alt={card.name} className='w-[150px] md:w-[500px]' />
                 </div>
@@ -86,7 +131,6 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Conditional Navigation Buttons */}
           {currentSlide > 0 && (
             <button
               onClick={prevSlide}
@@ -114,4 +158,3 @@ const Hero = () => {
 };
 
 export default Hero;
-

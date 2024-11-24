@@ -69,10 +69,10 @@ const FeaturedProducts = () => {
             ? Array.from({ length: itemsPerSlide }).map((_, index) => (
                 <div
                   key={index}
-                  className="skeleton-item flex flex-col gap-[20px] border items-center bg-gray-200 animate-pulse rounded shadow-md p-4 flex-shrink-0"
+                  className="skeleton-item flex flex-col gap-[20px] border items-center h-[400px] bg-gray-200 animate-pulse rounded shadow-md p-3 flex-shrink-0"
                   style={{ width: `${100 / itemsPerSlide}%` }}
                 >
-                  <div className="w-[80%] h-[150px] bg-gray-300 rounded"></div>
+                  <div className="w-[90%] h-[250px] bg-gray-300 rounded"></div>
                   <div className="w-[60%] h-[20px] bg-gray-300 rounded"></div>
                   <div className="w-[40%] h-[20px] bg-gray-300 rounded"></div>
                 </div>

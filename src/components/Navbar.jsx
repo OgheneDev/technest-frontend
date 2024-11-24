@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Menu, User, ShoppingBag, Search, X } from 'lucide-react'
+import { Menu, User, ShoppingBag, Search, X, Heart, Box } from 'lucide-react'
 import logo from '../assets/images/logo.png'
 import { useLocation, Link } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div>
-     <nav className='px-[25px] py-[20px] md:px-[100px] bg-[#0d6efd] flex justify-between'>
+     <nav className='px-[25px] py-[20px] md:px-[100px] text-white bg-[#0d6efd] flex items-center justify-between'>
       <div className='flex gap-[20px] items-start'>
         <button 
          onClick={() => setIsMenuOpen(true)}
@@ -21,11 +21,29 @@ const Navbar = () => {
         </Link>
       </div>
 
+      <div className="search-container-mobile md:flex rounded-full border shadow-sm w-fit my-[20px] p-[10px] px-[20px] hidden gap-[20px] mx-auto">
+        <input type="text" placeholder='Search for Products..' className='w-[280px] outline-none bg-transparent placeholder:text-white' />
+        <button>
+          <Search size={23} />
+        </button>
+      </div>
+
       <div className='flex gap-[20px]'>
         <Link to='/account'>
-          <User size={25} className='text-white' />
+          <div className='flex items-center gap-[10px]'>
+            <User size={25} className='text-white' />
+            <span className='hidden md:block' >My account</span>
+          </div>
         </Link>
-        <ShoppingBag size={25} className='text-white' />
+          <div className="flex items-center gap-[10px]">
+            <Heart size={25} />
+            <span className='hidden md:block'>Wishlist</span>
+          </div>
+          <div className="flex items-center gap-[10px]">
+            <Box size={25} />
+            <span className='hidden md:block'>Track order</span>
+          </div>
+        <ShoppingBag size={30} className='text-white' />
       </div>
     </nav>
 
