@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFetchedProducts } from '../context/FetchProducts';
-import { Star } from 'lucide-react';
+import { Star, Heart, MoveRight, Search } from 'lucide-react';
 
 const ProductList = () => {
   const { products, loading, fetchProducts } = useFetchedProducts();
@@ -26,11 +26,13 @@ const ProductList = () => {
         {loading ? (
           // Render skeletons while loading
           Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="product-skeleton">
+            <div key={index} className="product-skeleton w-[90%] p-[20px] h-[380px] mx-auto bg-[#f4f4f4]">
               {/* Placeholder for skeleton */}
-              <div className="skeleton-image"></div>
-              <div className="skeleton-title"></div>
-              <div className="skeleton-price"></div>
+              <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px]"></div>
+              <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[20px] mb-[5px]"></div>
+              <div className="skeleton-title w-[70%] mx-auto bg-gray-300 h-[20px] mb-[10px]"></div>
+              <div className="skeleton-rating w-[40%] mx-auto bg-gray-300 h-[20px] mb-[15px]"></div>
+              <div className="skeleton-price w-[45%] mx-auto bg-gray-300 h-[20px]"></div>
             </div>
           ))
         ) : (
@@ -41,7 +43,18 @@ const ProductList = () => {
               <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
               <h2 className='text-xl font-bold text-[#222529]'>{product.name}</h2>
               <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
-              <p className='text-[#444] font-bold text-xl'>${product.price}</p>
+              <p className='text-[#444] font-bold text-xl'>${product.price} - $30</p>
+              <div className="options flex flex-col gap-[15px] absolute right-[60px] opacity-0">
+                <div className='bg-white py-[15px] rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]'>
+                    <Heart size={22} />
+                </div>
+                <div className='bg-white py-[15px] rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]'>
+                    <MoveRight size={22} />
+                </div>
+                <div className='bg-white py-[15px] rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]'>
+                    <Search size={22} />
+                </div>
+              </div>
             </div>
           ))
         )}
