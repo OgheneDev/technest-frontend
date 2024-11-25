@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const HurryUpDeals = () => {
   return (
@@ -9,7 +10,11 @@ const HurryUpDeals = () => {
         <div className="bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] md:items-center rounded-[15px] w-[90%] flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto text-white">
             <div className="text-content flex md:items-start flex-col gap-[20px]">
             <h3 className='text-2xl md:text-4xl font-bold '>Airpods <br /> Experience</h3>
-            <button className='bg-white text-bs-indigo rounded-full py-[5px] px-[20px]'>Shop Now</button>
+            <Link to='/shop'>
+            <button className='bg-white text-bs-indigo rounded-full py-[5px] px-[20px]'>
+              Shop Now
+            </button>
+            </Link>
             </div>
 
             <div className="image-container">
@@ -21,7 +26,11 @@ const HurryUpDeals = () => {
         <div className="text-content md:w-[50%] flex flex-col md:items-start gap-[20px]">
             <h3 className='text-2xl md:text-4xl font-bold'>New 3 in 1 <br/> wireless charger</h3>
             <p className='text-[#777] hidden md:block'>Save up to 50% off on new arrivals</p>
-            <button className='bg-white text-bs-indigo rounded-full py-[5px] w-fit px-[25px]'>Shop Now</button>
+             <Link to='/shop'>
+             <button className='bg-white text-bs-indigo rounded-full py-[5px] w-fit px-[25px]'>
+              Shop Now
+            </button>
+             </Link>
             </div>
 
             <div className="image-container">

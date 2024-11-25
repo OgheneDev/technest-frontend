@@ -21,7 +21,7 @@ const ProductList = () => {
   };
 
   return (
-    <div className='px-[20px]'>
+    <div className='px-[20px] py-[30px]'>
       <div className="product-list flex flex-wrap gap-[30px]">
         {loading ? (
           // Render skeletons while loading
