@@ -38,25 +38,28 @@ const ProductList = () => {
         ) : (
           // Render products once loaded
           products.map(product => (
-            <div key={product.id} className="product-item bg-[#F4F4F4] w-[90%] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px]"> 
-              <img src={product.images[0]} alt="" />
-              <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
-              <h2 className='text-xl font-bold text-[#222529]'>{product.name}</h2>
-              <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
-              <p className='text-[#444] font-bold text-xl'>${product.price} - $30</p>
-              <div className="options flex flex-col gap-[15px] absolute right-[60px] opacity-0">
-                <div className='bg-white py-[15px] rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]'>
-                    <Heart size={22} />
-                </div>
-                <div className='bg-white py-[15px] rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]'>
-                    <MoveRight size={22} />
-                </div>
-                <div className='bg-white py-[15px] rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]'>
-                    <Search size={22} />
-                </div>
-              </div>
+            <div
+              key={product.id}
+              className="product-item bg-[#F4F4F4] w-[90%] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
+            >
+             <img src={product.images[0]} alt="" />
+             <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
+             <h2 className="text-xl font-bold text-[#222529]">{product.name}</h2>
+             <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
+             <p className="text-[#444] font-bold text-xl">${product.price} - $30</p>
+             <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+             <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+               <Heart size={22} />
+             </div>
+            <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+              <MoveRight size={22} />
             </div>
-          ))
+           <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+             <Search size={22} />
+           </div>
+        </div>
+    </div> 
+    ))
         )}
       </div>
     </div>
