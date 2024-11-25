@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div>
-     <nav className='px-[25px] py-[20px] md:px-[100px] text-white bg-[#0d6efd] flex items-center justify-between'>
+     <nav className='px-[25px] py-[20px] md:py-[10px] md:px-[100px] text-white bg-[#0d6efd] flex items-center justify-between'>
       <div className='flex gap-[20px] items-start'>
         <button 
          onClick={() => setIsMenuOpen(true)}

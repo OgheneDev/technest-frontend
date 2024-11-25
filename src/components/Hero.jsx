@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ArrowLeft, ArrowRight, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -117,12 +118,14 @@ const Hero = () => {
                   >
                     {card.description}
                   </motion.p>
+                  <Link to='/shop'>
                   <motion.button 
                     className='text-white bg-[#6610f2] w-fit px-[20px] md:px-[35px] py-[5px] md:py-[13px] md:font-semibold rounded-full'
                     variants={textVariants}
                   >
                     Shop Now
                   </motion.button>
+                  </Link>
                 </motion.div>
                 <div className="image-container">
                   <img src={card.image} alt={card.name} className='w-[150px] md:w-[500px]' />
