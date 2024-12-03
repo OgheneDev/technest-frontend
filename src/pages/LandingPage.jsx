@@ -10,6 +10,7 @@ import LatestPosts from '../components/LandingPage/LatestPosts'
 import Testimonials from '../components/LandingPage/Testimonials'
 import { TestimonialContextProvider } from '../context/TestimonialsContext'
 
+
 const LandingPage = () => {
   return (
     <>

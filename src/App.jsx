@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import AuthenticationPage from './pages/AuthenticationPage';
 import ShopPage from './pages/ShopPage';
 
+
 const App = () => {
 
   const router = createBrowserRouter(
