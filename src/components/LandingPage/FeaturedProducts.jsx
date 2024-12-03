@@ -63,7 +63,7 @@ const FeaturedProducts = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="snap-center text-center flex flex-col gap-[10px] relative shrink-0 w-[40vw] md:w-[24%] p-[20px] bg-[#F4F4F4] rounded-[15px]"
+              className="snap-center text-center flex flex-col gap-[10px] relative shrink-0 w-[43vw] md:w-[24%] p-[20px] bg-[#F4F4F4] rounded-[15px]"
             >
               <img src={product.images[0]} alt={product.name} className="w-full rounded" />
               <span className="uppercase text-gray-600 text-[11px] font-bold">
@@ -73,7 +73,7 @@ const FeaturedProducts = () => {
               <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
               <p className="font-bold text-dark">${product.price} - $30.00</p>
               <span className="bg-red-600 text-white uppercase text-[11px] py-[2px] px-[10px] absolute rounded-full">Hot</span>
-              <button className="bg-white rounded-full p-2 border border-gray-400 w-fit absolute right-2">
+              <button className="bg-white rounded-full p-[6px] border border-gray-400 w-fit absolute right-2">
                 <ArrowRight size={15} />
               </button>
             </div>
