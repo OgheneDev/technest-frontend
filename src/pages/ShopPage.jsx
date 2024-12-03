@@ -1,10 +1,8 @@
 import React from 'react'
 import { PopularCategoriesProvider } from '../context/PopularContext'
-import PopularCategoriesSlider from '../components/PopularCategoriesSlider'
+import PopularCategoriesSlider from '../components/LandingPage/PopularCategoriesSlider'
 import { FetchProductsContextProvider } from '../context/FetchProducts'
 import ProductList from '../components/ProductList'
-import { ChevronRight, Home } from 'lucide-react'
-import { Link } from 'react-router-dom'
 
 const ShopPage = () => {
   return (

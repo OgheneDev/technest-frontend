@@ -1,99 +1,89 @@
-import React, { useState, useEffect, useContext, createContext, useRef } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from '../firebaseConfig';
+import { db } from "../firebaseConfig";
 
 const FeatProductsContext = createContext(null);
 
 export const FeatProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [itemsPerSlide, setItemsPerSlide] = useState(2);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-  const [loading, setLoading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("cases");
+  const sliderRef = useRef(null);
 
   const fetchFeaturedProducts = async (category) => {
     try {
-      setLoading(true);
       const q = query(
         collection(db, "products"),
         where("featured", "==", true),
         where("category", "==", category)
       );
       const querySnapshot = await getDocs(q);
-      const fetchedProducts = querySnapshot.docs.map(doc => ({
+      const fetchedProducts = querySnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       setProducts(fetchedProducts);
-      setCurrentSlide(0); // Reset to the first slide
+      setActiveIndex(0); // Reset to the first slide
     } catch (error) {
       console.error("Error fetching featured products: ", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const calculateItemsPerSlide = () => {
-    setItemsPerSlide(window.innerWidth >= 1024 ? 4 : 2);
+  // Handle slider navigation
+  const handleNavigate = (direction) => {
+    const container = sliderRef.current;
+    const cardWidth = container.offsetWidth / (window.innerWidth >= 1024 ? 4 : 2);
+    let nextIndex = activeIndex;
+
+    if (direction === "next" && activeIndex < products.length - 1) {
+      nextIndex += 1;
+    } else if (direction === "prev" && activeIndex > 0) {
+      nextIndex -= 1;
+    }
+
+    container.scrollTo({
+      left: cardWidth * nextIndex,
+      behavior: "smooth",
+    });
+    setActiveIndex(nextIndex);
   };
 
+  // Update active index based on scroll position
   useEffect(() => {
-    calculateItemsPerSlide();
-    window.addEventListener('resize', calculateItemsPerSlide);
-    return () => window.removeEventListener('resize', calculateItemsPerSlide);
+    const handleScroll = () => {
+      const container = sliderRef.current;
+      const scrollPosition = container.scrollLeft;
+      const cardWidth = container.offsetWidth / (window.innerWidth >= 1024 ? 4 : 2);
+      const currentIndex = Math.round(scrollPosition / cardWidth);
+      setActiveIndex(currentIndex);
+    };
+
+    const container = sliderRef.current;
+    container.addEventListener("scroll", handleScroll);
+
+    return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, Math.max(0, Math.floor((products.length - 1) / itemsPerSlide))));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndX.current = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      nextSlide();
-    } else if (touchEndX.current - touchStartX.current > 50) {
-      prevSlide();
-    }
-  };
+  useEffect(() => {
+    fetchFeaturedProducts(selectedCategory);
+  }, [selectedCategory]);
 
   const value = {
     products,
-    currentSlide,
-    itemsPerSlide,
-    loading,
-    fetchFeaturedProducts,
-    nextSlide,
-    prevSlide,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
+    activeIndex,
+    sliderRef,
+    selectedCategory,
+    setSelectedCategory,
+    handleNavigate,
   };
 
-  return (
-    <FeatProductsContext.Provider value={value}>
-      {children}
-    </FeatProductsContext.Provider>
-  );
+  return <FeatProductsContext.Provider value={value}>{children}</FeatProductsContext.Provider>;
 };
 
 export const useFeaturedProducts = () => {
   const context = useContext(FeatProductsContext);
   if (!context) {
-    throw new Error('useFeaturedProducts must be used within a FeatProductsProvider');
+    throw new Error("useFeaturedProducts must be used within a FeatProductsProvider");
   }
   return context;
 };
-
-

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useTestimonialsContext } from '../context/TestimonialsContext';
+import { useTestimonialsContext } from '../../context/TestimonialsContext';
 import { Star, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const Testimonials = () => {

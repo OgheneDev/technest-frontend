@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePopularCategories } from '../context/PopularContext';
+import { usePopularCategories } from '../../context/PopularContext';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const PopularCategoriesSlider = () => {

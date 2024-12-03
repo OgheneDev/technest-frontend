@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLatestPosts } from '../context/LatestPostContext';
+import { useLatestPosts } from '../../context/LatestPostContext';
 import { Link } from 'react-router-dom';
 import { User } from 'lucide-react';
 
