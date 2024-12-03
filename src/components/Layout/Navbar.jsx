@@ -50,7 +50,13 @@ const Navbar = () => {
             <Box size={25} />
             <span className="hidden md:block">Track order</span>
           </div>
-          <ShoppingBag size={30} className="text-white" />
+          <div className="relative">
+           <ShoppingBag size={30} className="text-white" />
+            <span className="absolute top-0 left-4 bg-[#6610f2] text-white text-xs rounded-full px-[6px] py-[1px]">
+               0
+            </span>
+</div>
+
         </div>
       </nav>
 

@@ -8,6 +8,7 @@ export const FeatProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("cases");
+  const [loading, setLoading] = useState(false);
   const sliderRef = useRef(null);
 
   const fetchFeaturedProducts = async (category) => {
@@ -26,6 +27,8 @@ export const FeatProductsProvider = ({ children }) => {
       setActiveIndex(0); // Reset to the first slide
     } catch (error) {
       console.error("Error fetching featured products: ", error);
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -73,6 +76,7 @@ export const FeatProductsProvider = ({ children }) => {
     activeIndex,
     sliderRef,
     selectedCategory,
+    loading,
     setSelectedCategory,
     handleNavigate,
   };
