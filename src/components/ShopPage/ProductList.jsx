@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useFetchedProducts } from '../context/FetchProducts';
+import { useFetchedProducts } from '../../context/FetchProducts';
 import { Star, Heart, MoveRight, Search } from 'lucide-react';
 
 const ProductList = () => {
@@ -40,11 +40,11 @@ const ProductList = () => {
           products.map(product => (
             <div
               key={product.id}
-              className="product-item bg-[#F4F4F4] w-[90%] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
+              className="product-item bg-[#F4F4F4] w-[90%] md:w-[350px] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
             >
              <img src={product.images[0]} alt="" />
              <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
-             <h2 className="text-xl font-bold text-[#222529]">{product.name}</h2>
+             <h2 className="text-xl font-bold text-[#222529] truncate w-full">{product.name}</h2>
              <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
              <p className="text-[#444] font-bold text-xl">${product.price} - $30</p>
              <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">

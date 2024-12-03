@@ -1,7 +1,7 @@
 import React from 'react'
-import AccountBanner from '../components/AccountBanner'
-import SignInForm from '../components/SignInForm'
-import SignUpForm from '../components/SignUpForm'
+import AccountBanner from '../components/AuthPage/AccountBanner'
+import SignInForm from '../components/AuthPage/SignInForm'
+import SignUpForm from '../components/AuthPage/SignUpForm'
 
 const AuthenticationPage = () => {
   return (

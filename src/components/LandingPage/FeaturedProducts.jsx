@@ -49,7 +49,7 @@ const FeaturedProducts = () => {
         {activeIndex > 0 && (
           <button
             onClick={() => handleNavigate("prev")}
-            className="absolute left-2 md:left-[100px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+            className="absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
           >
             <ArrowLeft size={15} />
           </button>
@@ -57,7 +57,7 @@ const FeaturedProducts = () => {
 
         {/* Product slider */}
         <div
-          className="product-slider flex overflow-x-auto snap-x snap-mandatory gap-[20px] px-4"
+          className="product-slider testimonial-slider flex overflow-x-auto snap-x snap-mandatory gap-[20px] px-4"
           ref={sliderRef}
         >
           {products.map((product) => (
@@ -84,7 +84,7 @@ const FeaturedProducts = () => {
         {activeIndex < products.length - 1 && (
           <button
             onClick={() => handleNavigate("next")}
-            className="absolute right-2 md:right-[100px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+            className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
           >
             <ArrowRight size={15} />
           </button>
