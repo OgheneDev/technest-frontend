@@ -44,7 +44,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="px-[25px] py-[20px] md:py-[10px] md:px-[100px] text-white bg-[#0d6efd] flex items-center justify-between">
+      <nav className="px-[25px] py-[20px] md:py-[10px] md:px-[100px] mb-[40px] text-white bg-[#0d6efd] flex items-center justify-between">
         <div className="flex gap-[20px] items-start">
           <button onClick={() => setIsMenuOpen(true)}>
             <Menu size={25} className="text-white md:hidden" />
@@ -54,16 +54,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="search-container-mobile md:flex rounded-full border shadow-sm w-fit my-[20px] p-[10px] px-[20px] hidden gap-[20px] mx-auto">
-          <input
-            type="text"
-            placeholder="Search for Products.."
-            className="w-[280px] outline-none bg-transparent placeholder:text-white"
-          />
-          <button>
-            <Search size={23} />
-          </button>
-        </div>
 
         <div className="flex gap-[20px]">
           <Link to="/account">
@@ -88,17 +78,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      <div className="search-container md:hidden rounded-full border shadow-sm w-[80%] my-[20px] p-[10px] px-[20px] flex gap-[20px] mx-auto">
-        <input
-          type="text"
-          placeholder="Search for Products.."
-          className="w-[280px] outline-none"
-        />
-        <button>
-          <Search size={23} />
-        </button>
-      </div>
 
       {/* Mobile Sliding Menu */}
       <div
