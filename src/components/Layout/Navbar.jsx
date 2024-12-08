@@ -89,7 +89,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <div className="search-container md:hidden rounded-full border shadow-sm w-fit my-[20px] p-[10px] px-[20px] flex gap-[20px] mx-auto">
+      <div className="search-container md:hidden rounded-full border shadow-sm w-[80%] my-[20px] p-[10px] px-[20px] flex gap-[20px] mx-auto">
         <input
           type="text"
           placeholder="Search for Products.."
