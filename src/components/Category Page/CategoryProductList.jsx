@@ -1,20 +1,24 @@
-import React, { useState, useMemo } from 'react';
-import { useFetchedProducts } from '../../context/FetchProducts';
+import React, { useState, useMemo } from 'react'
+import { useFetchedCategoryProducts } from '../../context/FetchCategories'
 import { Star, Heart, MoveRight, Search } from 'lucide-react';
 
-const ProductList = () => {
-  const { products, loading } = useFetchedProducts();
-  
-  // Pagination state
+const CategoryProductList = () => {
+
+  const {
+    products,
+    loading
+  } = useFetchedCategoryProducts();
+
+  //Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
-  // Filtering state
+  //Filtering state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  // Sorting state
-  const [sortOption, setSortOption] = useState('');
+  //Sorting State
+  const [sortOption, setSortOption] = useState();
 
   // Render stars for ratings
   const renderStars = (rating) => {
@@ -105,7 +109,7 @@ const ProductList = () => {
   };
 
   return (
-    <div className='px-[20px] md:px-[100px] py-[30px]'>
+<div className='px-[20px] md:px-[100px] py-[30px] md:py-20'>
       {/* Filters and Sorting */}
       <div className="filters mb-[30px] flex flex-wrap gap-[15px] justify-between items-center">
         {/* Search Input */}
@@ -243,7 +247,7 @@ const ProductList = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ProductList;
+export default CategoryProductList

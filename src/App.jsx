@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import LandingPage from './pages/LandingPage';
 import AuthenticationPage from './pages/AuthenticationPage';
 import ShopPage from './pages/ShopPage';
+import CategoryPage from './pages/CategoryPage';
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
         <Route index element={<LandingPage />} />
         <Route path='/account' element={<AuthenticationPage />} />
         <Route path='/shop' element={<ShopPage />} /> 
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
       </Route>
     )
   );

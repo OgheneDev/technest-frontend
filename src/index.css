@@ -38,3 +38,12 @@ body, button, input{
 .testimonial-slider::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }
+
+.product-slider {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.product-slider::-webkit-scrollbar{
+  display: none; /* Chrome, Safari, Edge */
+}

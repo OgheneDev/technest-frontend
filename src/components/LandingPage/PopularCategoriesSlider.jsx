@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { usePopularCategories } from '../../context/PopularContext';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -35,6 +36,7 @@ const useScrollAnimation = (threshold = 0.1) => {
 
 // Use forwardRef to properly handle ref passing
 const PopularCategoriesSlider = forwardRef((props, ref) => {
+    const navigate = useNavigate();
     const {
         currentSlide,
         itemsPerSlide,
@@ -48,6 +50,17 @@ const PopularCategoriesSlider = forwardRef((props, ref) => {
 
     // Use scroll animation hook
     const { ref: scrollRef, isVisible } = useScrollAnimation();
+
+    // Handle category click
+    const handleCategoryClick = (categoryName) => {
+        // Convert category name to URL-friendly format
+        const urlFriendlyCategoryName = categoryName
+            .toLowerCase()
+            .replace(/\s+/g, '-');
+        
+        // Navigate to category page
+        navigate(`/category/${urlFriendlyCategoryName}`);
+    };
 
     // Combine refs if needed
     const combinedRef = (node) => {
@@ -120,6 +133,7 @@ const PopularCategoriesSlider = forwardRef((props, ref) => {
                         <motion.div
                             key={category.id}
                             variants={itemVariants}
+                            onClick={() => handleCategoryClick(category.name)}
                             className="flex flex-col items-center bg-white cursor-pointer p-4 flex-shrink-0 text-center"
                             style={{ width: `${100 / itemsPerSlide}%` }}
                         >

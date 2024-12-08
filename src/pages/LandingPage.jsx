@@ -3,7 +3,7 @@ import Hero from '../components/LandingPage/Hero'
 import { PopularCategoriesProvider } from '../context/PopularContext'
 import PopularCategoriesSlider from '../components/LandingPage/PopularCategoriesSlider'
 import HurryUpDeals from '../components/LandingPage/HurryUpDeals'
-import { FeatProductsProvider } from '../context/FeaturedProductsContext'
+import { FeaturedProductsProvider } from '../context/FeaturedProductsContext'
 import FeaturedProducts from '../components/LandingPage/FeaturedProducts'
 import { LatestPostsProvider } from '../context/LatestPostContext'
 import LatestPosts from '../components/LandingPage/LatestPosts'
@@ -19,9 +19,9 @@ const LandingPage = () => {
         <PopularCategoriesSlider />
       </PopularCategoriesProvider>
       <HurryUpDeals />
-      <FeatProductsProvider>
-        <FeaturedProducts />
-      </FeatProductsProvider>
+      <FeaturedProductsProvider>
+      <FeaturedProducts />
+    </FeaturedProductsProvider>
       <LatestPostsProvider>
         <LatestPosts />
       </LatestPostsProvider>
