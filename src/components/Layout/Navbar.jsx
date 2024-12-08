@@ -48,7 +48,7 @@ const Navbar = () => {
   return (
     <div>
       <nav className="px-[25px] py-[30px]  md:px-[100px] text-white bg-[#0d6efd] ">
-         <div className="flex items-center justify-between mb-[30px]">
+         <div className="flex items-center justify-between md:mb-[30px]">
          <div className="flex gap-[20px] items-start">
           <button onClick={() => setIsMenuOpen(true)}>
             <Menu size={25} className="text-white md:hidden" />
