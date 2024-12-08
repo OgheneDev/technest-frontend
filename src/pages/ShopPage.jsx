@@ -7,7 +7,7 @@ import ProductList from '../components/ShopPage/ProductList'
 const ShopPage = () => {
   return (
     <div>
-     <div className='border-y border-gray-500'>
+     <div>
         <PopularCategoriesProvider>
           <PopularCategoriesSlider />
         </PopularCategoriesProvider>

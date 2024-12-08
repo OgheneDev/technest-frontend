@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Menu, User, ShoppingBag, Search, X, Heart, Box } from "lucide-react";
+import { Menu, User, ShoppingBag, X, Heart, Box } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 
 const Navbar = () => {
@@ -31,21 +31,25 @@ const Navbar = () => {
      }
   ]
 
-  // Handle category click
   const handleCategoryClick = (categoryName) => {
     // Convert category name to URL-friendly format
     const urlFriendlyCategoryName = categoryName
-        .toLowerCase()
-        .replace(/\s+/g, '-');
-    
-    // Navigate to category page
+      .toLowerCase()
+      .replace(/\s+/g, '-');
+  
+    // Close the menu
+    setIsMenuOpen(false);
+  
+    // Navigate to the category page
     navigate(`/category/${urlFriendlyCategoryName}`);
-};
+  };
+  
 
   return (
     <div>
-      <nav className="px-[25px] py-[20px] md:py-[10px] md:px-[100px] mb-[40px] text-white bg-[#0d6efd] flex items-center justify-between">
-        <div className="flex gap-[20px] items-start">
+      <nav className="px-[25px] py-[30px]  md:px-[100px] text-white bg-[#0d6efd] ">
+         <div className="flex items-center justify-between mb-[30px]">
+         <div className="flex gap-[20px] items-start">
           <button onClick={() => setIsMenuOpen(true)}>
             <Menu size={25} className="text-white md:hidden" />
           </button>
@@ -77,7 +81,26 @@ const Navbar = () => {
             </span>
           </div>
         </div>
+         </div>
+
+         <nav className="pl-6 hidden md:block">
+          <ul className="flex items-center justify-between">
+            {
+              categories.map((item, index) => (
+                <li
+                 key={index}
+                 onClick={() => handleCategoryClick(item.name)}
+                 className="cursor-pointer"
+                >
+                  {item.name}
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
       </nav>
+
+      
 
       {/* Mobile Sliding Menu */}
       <div

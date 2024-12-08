@@ -80,7 +80,7 @@ const Hero = () => {
 
   return (
     <div>
-      <section className='hero w-[90%] md:mt-[40px] mx-auto md:mx-[100px] md:w-auto'>
+      <section className='hero w-[90%] md:mt-[40px] pt-[40px] mx-auto md:mx-[100px] md:w-auto'>
         <div
           className="slider relative w-full overflow-hidden"
           ref={sliderRef}

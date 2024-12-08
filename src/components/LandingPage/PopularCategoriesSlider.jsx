@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { usePopularCategories } from '../../context/PopularContext';
@@ -37,6 +38,7 @@ const useScrollAnimation = (threshold = 0.1) => {
 // Use forwardRef to properly handle ref passing
 const PopularCategoriesSlider = forwardRef((props, ref) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const {
         currentSlide,
         itemsPerSlide,
@@ -118,12 +120,16 @@ const PopularCategoriesSlider = forwardRef((props, ref) => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
-            <motion.h2 
+            {
+                location.pathname === '/' && (
+                <motion.h2 
                 variants={itemVariants}
                 className="text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4"
             >
                 Popular Categories
-            </motion.h2>
+               </motion.h2>
+                )
+            }
             <div className="slider-wrapper overflow-hidden relative">
                 <motion.div
                     className="slider-inner flex gap-1 transition-transform duration-500 ease-in-out"

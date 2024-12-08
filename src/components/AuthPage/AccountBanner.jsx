@@ -21,7 +21,7 @@ const AccountBanner = () => {
         <h6>Account</h6>
       </div>
 
-      <h1 className='text-center text-2xl font-semibold'>My account</h1>
+      <h1 className='text-center text-2xl font-semibold md:fomt-bold'>My account</h1>
     </section>
   )
 }

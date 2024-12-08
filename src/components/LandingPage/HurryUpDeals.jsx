@@ -1,9 +1,10 @@
 import React, { useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const HurryUpDeals = () => {
   const sectionRef = useRef(null);
+  const location = useLocation();
 
   // Variants for section and item animations
   const containerVariants = {
@@ -38,12 +39,14 @@ const HurryUpDeals = () => {
       variants={containerVariants}
       className='mb-[50px]'
     >
-      <motion.h3 
-        variants={itemVariants}
-        className='font-bold text-grey-dark text-xl md:text-3xl mb-[20px] pl-[20px] md:pl-[100px]'
-      >
-        Hurry Up Deals
-      </motion.h3>
+      {location.pathname === '/' && (
+        <motion.h3
+          variants={itemVariants}
+          className="font-bold text-grey-dark text-xl md:text-3xl mb-[20px] pl-[20px] md:pl-[100px]"
+        >
+          Hurry Up Deals
+        </motion.h3>
+      )}
 
       <div className="deals flex flex-col md:flex-row md:px-[100px] gap-[20px]">
         <motion.div 

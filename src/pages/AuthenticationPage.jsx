@@ -7,8 +7,10 @@ const AuthenticationPage = () => {
   return (
     <div>
       <AccountBanner />
-      <SignInForm />
-      <SignUpForm />
+      <div className="md:flex gap-10 md:px-[150px] md:py-10">
+        <SignInForm />
+        <SignUpForm />
+      </div>
     </div>
   )
 }

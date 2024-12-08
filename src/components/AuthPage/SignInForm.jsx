@@ -15,6 +15,7 @@ const SignInForm = () => {
         <input type="password" name="" id="" className='border rounded-sm pl-[10px] py-[15px]'  />
       </div>
 
+      <div className="flex items-center justify-between">
       <div className="form-group flex flex-row gap-[5px] items-center">
         <input type="checkbox" name="" id="" /> 
         <label htmlFor="" className='text-[13px] text-gray-500'>Remember me</label>
@@ -23,6 +24,7 @@ const SignInForm = () => {
       <Link to='/password-reset' className='text-[14px] font-semibold'>
         Forgot password?
       </Link>
+      </div>
 
       <button type='submit' className='bg-black text-white py-[15px] uppercase font-semibold'>
         Login
