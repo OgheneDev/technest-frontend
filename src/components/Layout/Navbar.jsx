@@ -1,16 +1,46 @@
 import React, { useState } from "react";
-import { Menu, User, ShoppingBag, Search, X, Heart, Box, ChevronDown } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Menu, User, ShoppingBag, Search, X, Heart, Box } from "lucide-react";
 import logo from "../../assets/images/logo.png";
-import { useLocation, Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null); // State for dropdowns
-  const location = useLocation();
+  const navigate = useNavigate();
 
-  const toggleDropdown = (id) => {
-    setActiveDropdown(activeDropdown === id ? null : id);
-  };
+  const categories = [
+     {
+      id: 1, name:'Cases'
+     },
+     {
+      id: 2, name: 'Screen Protectors'
+     },
+     {
+      id: 3, name: 'MagSafe'
+     },
+     {
+      id: 4, name: 'Cables'
+     },
+     {
+      id: 5, name: 'Chargers'
+     },
+     {
+      id: 6, name: 'Power Banks'
+     },
+     {
+      id: 7, name: 'Headphones'
+     }
+  ]
+
+  // Handle category click
+  const handleCategoryClick = (categoryName) => {
+    // Convert category name to URL-friendly format
+    const urlFriendlyCategoryName = categoryName
+        .toLowerCase()
+        .replace(/\s+/g, '-');
+    
+    // Navigate to category page
+    navigate(`/category/${urlFriendlyCategoryName}`);
+};
 
   return (
     <div>
@@ -51,12 +81,11 @@ const Navbar = () => {
             <span className="hidden md:block">Track order</span>
           </div>
           <div className="relative">
-           <ShoppingBag size={30} className="text-white" />
+            <ShoppingBag size={30} className="text-white" />
             <span className="absolute top-0 left-4 bg-[#6610f2] text-white text-xs rounded-full px-[6px] py-[1px]">
-               0
+              0
             </span>
-</div>
-
+          </div>
         </div>
       </nav>
 
@@ -84,88 +113,17 @@ const Navbar = () => {
         </div>
 
         <nav className="p-4">
-          <ul className="space-y-5">
-            <li>
-              <button
-                onClick={() => toggleDropdown("cases")}
-                className="flex justify-between items-center w-full"
-              >
-                Cases
-                <span
-                  className={`transform ${
-                    activeDropdown === "cases" ? "rotate-180" : ""
-                  }`}
+          <ul className="categories space-y-5">
+            {
+              categories.map((item, index) => (
+                <li
+                 key={index}
+                 onClick={() => handleCategoryClick(item.name)}
                 >
-                  <ChevronDown size={15} />
-                </span>
-              </button>
-              {activeDropdown === "cases" && (
-                <ul className="pl-4 pt-4 space-y-3">
-                  <li>iPhone Cases</li>
-                  <li>iPad Cases</li>
-                  <li>Samsung Cases</li>
-                </ul>
-              )}
-            </li>
-
-            <li>
-              <button
-                onClick={() => toggleDropdown("screenProtectors")}
-                className="flex justify-between items-center w-full"
-              >
-                Screen Protectors
-                <span
-                  className={`transform ${
-                    activeDropdown === "screenProtectors" ? "rotate-180" : ""
-                  }`}
-                >
-                  <ChevronDown size={15} />
-                </span>
-              </button>
-              {activeDropdown === "screenProtectors" && (
-                <ul className="pl-4 pt-4 space-y-3">
-                  <li>iPhone Screen Protectors</li>
-                  <li>iPad Screen Protectors</li>
-                  <li>Samsung Screen Protectors</li>
-                </ul>
-              )}
-            </li>
-
-            <li>
-              MagSafe
-            </li>
-            <li>Cables</li>
-            <li>Chargers</li>
-            <li>Power Banks</li>
-            <li>Headphones</li>
-
-            <li>
-              <button
-                onClick={() => toggleDropdown("more")}
-                className="flex justify-between items-center w-full"
-              >
-                More
-                <span
-                  className={`transform ${
-                    activeDropdown === "more" ? "rotate-180" : ""
-                  }`}
-                >
-                  <ChevronDown size={15} />
-                </span>
-              </button>
-              {activeDropdown === "more" && (
-                <ul className="pl-4 pt-4 space-y-3">
-                  <li>Straps / Bands - 40mm</li>
-                  <li>Straps / Bands - 44mm</li>
-                  <li>Tripods & Mounts</li>
-                  <li>Cradles & Holders</li>
-                  <li>Stands</li>
-                  <li>Car Kits</li>
-                  <li>Adaptors</li>
-                  <li>Cleaning</li>
-                </ul>
-              )}
-            </li>
+                  {item.name}
+                </li>
+              ))
+            }
           </ul>
         </nav>
       </div>
