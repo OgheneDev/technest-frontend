@@ -33,7 +33,7 @@ const FeaturedProducts = () => {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold ${
+              className={`uppercase text-[12px] text-dark border rounded-full py-[5px] px-[20px] font-bold ${
                 selectedCategory === category ? "bg-[#6610f2] text-white" : ""
               }`}
             >
