@@ -11,7 +11,8 @@ export default {
         'bs-blue': '#0d6efd',
         'grey-dark': '#343a40',
         'dark': '#1d2127',
-        'bs-light': '#f8f9fa'
+        'bs-light': '#f8f9fa',
+        'grey': '#777'
       }
     },
   },
