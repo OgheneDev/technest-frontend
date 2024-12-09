@@ -37,12 +37,12 @@ const HurryUpDeals = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
       variants={containerVariants}
-      className='mb-[50px]'
+      className='mb-[50px] px-[20px] md:px-[100px]'
     >
       {location.pathname === '/' && (
         <motion.h3
           variants={itemVariants}
-          className="font-bold text-grey-dark text-xl md:text-3xl mb-[20px] pl-[20px] md:pl-[100px]"
+          className="font-bold text-grey-dark text-xl md:text-3xl mb-[20px]"
         >
           Hurry Up Deals
         </motion.h3>
