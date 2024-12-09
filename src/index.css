@@ -39,11 +39,15 @@ body, button, input{
   display: none; /* Chrome, Safari, Edge */
 }
 
-.product-slider {
+.product-slider, .image-slider {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
 
 .product-slider::-webkit-scrollbar{
   display: none; /* Chrome, Safari, Edge */
+}
+
+.image-slider::-webkit-scrollbar{
+  display: none;
 }

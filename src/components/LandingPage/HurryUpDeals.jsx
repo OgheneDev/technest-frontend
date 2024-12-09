@@ -51,7 +51,7 @@ const HurryUpDeals = () => {
       <div className="deals flex flex-col md:flex-row md:px-[100px] gap-[20px]">
         <motion.div 
           variants={itemVariants}
-          className="bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] md:items-center rounded-[15px] w-[90%] flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto text-white"
+          className="bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] md:items-center rounded-[15px] w-full flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto text-white"
         >
           <div className="text-content flex md:items-start flex-col gap-[20px]">
             <motion.h3 
@@ -87,7 +87,7 @@ const HurryUpDeals = () => {
 
         <motion.div 
           variants={itemVariants}
-          className="bg-bs-light w-[90%] flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto items-center text-grey-dark rounded-[15px]"
+          className="bg-bs-light w-full flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto items-center text-grey-dark rounded-[15px]"
         >
           <div className="text-content md:w-[50%] flex flex-col md:items-start gap-[20px]">
             <motion.h3 
