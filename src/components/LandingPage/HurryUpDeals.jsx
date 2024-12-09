@@ -39,7 +39,7 @@ const HurryUpDeals = () => {
       variants={containerVariants}
       className='mb-[50px] px-[20px] md:px-[100px]'
     >
-      {location.pathname === '/' && (
+      {location.pathname === '/' || '/product/:productId' && (
         <motion.h3
           variants={itemVariants}
           className="font-bold text-grey-dark text-xl md:text-3xl mb-[20px]"
@@ -48,7 +48,7 @@ const HurryUpDeals = () => {
         </motion.h3>
       )}
 
-      <div className="deals flex flex-col md:flex-row md:px-[100px] gap-[20px]">
+      <div className="deals flex flex-col md:flex-row gap-[20px]">
         <motion.div 
           variants={itemVariants}
           className="bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] md:items-center rounded-[15px] w-full flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto text-white"

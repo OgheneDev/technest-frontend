@@ -43,7 +43,7 @@ const ImageSlider = ({ images }) => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative mb-7">
       {activeIndex > 0 && (
         <button
           className="absolute left-2 top-1/3 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md"

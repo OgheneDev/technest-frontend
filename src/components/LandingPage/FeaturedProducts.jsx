@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useFeaturedProducts } from "../../context/FeaturedProductsContext";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
@@ -15,8 +15,6 @@ const FeaturedProducts = () => {
     loading,
     error,
   } = useFeaturedProducts();
-
-  const navigate = useNavigate();
 
   // Animation variants
   const containerVariants = {
@@ -210,4 +208,4 @@ const FeaturedProducts = () => {
   );
 };
 
-export default FeaturedProducts;
+export default FeaturedProducts; 

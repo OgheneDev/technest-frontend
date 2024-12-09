@@ -19,7 +19,8 @@ const ProductInfo = ({ name, rating, price, description, category }) => (
       <span className="text-[#777] font-normal">Category: </span>
       {category}
     </p>
-    <div className="flex gap-3 mb-4">
+    <button className='text-white bg-black rounded-full py-3 px-10 uppercase mb-5'>Add to Cart</button>
+    <div className="flex items-center gap-3 mb-4">
       <CalendarCheckIcon size={40} />
       <p>Order now and ships by Tue, Mar 12</p>
     </div>
