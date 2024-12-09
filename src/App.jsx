@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import AuthenticationPage from './pages/AuthenticationPage';
 import ShopPage from './pages/ShopPage';
 import CategoryPage from './pages/CategoryPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/account' element={<AuthenticationPage />} />
         <Route path='/shop' element={<ShopPage />} /> 
         <Route path="/category/:categoryName" element={<CategoryPage />} />
+        <Route path='/product/:productId' element={<ProductDetailPage />} />
       </Route>
     )
   );
