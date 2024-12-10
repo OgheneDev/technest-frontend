@@ -44,8 +44,8 @@ const RelatedProducts = ({ products }) => {
   };
 
   return (
-    <div className="px-[20px] md:px-[100px] py-[30px]">
-      <h2 className="text-xl font-bold text-[#222529] mb-[30px] text-center">
+    <div className="py-[30px]">
+      <h2 className="text-3xl font-bold text-grey-dark mb-[30px]">
         Related Products
       </h2>
 

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Menu, User, ShoppingBag, X, Heart, Box } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 import logo from "../../assets/images/logo.png";
 
 const Navbar = () => {
+  const { state } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -74,12 +76,16 @@ const Navbar = () => {
             <Box size={25} />
             <span className="hidden md:block">Track order</span>
           </div>
+          <Link to='/cart'>
           <div className="relative">
             <ShoppingBag size={30} className="text-white" />
-            <span className="absolute top-0 left-4 bg-[#6610f2] text-white text-xs rounded-full px-[6px] py-[1px]">
-              0
-            </span>
-          </div>
+           {state.totalQuantity > 0 && (
+           <span className="absolute top-0 left-4 bg-[#6610f2] text-white text-xs rounded-full px-[6px] py-[1px]">
+            {state.totalQuantity}
+           </span>
+           )}
+         </div>
+          </Link>
         </div>
          </div>
 

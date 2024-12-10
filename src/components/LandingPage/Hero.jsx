@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ArrowLeft, ArrowRight, Truck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Truck, CircleDollarSign, CalendarClock, LockOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -152,10 +152,23 @@ const Hero = () => {
           )}
         </div>
       </section>
-      <div className="ship flex gap-[30px] items-center justify-center border-b py-[30px]">
+      <div className="ship md:hidden flex gap-[30px] items-center justify-center border-b py-[30px]">
         <Truck size={40} className='text-[#0d6efd]' />
         <h2 className='font-bold text-[#343a40]'>Free Shipping & Returns</h2>
+      </div> 
+    <div className="facts hidden md:flex flex-col md:flex-row md:justify-between gap-7 border-b   py-10 px-[100px] md:pb-8">
+    {[
+      { icon: Truck, text: 'Free Shipping & Returns' },
+      { icon: CircleDollarSign, text: 'Money Back Guarantee' },
+      { icon: CalendarClock, text: 'Online Support 24/7' },
+      { icon: LockOpen, text: 'Secure Payment' },
+    ].map(({ icon: Icon, text }, index) => (
+      <div key={index} className="flex gap-3 items-center">
+        <Icon size={45} className="text-bs-indigo" />
+        <span className="text-xl font-semibold">{text}</span>
       </div>
+    ))}
+  </div>
     </div>
   );
 };

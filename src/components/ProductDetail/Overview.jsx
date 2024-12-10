@@ -2,8 +2,8 @@ import React from 'react'
 
 const Overview = () => {
   return (
-    <div className='text-grey'>
-      <h2 className='text-3xl text-grey-dark mb-5 font-bold'>Overview</h2>
+    <div className='text-grey md:w-[50%]'>
+      <h2 className='text-3xl md:text-2xl text-grey-dark mb-5 font-bold'>Overview</h2>
       <p className='mb-7'>
         The Galaxy A35 5G Silicone Case is the perfect blend of style and functionality. It not only enhances the look of your
        smartphone but also provides robust protection against daily wear and tear.

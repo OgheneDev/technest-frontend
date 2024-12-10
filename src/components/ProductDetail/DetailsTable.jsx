@@ -2,8 +2,8 @@ import React from 'react'
 
 const DetailsTable = () => {
   return (
-    <div>
-      <h2 className='text-grey-dark text-3xl mb-5 font-bold'>Details</h2>
+    <div className='md:w-[50%]'>
+      <h2 className='text-grey-dark text-3xl mb-5 font-bold md:text-2xl'>Details</h2>
       <div className='bg-bs-light text-[18px]  uppercase p-3  mb-3'>Specifications</div>
       <table>
          <tbody>

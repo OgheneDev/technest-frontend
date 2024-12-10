@@ -41,7 +41,7 @@ const LatestPosts = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
       variants={containerVariants}
-      className="px-[20px] md:px-[100px] pb-[50px]"
+      className="px-[20px] md:px-[100px] py-[50px] pb-20"
     >
       <motion.h2 
         variants={itemVariants}
@@ -84,15 +84,6 @@ const LatestPosts = () => {
                 >
                   {post.description}
                 </motion.p>
-                <Link to="">
-                  <motion.span
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.1 }}
-                    className="text-blue-800 underline text-[15px]"
-                  >
-                    Continue Reading
-                  </motion.span>
-                </Link>
                 <motion.div 
                   variants={itemVariants}
                   className="user flex gap-[10px] items-center"
@@ -114,7 +105,7 @@ const LatestPosts = () => {
             </motion.div>
           ))
         ) : (
-          <motion.p variants={itemVariants}>No posts found for this category.</motion.p>
+          <motion.p variants={itemVariants}>No posts found.</motion.p>
         )}
       </div>
     </motion.div>

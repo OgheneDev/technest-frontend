@@ -170,7 +170,7 @@ const FeaturedProducts = () => {
                   variants={itemVariants}
                   className="font-bold text-dark"
                 >
-                  ${product.price} - $30.00
+                  ${product.price}
                 </motion.p>
                 <motion.span
                   variants={itemVariants}
@@ -184,7 +184,9 @@ const FeaturedProducts = () => {
                   whileTap={{ scale: 0.9 }}
                   className="bg-white rounded-full p-[6px] border border-gray-400 w-fit absolute right-2"
                 >
+                  <Link to={`/product/${product.id}`}>
                   <ArrowRight size={15} />
+                  </Link>
                 </motion.button>
               </motion.div>
             ))

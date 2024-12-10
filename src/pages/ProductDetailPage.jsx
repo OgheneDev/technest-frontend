@@ -74,15 +74,17 @@ const ProductDetailPage = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="py-[30px] px-5 flex flex-col mb-7 gap-[25px]">
+    <div className="py-[30px] px-5 md:px-[100px] flex flex-col mb-7 gap-[25px]">
       <Breadcrumbs category={product.category} name={product.name} />
-      <div className='md:flex'>
+      <div className='md:flex gap-[50px]'>
       <ImageSlider images={product.images} />
       <ProductInfo {...product} />
       </div>
       <SupportInfo />
-      <Overview />
-      <DetailsTable />
+       <div className="md:flex gap-[50px]">
+       <Overview />
+       <DetailsTable />
+       </div>
       <RelatedProducts products={products} />
       <HurryUpDeals />
     </div>

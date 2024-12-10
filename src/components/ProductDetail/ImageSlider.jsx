@@ -39,6 +39,8 @@ const ImageSlider = ({ images }) => {
 
     const container = sliderRef.current;
     if (container) container.addEventListener('scroll', handleScroll);
+
+    // Cleanup scroll listener on unmount
     return () => container?.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -53,9 +55,17 @@ const ImageSlider = ({ images }) => {
         </button>
       )}
 
-      <div className="image-slider flex overflow-x-auto snap-x snap-mandatory space-x-[20px] px-4" ref={sliderRef}>
+      <div
+        className="image-slider flex overflow-x-auto snap-x snap-mandatory space-x-0 px-4 md:w-[550px]"
+        ref={sliderRef}
+      >
         {images.map((image, index) => (
-          <img key={index} src={image} alt={`Product ${index + 1}`} className="snap-start w-full h-auto rounded-md" />
+          <img
+            key={index}
+            src={image}
+            alt={`Product ${index + 1}`}
+            className="snap-start w-full h-auto flex-shrink-0"
+          />
         ))}
       </div>
 
