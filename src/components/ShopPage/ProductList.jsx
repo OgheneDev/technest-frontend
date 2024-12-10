@@ -144,7 +144,7 @@ const ProductList = () => {
 
       {/* Sort Dropdown */}
       {isSortOpen && (
-        <div className="absolute top-[60px] right-[20px] bg-white shadow-lg rounded-md w-[90%] z-50">
+        <div className="absolute top-[60%] right-[20px] bg-white shadow-lg rounded-md w-[90%] z-50">
           <ul className="text-sm">
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
