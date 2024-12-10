@@ -8,12 +8,14 @@ export const TestimonialContextProvider = ({ children }) => {
   const [testimonials, setTestimonials] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [itemsPerSlide, setItemsPerSlide] = useState(2);
+  const [loading, setLoading] = useState(true);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
   // Fetch testimonials from Firestore
   const fetchTestimonials = async () => {
     try {
+      setLoading(true);
       const q = query(collection(db, "testimonials"));
       const querySnapshot = await getDocs(q);
       const fetchedTestimonials = querySnapshot.docs.map(doc => ({
@@ -24,6 +26,8 @@ export const TestimonialContextProvider = ({ children }) => {
       setCurrentSlide(0); // Reset to the first slide
     } catch (error) {
       console.error("Error fetching Testimonials: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 

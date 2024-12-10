@@ -1,11 +1,23 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLatestPosts } from '../../context/LatestPostContext';
-import { Link } from 'react-router-dom';
 import { User } from 'lucide-react';
 
+const SkeletonPost = () => (
+  <div className="animate-pulse flex flex-col gap-[15px] items-start w-full md:w-[280px]">
+    <div className="bg-gray-300 rounded-[10px] mb-[10px] h-[170px] w-full"></div>
+    <div className="bg-gray-300 py-[5px] px-[20px] rounded-full w-1/3"></div>
+    <div className="bg-gray-300 h-[20px] w-2/3 rounded-md"></div>
+    <div className="bg-gray-300 h-[15px] w-full rounded-md"></div>
+    <div className="user flex gap-[10px] items-center">
+      <div className="profile bg-gray-300 p-[5px] rounded-full h-[35px] w-[35px]"></div>
+      <div className="bg-gray-300 h-[15px] w-[80px] rounded-md"></div>
+    </div>
+  </div>
+);
+
 const LatestPosts = () => {
-  const { posts, fetchPosts } = useLatestPosts();
+  const { posts, fetchPosts, loading } = useLatestPosts();
 
   useEffect(() => {
     fetchPosts(); // Fetch posts on component mount
@@ -51,7 +63,12 @@ const LatestPosts = () => {
       </motion.h2>
 
       <div className="posts flex flex-col md:flex-row gap-[30px]">
-        {posts.length > 0 ? (
+        {loading ? (
+          // Show 3 skeletons while loading
+          Array(4).fill().map((_, index) => (
+            <SkeletonPost key={index} />
+          ))
+        ) : posts.length > 0 ? (
           posts.map((post) => (
             <motion.div
               key={post.id}

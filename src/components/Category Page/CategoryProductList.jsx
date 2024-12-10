@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { useFetchedCategoryProducts } from '../../context/FetchCategories'
-import { Star, Heart, MoveRight, Search } from 'lucide-react';
+import { Star, Heart, MoveRight, Search, SlidersHorizontal, ChevronDown, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CategoryProductList = () => {
@@ -17,6 +17,10 @@ const CategoryProductList = () => {
   //Filtering state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Modal states
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   //Sorting State
   const [sortOption, setSortOption] = useState();
@@ -109,17 +113,42 @@ const CategoryProductList = () => {
     return pageNumbers;
   };
 
+  const handleSort = (option) => {
+    setSortOption(option);
+    setCurrentPage(1); // Reset to first page when sorting
+    setIsSortOpen(false); // Close sort dropdown
+  };
+
   return (
 <div className='px-[20px] md:px-[100px] py-[30px] md:py-20'>
-      {/* Filters and Sorting */}
-      <div className="filters mb-[30px] flex flex-wrap gap-[15px] justify-between items-center">
-        {/* Search Input */}
-        <div className="search-filter flex items-center border rounded-md px-3 py-2">
+      {/* Filters and Sorting Section */}
+      <div className="flex justify-between items-center mb-[30px]">
+        {/* Filter Button */}
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="flex items-center gap-2 bg-white border rounded-md px-4 py-2 text-sm shadow-sm"
+        >
+          <SlidersHorizontal size={20} />
+          Filter
+        </button>
+
+        {/* Sort Button */}
+        <button
+          onClick={() => setIsSortOpen((prev) => !prev)}
+          className="flex items-center gap-2 bg-white border rounded-md px-4 py-2 text-sm shadow-sm"
+        >
+          Sort
+          <ChevronDown size={18} />
+        </button>
+      </div>
+
+      {/* Search Input */}
+      <div className="search-filter flex items-center border md:w-[300px] md:mx-auto rounded-md px-3 py-2 mb-5">
           <Search size={20} className="mr-2 text-gray-500" />
           <input 
             type="text" 
             placeholder="Search products..." 
-            className="outline-none w-full"
+            className="outline-none w-full "
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -128,45 +157,90 @@ const CategoryProductList = () => {
           />
         </div>
 
-        {/* Category Filter */}
-        <select 
-          className="border rounded-md px-3 py-2"
-          value={selectedCategory}
-          onChange={(e) => {
-            setSelectedCategory(e.target.value);
-            setCurrentPage(1); // Reset to first page when filtering
-          }}
-        >
-          <option value="">All Categories</option>
-          {categories.map(category => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
 
-        {/* Sorting */}
-        <select 
-          className="border rounded-md px-3 py-2"
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-        >
-          <option value="">Sort By</option>
-          <option value="priceAsc">Price: Low to High</option>
-          <option value="priceDesc">Price: High to Low</option>
-          <option value="nameAsc">Name: A to Z</option>
-          <option value="nameDesc">Name: Z to A</option>
-        </select>
-      </div>
+      {/* Filter Modal */}
+      {isFilterOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px]">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold">Filter Products</h2>
+              <button onClick={() => setIsFilterOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="flex flex-col gap-4">
+              <label className="text-sm font-bold">Category</label>
+              <select
+                className="border rounded-md px-3 py-2"
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setCurrentPage(1); // Reset to first page when filtering
+                  setIsFilterOpen(false); // Close modal
+                }}
+              >
+                <option value="">All Categories</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sort Dropdown */}
+      {isSortOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px]">
+          <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold">Sort Products By</h2>
+              <button onClick={() => setIsSortOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
+          <ul className="text-sm space-y-3">
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer "
+              onClick={() => handleSort("priceAsc")}
+            >
+              Price: Low to High
+            </li>
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleSort("priceDesc")}
+            >
+              Price: High to Low
+            </li>
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleSort("nameAsc")}
+            >
+              Name: A to Z
+            </li>
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleSort("nameDesc")}
+            >
+              Name: Z to A
+            </li>
+          </ul>
+        </div>
+        </div>
+      )}
 
       {/* Product Grid */}
       <div className="product-list grid grid-cols-2 md:grid-cols-4 gap-[30px]">
         {loading ? (
           // Render skeletons while loading
           Array.from({ length: 8 }).map((_, index) => (
-            <div key={index} className="product-skeleton w-full md:w-[250px] p-[20px] h-[380px] mx-auto bg-[#f4f4f4]">
-              <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px]"></div>
-              <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[20px] mb-[5px]"></div>
-              <div className="skeleton-title w-[70%] mx-auto bg-gray-300 h-[20px] mb-[10px]"></div>
-              <div className="skeleton-rating w-[40%] mx-auto bg-gray-300 h-[20px] mb-[15px]"></div>
+            <div key={index} className="product-skeleton animate-pulse w-full md:w-[250px] p-[20px] h-[380px] mx-auto ">
+              <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px] rounded-[15px]"></div>
+              <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[10px] mb-[5px] rounded-[5px]"></div>
+              <div className="skeleton-title w-[70%] mx-auto bg-gray-300 h-[20px] mb-[10px] rounded-[5px]"></div>
+              <div className="skeleton-rating w-[40%] mx-auto bg-gray-300 h-[20px] mb-[15px] rounded-[5px]"></div>
               <div className="skeleton-price w-[45%] mx-auto bg-gray-300 h-[20px]"></div>
             </div>
           ))

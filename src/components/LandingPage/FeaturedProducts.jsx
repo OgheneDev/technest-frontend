@@ -116,13 +116,13 @@ const FeaturedProducts = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="product-skeleton w-[90%] p-[20px] h-[380px] mx-auto bg-[#f4f4f4]"
+                className="product-skeleton animate-pulse w-[90%] p-[20px] h-[380px] mx-auto  rounded-[15px]"
               >
-                <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px]"></div>
-                <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[20px] mb-[5px]"></div>
-                <div className="skeleton-title w-[70%] mx-auto bg-gray-300 h-[20px] mb-[10px]"></div>
-                <div className="skeleton-rating w-[40%] mx-auto bg-gray-300 h-[20px] mb-[15px]"></div>
-                <div className="skeleton-price w-[45%] mx-auto bg-gray-300 h-[20px]"></div>
+                <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px] rounded-[15px]"></div>
+                <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[10px] mb-[5px] rounded-[5px]"></div>
+                <div className="skeleton-title w-[70%] mx-auto bg-gray-300 h-[20px] mb-[10px] rounded-[5px]"></div>
+                <div className="skeleton-rating w-[40%] mx-auto bg-gray-300 h-[20px] mb-[15px] rounded-[5px]"></div>
+                <div className="skeleton-price w-[45%] mx-auto bg-gray-300 h-[20px] rounded-[5px]"></div>
               </motion.div>
             ))
           ) : error ? (

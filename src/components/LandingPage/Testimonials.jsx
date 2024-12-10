@@ -3,8 +3,29 @@ import { motion } from 'framer-motion';
 import { useTestimonialsContext } from '../../context/TestimonialsContext';
 import { Star, ArrowLeft, ArrowRight } from 'lucide-react';
 
+const SkeletonTestimonial = () => (
+  <div className="snap-center shrink-0 w-[100vw] md:w-[49%] p-[20px] bg-white animate-pulse">
+    <div className="flex gap-[20px] items-start">
+      <div className="bg-gray-300 w-[70px] h-[70px] rounded-full"></div>
+      <div className="text-content flex flex-col gap-[10px] max-w-full">
+        <div className="bg-gray-300 h-[20px] w-2/3 rounded-md"></div>
+        <div className="bg-gray-300 h-[15px] w-1/3 rounded-md"></div>
+        <div className="flex gap-1 mb-2">
+          {Array(5)
+            .fill()
+            .map((_, index) => (
+              <div key={index} className="bg-gray-300 h-[10px] w-[10px] rounded-full"></div>
+            ))}
+        </div>
+        <div className="bg-gray-300 h-[15px] w-full rounded-md"></div>
+        <div className="bg-gray-300 h-[15px] w-3/4 rounded-md"></div>
+      </div>
+    </div>
+  </div>
+);
+
 const Testimonials = () => {
-  const { testimonials, fetchTestimonials } = useTestimonialsContext();
+  const { testimonials, fetchTestimonials, loading } = useTestimonialsContext();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderRef = useRef(null);
@@ -120,7 +141,12 @@ const Testimonials = () => {
           className="testimonial-slider flex overflow-x-auto snap-x snap-mandatory space-x-[20px] px-4"
           ref={sliderRef}
         >
-          {testimonials.map((testimonial) => (
+          {loading ? (
+            // Show 3 skeletons while loading
+            Array(3).fill().map((_, index) => (
+              <SkeletonTestimonial key={index} />
+            ))
+          ) : testimonials.map((testimonial) => (
             <motion.div
               key={testimonial.id}
               variants={itemVariants}

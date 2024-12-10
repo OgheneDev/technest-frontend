@@ -6,9 +6,11 @@ const LatestPostsContext = createContext(null);
 
 export const LatestPostsProvider = ({children}) => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const fetchPosts = async () => {
        try {
+        setLoading(true);
         const q = query(
           collection(db, "posts")
         );
@@ -21,11 +23,14 @@ export const LatestPostsProvider = ({children}) => {
         console.log("Posts:", fetchedPosts)
        } catch (error) {
         console.error("Error fetching featured posts: ", error);
+       } finally {
+        setLoading(false);
        }
     };
    
     const value = {
        posts,
+       loading,
        setPosts,
        fetchPosts
     }
