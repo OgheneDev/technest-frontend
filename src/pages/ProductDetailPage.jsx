@@ -39,52 +39,48 @@ const ProductDetailPage = () => {
     fetchProduct();
   }, [productId]);
 
-
   useEffect(() => {
-    const fetchRelatedProducts = async () => {
+    const fetchRelatedProducts = async () => { 
       if (!product) return;
-  
+
       try {
-        console.log("Fetching related products for category:", product.category);
-  
         const q = query(collection(db, "products"), where("category", "==", product.category));
         const querySnapshot = await getDocs(q);
-  
-        console.log("Raw Query Results:", querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-  
+
         const relatedProducts = querySnapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
           .filter((doc) => doc.id !== productId);
-  
-        console.log("Filtered Related Products:", relatedProducts);
+
         setProducts(relatedProducts);
-  
+
       } catch (error) {
-        console.error("Error fetching related products:", error);
         setError("Failed to fetch related products");
       }
     };
-  
+
     fetchRelatedProducts();
   }, [product]);
-  
 
+  if (loading) return (
+    <div className="flex items-center justify-center w-full h-[700px]">
+      <div className="spinner-border animate-spin inline-block w-10 h-10 border-4 rounded-full text-bs-indigo"></div>
+    </div>
+  );
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="py-[30px] px-5 md:px-[100px] flex flex-col mb-7 gap-[25px]">
       <Breadcrumbs category={product.category} name={product.name} />
       <div className='md:flex gap-[50px]'>
-      <ImageSlider images={product.images} />
-      <ProductInfo {...product} />
+        <ImageSlider images={product.images} />
+        <ProductInfo {...product} />
       </div>
       <SupportInfo />
-       <div className="md:flex gap-[50px]">
-       <Overview />
-       <DetailsTable />
-       </div>
+      <div className="md:flex gap-[50px]">
+        <Overview />
+        <DetailsTable />
+      </div>
       <RelatedProducts products={products} />
       <HurryUpDeals />
     </div>
