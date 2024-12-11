@@ -5,52 +5,86 @@ const CartContext = createContext();
 
 // Initial state
 const initialState = {
-  items: [],
-  totalQuantity: 0,
-  totalPrice: 0,
+  items: [], // Array of cart items
+  totalQuantity: 0, // Total number of items in the cart
+  totalPrice: 0, // Total cost of items in the cart
 };
 
 // Cart reducer function
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_ITEM":
-      const existingItemIndex = state.items.findIndex(item => item.id === action.payload.id);
+      const existingItemIndex = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+
       if (existingItemIndex !== -1) {
+        // If the item exists, update its quantity
         const updatedItems = [...state.items];
+        const existingItem = updatedItems[existingItemIndex];
         updatedItems[existingItemIndex] = {
-          ...updatedItems[existingItemIndex],
-          quantity: updatedItems[existingItemIndex].quantity + action.payload.quantity,
+          ...existingItem,
+          quantity: existingItem.quantity + action.payload.quantity,
         };
         return {
           ...state,
           items: updatedItems,
           totalQuantity: state.totalQuantity + action.payload.quantity,
-          totalPrice: state.totalPrice + action.payload.price * action.payload.quantity,
+          totalPrice:
+            state.totalPrice +
+            action.payload.quantity * action.payload.price,
         };
       }
+
+      // If the item does not exist, add it to the cart
       return {
         ...state,
         items: [...state.items, action.payload],
         totalQuantity: state.totalQuantity + action.payload.quantity,
-        totalPrice: state.totalPrice + action.payload.price * action.payload.quantity,
+        totalPrice:
+          state.totalPrice + action.payload.quantity * action.payload.price,
       };
 
     case "REMOVE_ITEM":
-      const filteredItems = state.items.filter(item => item.id !== action.payload.id);
-      const removedItem = state.items.find(item => item.id === action.payload.id);
+      const removedItem = state.items.find(
+        (item) => item.id === action.payload.id
+      );
+      if (!removedItem) return state; // If item is not found, return current state
+
+      const filteredItems = state.items.filter(
+        (item) => item.id !== action.payload.id
+      );
+
       return {
         ...state,
         items: filteredItems,
         totalQuantity: state.totalQuantity - removedItem.quantity,
-        totalPrice: state.totalPrice - removedItem.price * removedItem.quantity,
+        totalPrice:
+          state.totalPrice -
+          removedItem.quantity * removedItem.price,
+      };
+
+      case 'INCREMENT_QUANTITY':
+      return {
+        ...state,
+        items: state.items.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        ),
+      };
+    case 'DECREMENT_QUANTITY':
+      return {
+        ...state,
+        items: state.items.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: Math.max(1, item.quantity - 1) } // Prevent quantity from going below 1
+            : item
+        ),
       };
 
     case "CLEAR_CART":
-      return {
-        items: [],
-        totalQuantity: 0,
-        totalPrice: 0,
-      };
+      return initialState; // Reset the cart to the initial state
 
     default:
       throw new Error(`Unknown action type: ${action.type}`);
@@ -59,7 +93,6 @@ const cartReducer = (state, action) => {
 
 // CartProvider component
 export const CartProvider = ({ children }) => {
-  // Load initial state from localStorage if available
   const [state, dispatch] = useReducer(cartReducer, initialState, (initial) => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : initial;

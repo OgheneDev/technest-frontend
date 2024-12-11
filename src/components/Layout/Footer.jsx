@@ -33,7 +33,11 @@ const Footer = () => {
                 <h2>Company</h2>
                 <ul className='flex flex-col gap-[5px]'>
                     <li>About Us</li>
-                    <li>Shop</li>
+                    <li>
+                      <Link to='/shop'>
+                      Shop 
+                      </Link>
+                    </li>
                     <li>Contact Us</li>
                     <li>Blog</li>
                 </ul>

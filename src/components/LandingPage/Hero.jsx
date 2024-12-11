@@ -137,17 +137,17 @@ const Hero = () => {
           {currentSlide > 0 && (
             <button
               onClick={prevSlide}
-              className="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 bg-white rounded-full hover:bg-[#6610f2] hover:text-white shadow-md"
+              className="absolute top-1/2 left-0 transform -translate-y-1/2 p-3 bg-white rounded-full hover:bg-[#6610f2] hover:text-white shadow-md"
             >
-              <ArrowLeft size={15} />
+              <ArrowLeft size={20} />
             </button>
           )}
           {currentSlide < slider.length - 1 && (
             <button
               onClick={nextSlide}
-              className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+              className="absolute top-1/2 right-0 transform -translate-y-1/2 p-3 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
             >
-              <ArrowRight size={15} />
+              <ArrowRight size={20} />
             </button>
           )}
         </div>
