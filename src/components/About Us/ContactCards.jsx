@@ -4,7 +4,7 @@ import ContactDetailsCard from './Contact Cards/ContactDetailsCard'
 
 const ContactCards = () => {
   return (
-    <div className='px-5 py-[30px] flex flex-col gap-7'>
+    <div className='px-5 md:px-[100px] py-[30px] md:py-[50px] flex flex-col md:flex-row md:justify-center gap-7'>
       <HelpCard />
       <ContactDetailsCard />
     </div>

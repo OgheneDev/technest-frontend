@@ -55,8 +55,9 @@ const FeaturedProducts = () => {
 
   return (
     <motion.div
+      key={selectedCategory} // Re-render container when category changes
       initial="hidden"
-      whileInView="visible"
+      animate="visible"
       viewport={{ once: true, amount: 0.1 }}
       variants={containerVariants}
       className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px]"
@@ -116,7 +117,7 @@ const FeaturedProducts = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="product-skeleton animate-pulse w-[90%] p-[20px] h-[380px] mx-auto  rounded-[15px]"
+                className="product-skeleton animate-pulse w-[90%] p-[20px] h-[380px] mx-auto rounded-[15px]"
               >
                 <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px] rounded-[15px]"></div>
                 <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[10px] mb-[5px] rounded-[5px]"></div>
@@ -137,55 +138,45 @@ const FeaturedProducts = () => {
               <motion.div
                 key={product.id}
                 variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
                 whileHover={{ scale: 1.05 }}
                 className="snap-center text-center cursor-pointer flex flex-col gap-[10px] relative shrink-0 w-[43vw] md:w-[24%] p-[20px] bg-[#F4F4F4] rounded-[15px]"
               >
                 <Link to={`/product/${product.id}`}>
-                <motion.img
-                  variants={itemVariants}
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="w-full rounded"
-                />
+                  <motion.img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="w-full rounded"
+                  />
                 </Link>
                 <motion.span
-                  variants={itemVariants}
                   className="uppercase text-gray-600 text-[11px] font-bold"
                 >
                   {product.category}
                 </motion.span>
-                <motion.h4
-                  variants={itemVariants}
-                  className="font-bold text-dark truncate w-full"
-                >
+                <motion.h4 className="font-bold text-dark truncate w-full">
                   {product.name}
                 </motion.h4>
-                <motion.div
-                  variants={itemVariants}
-                  className="flex gap-1 mb-2 justify-center"
-                >
+                <motion.div className="flex gap-1 mb-2 justify-center">
                   {renderStars(product.rating)}
                 </motion.div>
-                <motion.p
-                  variants={itemVariants}
-                  className="font-bold text-dark"
-                >
-                  ${product.price}
+                <motion.p className="font-bold text-dark">
+                  ${product.price.toFixed(2)}
                 </motion.p>
                 <motion.span
-                  variants={itemVariants}
                   className="bg-red-600 text-white uppercase text-[11px] py-[2px] px-[10px] absolute rounded-full"
                 >
                   Hot
                 </motion.span>
                 <motion.button
-                  variants={itemVariants}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   className="bg-white rounded-full p-[6px] border border-gray-400 w-fit absolute right-2"
                 >
                   <Link to={`/product/${product.id}`}>
-                  <ArrowRight size={15} />
+                    <ArrowRight size={15} />
                   </Link>
                 </motion.button>
               </motion.div>
@@ -210,4 +201,4 @@ const FeaturedProducts = () => {
   );
 };
 
-export default FeaturedProducts; 
+export default FeaturedProducts;

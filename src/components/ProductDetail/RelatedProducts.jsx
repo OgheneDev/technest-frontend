@@ -78,7 +78,7 @@ const RelatedProducts = ({ products }) => {
               <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
               <h2 className="text-xl font-bold text-[#222529] truncate w-full">{product.name}</h2>
               <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
-              <p className="text-[#444] font-bold text-xl">${product.price} - $30</p>
+              <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
               
               {/* Product Options (matching ProductList) */}
               <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">

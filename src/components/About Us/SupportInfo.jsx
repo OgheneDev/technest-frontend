@@ -3,7 +3,7 @@ import { Truck, CircleDollarSign, CalendarClock, LockOpen } from 'lucide-react';
 
 const SupportInfo = () => {
   return (
-    <div className="facts flex flex-col justify-center md:flex-row md:justify-between gap-7  py-[50px]">
+    <div className="facts flex flex-col md:px-[100px] justify-center md:flex-row md:justify-between gap-7  py-[50px]">
     {[
       { icon: Truck, text: 'Free Shipping & Returns' },
       { icon: CircleDollarSign, text: 'Money Back Guarantee' },

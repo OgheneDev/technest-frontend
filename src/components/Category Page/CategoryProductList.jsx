@@ -257,7 +257,7 @@ const CategoryProductList = () => {
               <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
               <h2 className="text-xl font-bold text-[#222529] truncate w-full">{product.name}</h2>
               <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
-              <p className="text-[#444] font-bold text-xl">${product.price}</p>
+              <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
               <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
                   <Heart size={22} />

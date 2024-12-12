@@ -259,7 +259,7 @@ const ProductList = () => {
         <div className="flex gap-1 mb-2 justify-center">
           {renderStars(product.rating || 4)}
         </div>
-        <p className="text-[#444] font-bold text-xl">${product.price}</p>
+        <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
      </div>
     ))
   )   :   (
