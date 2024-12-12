@@ -9,6 +9,7 @@ import { LatestPostsProvider } from '../context/LatestPostContext'
 import LatestPosts from '../components/LandingPage/LatestPosts'
 import Testimonials from '../components/LandingPage/Testimonials'
 import { TestimonialContextProvider } from '../context/TestimonialsContext'
+import ContactCards from '../components/About Us/ContactCards'
 
 
 const LandingPage = () => {
@@ -28,6 +29,7 @@ const LandingPage = () => {
       <TestimonialContextProvider>
         <Testimonials />
       </TestimonialContextProvider>
+      <ContactCards />
     </>
   )
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
-import { CartProvider } from "./context/CartContext"; // Ensure this path is correct
+import { CartProvider } from "./context/CartContext";
 import MainLayout from "./layouts/MainLayout";
 import LandingPage from "./pages/LandingPage";
 import AuthenticationPage from "./pages/AuthenticationPage";
@@ -9,6 +9,7 @@ import CategoryPage from "./pages/CategoryPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import AboutUspage from "./pages/AboutUspage";
+import BlogPage from "./pages/BlogPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/product/:productId" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/about-us" element={<AboutUspage />} />
+        <Route path="/blog" element={<BlogPage />} />
       </Route>
     )
   );

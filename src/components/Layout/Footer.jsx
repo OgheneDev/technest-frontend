@@ -43,7 +43,11 @@ const Footer = () => {
                       </Link>
                     </li>
                     <li>Contact Us</li>
-                    <li>Blog</li>
+                    <li>
+                      <Link to='/blog'>
+                      Blog
+                      </Link>
+                    </li>
                 </ul>
             </div>
 
@@ -52,8 +56,16 @@ const Footer = () => {
                     Support
                 </h2>
                 <ul className='flex flex-col gap-[5px]'>
-                    <li>Help & FAQs</li>
-                    <li>Login / Register</li>
+                    <li>
+                      <Link to='/contact-us'>
+                       Help & FAQs
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to='/account'>
+                        Login / Register
+                      </Link>
+                    </li>
                     <li>Track your Order</li>
                     <li>Shipping & Returns</li>
                     <li>Acessibility</li>
