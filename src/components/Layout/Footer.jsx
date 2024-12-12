@@ -32,7 +32,11 @@ const Footer = () => {
             <div className="list flex flex-col gap-[15px]">
                 <h2>Company</h2>
                 <ul className='flex flex-col gap-[5px]'>
-                    <li>About Us</li>
+                    <li>
+                      <Link to='/about-us'>
+                      About Us
+                      </Link>
+                    </li>
                     <li>
                       <Link to='/shop'>
                       Shop 

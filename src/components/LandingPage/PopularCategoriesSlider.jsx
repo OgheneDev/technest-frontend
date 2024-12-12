@@ -120,16 +120,17 @@ const PopularCategoriesSlider = forwardRef((props, ref) => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
-            {
-                location.pathname === '/' && (
-                <motion.h2 
-                variants={itemVariants}
-                className="text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4"
-            >
-                Popular Categories
-               </motion.h2>
-                )
+            { 
+             ['/', '/about-us'].includes(location.pathname) && (
+             <motion.h2 
+              variants={itemVariants}
+              className="text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4"
+             >
+               Popular Categories
+             </motion.h2>
+             )   
             }
+            
             <div className="slider-wrapper overflow-hidden relative">
                 <motion.div
                     className="slider-inner flex gap-1 transition-transform duration-500 ease-in-out"
