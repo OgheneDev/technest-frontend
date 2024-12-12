@@ -13,7 +13,7 @@ const initialState = {
 // Cart reducer function
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case "ADD_ITEM":
+    case "ADD_ITEM": {
       const existingItemIndex = state.items.findIndex(
         (item) => item.id === action.payload.id
       );
@@ -22,35 +22,31 @@ const cartReducer = (state, action) => {
         // If the item exists, update its quantity
         const updatedItems = [...state.items];
         const existingItem = updatedItems[existingItemIndex];
-        updatedItems[existingItemIndex] = {
+        const updatedItem = {
           ...existingItem,
           quantity: existingItem.quantity + action.payload.quantity,
         };
+        updatedItems[existingItemIndex] = updatedItem;
+
         return {
           ...state,
           items: updatedItems,
           totalQuantity: state.totalQuantity + action.payload.quantity,
-          totalPrice:
-            state.totalPrice +
-            action.payload.quantity * action.payload.price,
+          totalPrice: calculateTotalPrice(updatedItems),
         };
       }
 
       // If the item does not exist, add it to the cart
+      const newItems = [...state.items, action.payload];
       return {
         ...state,
-        items: [...state.items, action.payload],
+        items: newItems,
         totalQuantity: state.totalQuantity + action.payload.quantity,
-        totalPrice:
-          state.totalPrice + action.payload.quantity * action.payload.price,
+        totalPrice: calculateTotalPrice(newItems),
       };
+    }
 
-    case "REMOVE_ITEM":
-      const removedItem = state.items.find(
-        (item) => item.id === action.payload.id
-      );
-      if (!removedItem) return state; // If item is not found, return current state
-
+    case "REMOVE_ITEM": {
       const filteredItems = state.items.filter(
         (item) => item.id !== action.payload.id
       );
@@ -58,37 +54,56 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         items: filteredItems,
-        totalQuantity: state.totalQuantity - removedItem.quantity,
-        totalPrice:
-          state.totalPrice -
-          removedItem.quantity * removedItem.price,
+        totalQuantity: calculateTotalQuantity(filteredItems),
+        totalPrice: calculateTotalPrice(filteredItems),
       };
+    }
 
-      case 'INCREMENT_QUANTITY':
+    case 'INCREMENT_QUANTITY': {
+      const updatedItems = state.items.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+
       return {
         ...state,
-        items: state.items.map((item) =>
-          item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        ),
+        items: updatedItems,
+        totalQuantity: calculateTotalQuantity(updatedItems),
+        totalPrice: calculateTotalPrice(updatedItems),
       };
-    case 'DECREMENT_QUANTITY':
+    }
+
+    case 'DECREMENT_QUANTITY': {
+      const updatedItems = state.items.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
+          : item
+      );
+
       return {
         ...state,
-        items: state.items.map((item) =>
-          item.id === action.payload.id
-            ? { ...item, quantity: Math.max(1, item.quantity - 1) } // Prevent quantity from going below 1
-            : item
-        ),
+        items: updatedItems,
+        totalQuantity: calculateTotalQuantity(updatedItems),
+        totalPrice: calculateTotalPrice(updatedItems),
       };
+    }
 
     case "CLEAR_CART":
-      return initialState; // Reset the cart to the initial state
+      return initialState;
 
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
+};
+
+// Helper functions to calculate totals
+const calculateTotalQuantity = (items) => {
+  return items.reduce((total, item) => total + item.quantity, 0);
+};
+
+const calculateTotalPrice = (items) => {
+  return items.reduce((total, item) => total + (item.price * item.quantity), 0);
 };
 
 // CartProvider component
