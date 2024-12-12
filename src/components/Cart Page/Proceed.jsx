@@ -10,7 +10,7 @@ const Proceed = () => {
   const totalWithShipping = state.totalPrice + shippingCost;
 
   return (
-    <div className="proceed flex flex-col gap-3 w-[90%] mx-auto bg-white border-t-4 border-2 p-5 mb-10">
+    <div className="proceed md:w-[350px] flex flex-col gap-3 w-[90%] mx-auto bg-white border-t-4 border-2 p-5  mb-10">
       {state.items.length === 0 ? (
         <p className="text-center text-gray-500">Your cart is empty</p>
       ) : (
@@ -54,7 +54,7 @@ const Proceed = () => {
             <p>Total</p>
             <h2 className='text-2xl'>${totalWithShipping.toFixed(2)}</h2>
           </div>
-          <button className='bg-dark py-4 px-6 flex items-center gap-3 text-[16px] font-semibold uppercase text-white'>
+          <button className='bg-dark py-4 px-6 flex items-center gap-3 md:justify-between text-[16px] font-semibold uppercase text-white'>
             Proceed to Checkout
             <ArrowRight size={20} />
           </button>

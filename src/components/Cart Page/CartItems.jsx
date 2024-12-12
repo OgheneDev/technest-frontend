@@ -23,7 +23,7 @@ const CartItems = () => {
   };
 
   return (
-    <div className="cart-page py-5">
+    <div className="cart-page py-5 md:py-0">
       {state.items.length === 0 ? (
         <div className="text-center text-gray-500">Your cart is empty</div>
       ) : (
@@ -31,7 +31,7 @@ const CartItems = () => {
           {state.items.map((item) => (
             <div
               key={item.id}
-              className="flex flex-col gap-3 w-[90%] mx-auto bg-white border-t-4 border-2 border-t-blue-800 text-center p-5"
+              className="flex flex-col gap-3 w-[90%] md:w-[300px] mx-auto bg-white border-t-4 border-2 border-t-blue-800 text-center p-5"
             >
               <div className="relative">
                 <img
