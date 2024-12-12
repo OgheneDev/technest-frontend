@@ -66,7 +66,11 @@ const Footer = () => {
                         Login / Register
                       </Link>
                     </li>
-                    <li>Track your Order</li>
+                    <li>
+                      <Link to='/order-tracking'>
+                      Track your Order
+                      </Link>
+                    </li>
                     <li>Shipping & Returns</li>
                     <li>Acessibility</li>
                 </ul>
