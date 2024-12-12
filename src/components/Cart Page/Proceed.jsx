@@ -54,7 +54,7 @@ const Proceed = () => {
             <p>Total</p>
             <h2 className='text-2xl'>${totalWithShipping.toFixed(2)}</h2>
           </div>
-          <button className='bg-dark py-4 px-7 flex items-center gap-3 text-[18px] font-semibold uppercase text-white'>
+          <button className='bg-dark py-4 px-6 flex items-center gap-3 text-[16px] font-semibold uppercase text-white'>
             Proceed to Checkout
             <ArrowRight size={20} />
           </button>

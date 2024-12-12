@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react'
 
 const Breadcrumbs = () => {
   return (
-    <div className='flex gap-8 justify-center text-[20px] font-semibold py-7 px-5 flex-wrap text-grey'>
+    <div className='flex gap-8 justify-center text-[17px] font-semibold py-7 px-5 flex-wrap text-grey'>
        <Link to='/cart' className='hover:text-[#3740ea]'>
          Shopping Cart
        </Link>
