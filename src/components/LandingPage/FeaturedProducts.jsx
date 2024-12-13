@@ -95,16 +95,17 @@ const FeaturedProducts = () => {
       <div className="relative">
         {/* Previous button */}
         {activeIndex > 0 && (
-          <motion.button
-            variants={itemVariants}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => handleNavigate("prev")}
-            className="absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
-          >
-            <ArrowLeft size={15} />
-          </motion.button>
-        )}
+    <motion.button
+      variants={itemVariants}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={() => handleNavigate("prev")}
+      className="z-[1000] absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+      style={{ zIndex: 1000 }} // Inline style as an extra measure
+    >
+      <ArrowLeft size={15} />
+    </motion.button>
+  )}
 
         {/* Product slider */}
         <div
@@ -186,16 +187,17 @@ const FeaturedProducts = () => {
 
         {/* Next button */}
         {activeIndex < products.length - 1 && (
-          <motion.button
-            variants={itemVariants}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => handleNavigate("next")}
-            className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
-          >
-            <ArrowRight size={15} />
-          </motion.button>
-        )}
+    <motion.button
+      variants={itemVariants}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={() => handleNavigate("next")}
+      className="z-[100] absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+      style={{ zIndex: 100 }} // Inline style as an extra measure
+    >
+      <ArrowRight size={15} />
+    </motion.button>
+  )}
       </div>
     </motion.div>
   );

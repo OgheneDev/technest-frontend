@@ -53,7 +53,8 @@ const RelatedProducts = ({ products }) => {
         <button 
           onClick={() => handleNavigate('prev')}
           disabled={activeIndex === 0}
-          className="absolute  left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+          className="z-[1000] absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+          style={{ zIndex: 1000 }} // Inline style as an extra measure
         >
           <ArrowLeft size={15} />
         </button>
@@ -99,7 +100,8 @@ const RelatedProducts = ({ products }) => {
         <button 
           onClick={() => handleNavigate('next')}
           disabled={activeIndex >= products.length - 4}
-          className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+          className="z-[100] absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
+          style={{ zIndex: 100 }} // Inline style as an extra measure
         >
            <ArrowRight size={15} />
         </button>
