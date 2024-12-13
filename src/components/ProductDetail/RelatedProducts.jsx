@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Star, Heart, MoveRight, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Star, Heart, MoveRight, Search, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const RelatedProducts = ({ products }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -54,9 +53,9 @@ const RelatedProducts = ({ products }) => {
         <button 
           onClick={() => handleNavigate('prev')}
           disabled={activeIndex === 0}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 px-3 py-2 bg-white border rounded-full disabled:opacity-50"
+          className="absolute  left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
         >
-          {'<'}
+          <ArrowLeft size={15} />
         </button>
 
         {/* Product slider */}
@@ -72,7 +71,7 @@ const RelatedProducts = ({ products }) => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="product-item bg-[#F4F4F4] w-[60%] md:w-[250px] shrink-0 mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
+              className="product-item bg-[#F4F4F4] w-[50%] md:w-[250px] shrink-0 mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
             >
               <img src={product.images[0]} alt={product.name} />
               <span className="uppercase text-[13px] text-[#999999]">{product.category}</span>
@@ -100,9 +99,9 @@ const RelatedProducts = ({ products }) => {
         <button 
           onClick={() => handleNavigate('next')}
           disabled={activeIndex >= products.length - 4}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 px-3 py-2 bg-white border rounded-full disabled:opacity-50"
+          className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
         >
-          {'>'}
+           <ArrowRight size={15} />
         </button>
       </div>
     </div>
