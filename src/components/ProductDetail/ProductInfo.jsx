@@ -1,6 +1,5 @@
 import React from "react";
 import { useCart } from "../../context/CartContext";
-import { Link } from "react-router-dom";
 import { CalendarCheckIcon, CircleHelp, Star } from "lucide-react";
 
 const renderStars = (rating) =>

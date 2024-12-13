@@ -10,9 +10,12 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
+import QuickViewModal from "./QuickViewModal";
 
 const ProductList = () => {
   const { products, loading } = useFetchedProducts();
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +29,7 @@ const ProductList = () => {
   // Modal states
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isQuickViewModalOpen, setIsQuickViewModalOpen] = useState(false);
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -70,6 +74,15 @@ const ProductList = () => {
     setIsSortOpen(false); // Close sort dropdown
   };
   
+  const handleQuickView = (product) => {
+    setSelectedProduct(product);
+    setIsQuickViewModalOpen(true);
+  }
+
+  const closeQuickView = () => {
+    setSelectedProduct(null);
+    setIsQuickViewModalOpen(false);
+  }
 
   // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -260,6 +273,21 @@ const ProductList = () => {
           {renderStars(product.rating || 4)}
         </div>
         <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
+        <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+              <Heart size={22} />
+            </div>
+            <Link to={`/product/${product.id}`}>
+              <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+                <MoveRight size={22} />
+              </div>
+                </Link>
+              <div 
+              onClick={() => handleQuickView(product)}
+              className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+                <Search size={22} />
+              </div>
+        </div>
      </div>
     ))
   )   :   (
@@ -268,6 +296,11 @@ const ProductList = () => {
     </div>
  )}
       </div>
+
+      {/* Render QuickViewModal */}
+      {isQuickViewModalOpen && (
+        <QuickViewModal product={selectedProduct} onClose={closeQuickView} />
+      )}
 
       {/* Pagination */}
 {totalPages > 1 && (
