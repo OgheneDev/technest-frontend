@@ -1,6 +1,8 @@
 import React from "react";
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext"; // Add this import
+import { WishlistProvider } from "./context/WishlistContext";
 import MainLayout from "./layouts/MainLayout";
 import LandingPage from "./pages/LandingPage";
 import AuthenticationPage from "./pages/AuthenticationPage";
@@ -11,6 +13,7 @@ import CartPage from "./pages/CartPage";
 import AboutUspage from "./pages/AboutUspage";
 import BlogPage from "./pages/BlogPage";
 import OrderTrackingPage from "./pages/OrderTrackingPage";
+import WishlistPage from "./pages/WishlistPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -25,14 +28,19 @@ const App = () => {
         <Route path="/about-us" element={<AboutUspage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/order-tracking" element={<OrderTrackingPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
       </Route>
     )
   );
 
   return (
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <RouterProvider router={router} />
+        </WishlistProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 };
 

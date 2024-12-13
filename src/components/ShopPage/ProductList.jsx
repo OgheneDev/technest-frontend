@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useFetchedProducts } from "../../context/FetchProducts";
+import { useWishlist } from "../../context/WishlistContext";
 import {
   Star,
   Heart,
@@ -14,6 +15,7 @@ import QuickViewModal from "./QuickViewModal";
 
 const ProductList = () => {
   const { products, loading } = useFetchedProducts();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -274,9 +276,16 @@ const ProductList = () => {
         </div>
         <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
         <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
-              <Heart size={22} />
-            </div>
+        <div 
+           onClick={() => isInWishlist(product.id) 
+                      ? removeFromWishlist(product.id) 
+                      : addToWishlist(product)
+                  }
+                  className={`bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s] 
+                    ${isInWishlist(product.id) ? 'text-red-500' : ''}`}
+                >
+                  <Heart size={22} />
+                </div>
             <Link to={`/product/${product.id}`}>
               <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
                 <MoveRight size={22} />
