@@ -14,7 +14,7 @@ const Faqs = () => {
     const isActive = (id) => activeDropdowns.includes(id);
 
     return (
-        <div className="px-[20px] md:px-[100px] py-[30px]">
+        <div className="px-[20px] md:px-[100px] py-[30px] md:py-[60px]">
             <h2 className="text-dark text-xl font-bold mb-7 md:text-3xl">
                 Frequently Asked Questions
             </h2>

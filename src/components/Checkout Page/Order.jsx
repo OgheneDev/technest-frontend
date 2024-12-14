@@ -37,7 +37,7 @@ const Order = () => {
                  <div className="image">
                     <img
                      src={item.images && item.images.length > 0 ? item.images[0] : placeholderImg}
-                     className='w-[100px] h-[100px] md:w-[80px] md:h-[80px]'
+                     className='w-[120px] h-[120px] md:w-[80px] md:h-[80px]'
                      alt={item.name || 'Product image'} 
                     />
                  </div>
