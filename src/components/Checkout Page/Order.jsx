@@ -1,8 +1,14 @@
 import React from 'react'
 import { useCart } from '../../context/CartContext'
+import { X } from 'lucide-react';
+import placeholderImg from '../../assets/images/shop50-product-14-4-600x600.jpg';
 
 const Order = () => {
     const { state, dispatch } = useCart();
+
+    const handleRemoveItem = (id) => {
+      dispatch({ type: 'REMOVE_ITEM', payload: { id } });
+    };
     
     const handleIncrementQuantity = (id) => {
         dispatch({ type: 'INCREMENT_QUANTITY', payload: { id } });
@@ -18,7 +24,7 @@ const Order = () => {
 
 
   return (
-    <div className='w-[65%] mx-auto mb-[50px] bg-white border-2 md:px-[40px] text-dark px-5 py-7'>
+    <div className='md:w-[65%] w-[90%] mx-auto mb-[50px] bg-white border-2 md:px-[40px] text-dark px-5 py-7'>
       <h2 className='uppercase text-dark text-xl mb-5 font-bold md:text-[18px]'>Your order</h2>
       <div className="product">
         <h3 className='uppercase font-bold text-[18px] md:text-[16px] md:font-semibold text-dark mb-5'>Product</h3>
@@ -53,8 +59,13 @@ const Order = () => {
                      +
                    </button>
                 </div>
-                 <p className='font-bold text-[18px] md:font-semibold'>${item.price.toFixed(2)}</p>
-                   </div>
+                  <p className='font-bold text-[18px] md:font-semibold'>${item.price.toFixed(2)}</p>
+                </div>  
+                <button
+                 onClick={() => handleRemoveItem(item.id)}
+                 className='bg-white absolute right-[120px] flex justify-center shadow-lg rounded-full p-2'>
+                  <X size={15} />
+                </button>
             </div>
             </div>
             ))}
