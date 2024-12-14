@@ -28,10 +28,10 @@ const Shops = () => {
     ]
 
   return (
-    <div className='border border-grey-dark rounded-[15px] w-[90%] mx-auto p-7'>
+    <div className='border border-grey rounded-[15px] w-[90%] mx-auto p-7'>
       <div className="flex gap-2 mb-5 items-center">
          <Phone size={20} />
-         <h3 className='text-xl text-dark font-bold'>123 456 7890</h3>
+         <h3 className='text-2xl text-dark font-bold'>123 456 7890</h3>
         </div>
         <p className='text-grey mb-2'>Monday to Saturday - 8am - 6pm</p>
         <Link className='text-[#6610f2] underline '>Frequently asked Questions</Link>
@@ -41,11 +41,11 @@ const Shops = () => {
                 <div
                  key={index}
                 >
-                    <span className='text-grey uppercase'>Store {store.number}</span>
-                    <h3 className='font-bold text-2xl mb-3'>{store.name}</h3>
-                    <p className='text-grey text-[17px]'>{store.address}</p>
-                    <p className='text-grey text-[17px] mb-5'>{store.phoneNumber}</p>
-                    <p className='font-semibold text-[18px] underline text-dark'>{store.email}</p>
+                    <span className='text-grey uppercase text-[12px]'>Store {store.number}</span>
+                    <h3 className='font-bold text-xl mb-3'>{store.name}</h3>
+                    <p className='text-grey text-[14px]'>{store.address}</p>
+                    <p className='text-grey text-[14px] mb-5'>{store.phoneNumber}</p>
+                    <p className='font-semibold text-[15px] underline text-dark'>{store.email}</p>
                 </div>
             ))}
         </div>

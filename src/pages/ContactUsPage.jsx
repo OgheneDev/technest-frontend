@@ -2,6 +2,7 @@ import React from 'react'
 import ContactUsBanner from '../components/Contact Us Page/ContactUsBanner'
 import ContactUsForm from '../components/Contact Us Page/ContactUsForm'
 import Shops from '../components/Contact Us Page/Shops'
+import Faqs from '../components/Contact Us Page/Faqs'
 
 const ContactUsPage = () => {
   return (
@@ -11,6 +12,7 @@ const ContactUsPage = () => {
         <ContactUsForm />
         <Shops />
       </div>
+      <Faqs />
     </div>
   )
 }
