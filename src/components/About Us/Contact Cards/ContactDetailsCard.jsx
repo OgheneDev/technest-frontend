@@ -10,7 +10,7 @@ const ContactDetailsCard = () => {
         <h3 className='text-xl text-dark font-bold'>123 456 7890</h3>
       </div>
       <p className='text-grey mb-2'>Monday to Saturday - 8am - 6pm</p>
-      <Link className='text-[#6610f2] underline'>Frequently asked Questions</Link>
+      <Link to='/contact-us' className='text-[#6610f2] underline'>Frequently asked Questions</Link>
     </div>
   )
 }

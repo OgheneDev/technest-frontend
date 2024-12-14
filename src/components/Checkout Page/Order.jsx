@@ -18,10 +18,10 @@ const Order = () => {
 
 
   return (
-    <div className='w-[90%] mx-auto mb-[50px] bg-white border-2 text-dark px-5 py-7'>
-      <h2 className='uppercase text-dark text-xl mb-5 font-bold'>Your order</h2>
+    <div className='w-[65%] mx-auto mb-[50px] bg-white border-2 md:px-[40px] text-dark px-5 py-7'>
+      <h2 className='uppercase text-dark text-xl mb-5 font-bold md:text-[18px]'>Your order</h2>
       <div className="product">
-        <h3 className='uppercase font-bold text-[18px] text-dark mb-5'>Product</h3>
+        <h3 className='uppercase font-bold text-[18px] md:text-[16px] md:font-semibold text-dark mb-5'>Product</h3>
         <div className="flex flex-col gap-5">
             {state.items.map((item) => (
                 <div
@@ -31,13 +31,14 @@ const Order = () => {
                  <div className="image">
                     <img
                      src={item.images && item.images.length > 0 ? item.images[0] : placeholderImg}
-                     className='w-[80px] h-[80px]'
+                     className='w-[100px] h-[100px] md:w-[80px] md:h-[80px]'
                      alt={item.name || 'Product image'} 
                     />
                  </div>
                 <div className="info">
-                    <p className='break-words font-semibold mb-2'>{item.name}</p>
-                  <div className="quantity mb-2 flex items-center">
+                    <p className='break-words font-semibold md:font-normal mb-2'>{item.name}</p>
+                   <div className='md:flex md:justify-between md:items-center'>
+                   <div className="quantity mb-2 flex items-center">
                    <button
                     className="p-2 border"
                     onClick={() => handleDecrementQuantity(item.id)}
@@ -52,7 +53,8 @@ const Order = () => {
                      +
                    </button>
                 </div>
-                 <p className='font-bold text-[18px]'>${item.price.toFixed(2)}</p>
+                 <p className='font-bold text-[18px] md:font-semibold'>${item.price.toFixed(2)}</p>
+                   </div>
             </div>
             </div>
             ))}

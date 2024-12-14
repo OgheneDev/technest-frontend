@@ -1,6 +1,7 @@
 import React from "react";
 import { useCart } from "../../context/CartContext";
-import { CalendarCheckIcon, CircleHelp, Star } from "lucide-react";
+import { useWishlist } from "../../context/WishlistContext";
+import { CalendarCheckIcon, CircleHelp, Star, Heart } from "lucide-react";
 
 const renderStars = (rating) =>
   [...Array(5)].map((_, index) => (
@@ -11,8 +12,9 @@ const renderStars = (rating) =>
     />
   ));
 
-const ProductInfo = ({ id, name, rating, price, description, category, images }) => {
+const ProductInfo = ({ product, id, name, rating, price, description, category, images }) => {
   const { state, dispatch } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   const handleAddToCart = () => {
     const existingItem = state.items.find(item => item.id === id);
@@ -40,6 +42,17 @@ const ProductInfo = ({ id, name, rating, price, description, category, images })
         className="text-white bg-black rounded-full py-3 px-10 uppercase mb-5 hover:bg-gray-800 transition-colors"
       >
         Add to Cart
+      </button>
+      <button 
+      onClick={() => isInWishlist(id) 
+        ? removeFromWishlist(id) 
+        : addToWishlist(product)
+      }
+      className= {`flex items-center uppercase gap-2 text-[14px] mb-5 text-grey-dark
+                  ${isInWishlist(id) ? 'text-red-500' : ''} `}
+      >
+        <Heart size={20} />
+        Add to wishlist
       </button>
       <div className="flex items-center gap-3 mb-4">
         <CalendarCheckIcon size={40} />

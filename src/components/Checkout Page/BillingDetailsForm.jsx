@@ -2,7 +2,7 @@ import React from 'react'
 
 const BillingDetailsForm = () => {
   return (
-    <form className='px-[20px] py-[30px]'>
+    <form className='px-[20px] py-[30px] md:py-0 md:w-full'>
       <h2 className='text-xl font-bold mb-5 text-dark'>Billing Details</h2>
       <div className="form-group flex flex-col gap-1 mb-5">
         <label htmlFor="" className='text-grey text-[14px] font-semibold'>First Name</label>

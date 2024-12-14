@@ -6,6 +6,7 @@ import {
   Star,
   Heart,
   MoveRight,
+  ArrowRight,
   Search,
   SlidersHorizontal,
   ChevronDown,
@@ -251,7 +252,7 @@ const ProductList = () => {
       )}
 
       {/* Product Grid */}
-      <div className="product-list py-10 grid grid-cols-2 md:grid-cols-4 gap-[30px]">
+      <div className="product-list py-10 grid grid-cols-2 md:grid-cols-4 gap-[20px]">
       {loading ? (
        <div className="flex items-center justify-center w-full h-[400px]">
        <div className="spinner-border animate-spin inline-block w-10 h-10 border-4  rounded-full text-bs-indigo"></div>
@@ -260,7 +261,7 @@ const ProductList = () => {
           currentProducts.map((product) => (
         <div
           key={product.id}
-          className="product-item cursor-pointer bg-[#F4F4F4] w-full md:w-[250px] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
+          className="product-item cursor-pointer bg-[#F4F4F4] w-full md:w-[250px] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[10px] md:rounded-[15px] relative group"
         >
          <Link to={`/product/${product.id}`}>
            <img src={product.images[0]} alt={product.name} />
@@ -275,17 +276,17 @@ const ProductList = () => {
           {renderStars(product.rating || 4)}
         </div>
         <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
-        <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="options hidden md:flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div 
            onClick={() => isInWishlist(product.id) 
-                      ? removeFromWishlist(product.id) 
-                      : addToWishlist(product)
-                  }
-                  className={`bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s] 
-                    ${isInWishlist(product.id) ? 'text-red-500' : ''}`}
-                >
-                  <Heart size={22} />
-                </div>
+              ? removeFromWishlist(product.id) 
+              : addToWishlist(product)
+                 }
+            className={`bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s] 
+              ${isInWishlist(product.id) ? 'text-red-500' : ''}`}
+            >
+              <Heart size={22} />
+            </div>
             <Link to={`/product/${product.id}`}>
               <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
                 <MoveRight size={22} />
@@ -297,6 +298,13 @@ const ProductList = () => {
                 <Search size={22} />
               </div>
         </div>
+        <button
+          className="bg-white md:hidden rounded-full p-[6px] border border-gray-400 w-fit absolute right-2"
+        >
+           <Link to={`/product/${product.id}`}>
+             <ArrowRight size={15} />
+            </Link>
+        </button>
      </div>
     ))
   )   :   (

@@ -10,6 +10,7 @@ import HurryUpDeals from '../components/LandingPage/HurryUpDeals'
 import Overview from '../components/ProductDetail/Overview';
 import DetailsTable from '../components/ProductDetail/DetailsTable';
 import RelatedProducts from '../components/ProductDetail/RelatedProducts';
+import ContactCards from '../components/About Us/ContactCards';
 
 
 const ProductDetailPage = () => {
@@ -83,6 +84,7 @@ const ProductDetailPage = () => {
       </div>
       <RelatedProducts products={products} />
       <HurryUpDeals />
+      <ContactCards />
     </div>
   );
 };

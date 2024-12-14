@@ -12,7 +12,7 @@ const UserProfile = () => {
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="bg-gray-100 p-6 flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-gray-300 rounded-full  flex items-center justify-center">
               {user.email?.charAt(0).toUpperCase()}
             </div>
             <div>

@@ -43,7 +43,7 @@ const Navbar = () => {
 
           <div className="flex gap-[20px]">
             <Link to="/account">
-              <div className="flex items-center gap-[10px]">
+              <div className="md:flex hidden items-center gap-[10px]">
                 <User size={25} className="text-white" />
                 <span className="hidden md:block">My account</span>
               </div>

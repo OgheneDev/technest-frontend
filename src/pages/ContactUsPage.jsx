@@ -8,7 +8,7 @@ const ContactUsPage = () => {
   return (
     <div>
       <ContactUsBanner />
-      <div className="py-[70px] flex flex-col gap-6">
+      <div className="py-[70px] flex flex-col md:flex-row md:px-[100px] gap-6">
         <ContactUsForm />
         <Shops />
       </div>

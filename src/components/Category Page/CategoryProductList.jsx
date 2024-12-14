@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react'
 import { useFetchedCategoryProducts } from '../../context/FetchCategories'
-import { Star, Heart, MoveRight, Search, SlidersHorizontal, ChevronDown, X } from 'lucide-react';
+import { Star, Heart, MoveRight, Search, SlidersHorizontal, ChevronDown, X, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useWishlist } from '../../context/WishlistContext';
+import QuickViewModal from '../ShopPage/QuickViewModal';
 
 const CategoryProductList = () => {
 
@@ -9,6 +11,10 @@ const CategoryProductList = () => {
     products,
     loading
   } = useFetchedCategoryProducts();
+
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   //Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +27,7 @@ const CategoryProductList = () => {
   // Modal states
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isQuickViewModalOpen, setIsQuickViewModalOpen] = useState(false);
 
   //Sorting State
   const [sortOption, setSortOption] = useState();
@@ -118,6 +125,16 @@ const CategoryProductList = () => {
     setCurrentPage(1); // Reset to first page when sorting
     setIsSortOpen(false); // Close sort dropdown
   };
+
+  const handleQuickView = (product) => {
+    setSelectedProduct(product);
+    setIsQuickViewModalOpen(true);
+  }
+
+  const closeQuickView = () => {
+    setSelectedProduct(null);
+    setIsQuickViewModalOpen(false);
+  }
 
   return (
 <div className='px-[20px] md:px-[100px] py-[30px] md:py-20'>
@@ -232,7 +249,7 @@ const CategoryProductList = () => {
       )}
 
       {/* Product Grid */}
-      <div className="product-list grid grid-cols-2 md:grid-cols-4 gap-[30px]">
+      <div className="product-list grid grid-cols-2 md:grid-cols-4 gap-[20px]">
         {loading ? (
           // Render skeletons while loading
           Array.from({ length: 8 }).map((_, index) => (
@@ -249,7 +266,7 @@ const CategoryProductList = () => {
           currentProducts.map(product => (
             <div
               key={product.id}
-              className="product-item bg-[#F4F4F4] w-full md:w-[250px] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[15px] relative group"
+              className="product-item bg-[#F4F4F4] w-full md:w-[250px] mx-auto p-[20px] text-center flex flex-col gap-[10px] rounded-[10px] md:rounded-[15px] relative group"
             >
               <Link to={`/product/${product.id}`}>
                <img src={product.images[0]} alt={product.name} />
@@ -258,19 +275,36 @@ const CategoryProductList = () => {
               <h2 className="text-xl font-bold text-[#222529] truncate w-full">{product.name}</h2>
               <div className="flex gap-1 mb-2 justify-center">{renderStars(product.rating || 4)}</div>
               <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
-              <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
-                  <Heart size={22} />
+              <div className="options hidden md:flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div 
+                  onClick={() => isInWishlist(product.id) 
+                    ? removeFromWishlist(product.id) 
+                    : addToWishlist(product)
+                  }
+                    className={`bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s] 
+                              ${isInWishlist(product.id) ? 'text-red-500' : ''}`}
+                    >
+                      <Heart size={22} />
                 </div>
+
                 <Link to={`/product/${product.id}`}>
                 <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
                   <MoveRight size={22} />
                 </div>
                 </Link>
-                <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
-                  <Search size={22} />
+                <div 
+                  onClick={() => handleQuickView(product)}
+                  className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+                    <Search size={22} />
                 </div>
               </div>
+              <button
+               className="bg-white md:hidden rounded-full p-[6px] border border-gray-400 w-fit absolute right-2"
+              >
+                <Link to={`/product/${product.id}`}>
+                  <ArrowRight size={15} />
+                </Link>
+        </button>
             </div>
           ))
         ) : (
@@ -279,6 +313,11 @@ const CategoryProductList = () => {
           </div>
         )}
       </div>
+
+      {/* Render QuickViewModal */}
+      {isQuickViewModalOpen && (
+        <QuickViewModal product={selectedProduct} onClose={closeQuickView} />
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (

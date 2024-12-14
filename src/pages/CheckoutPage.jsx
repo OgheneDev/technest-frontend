@@ -8,8 +8,10 @@ const CheckoutPage = () => {
   return (
     <div>
       <Breadcrumbs />
+      <div className='md:flex flex-row md:px-[100px] items-start'>
       <BillingDetailsForm />
       <Order />
+      </div>
       <ContactCards />
     </div>
   )

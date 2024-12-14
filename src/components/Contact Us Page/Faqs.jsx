@@ -14,13 +14,13 @@ const Faqs = () => {
     const isActive = (id) => activeDropdowns.includes(id);
 
     return (
-        <div className="px-[20px] py-[30px]">
-            <h2 className="text-dark text-xl font-bold mb-7">
+        <div className="px-[20px] md:px-[100px] py-[30px]">
+            <h2 className="text-dark text-xl font-bold mb-7 md:text-3xl">
                 Frequently Asked Questions
             </h2>
             <div className="product mb-7">
                 <h3 className="text-dark text-[20px] font-bold mb-5">Product</h3>
-                <div className="dropdowns flex flex-col gap-5">
+                <div className="dropdowns flex flex-col gap-5 md:w-[80%] md:ml-auto">
                     <Dropdown
                         id="materials"
                         question="What materials are used in your products?"
@@ -47,7 +47,7 @@ const Faqs = () => {
 
             <div className="orders mb-7">
                 <h3 className="text-dark text-[20px] font-bold mb-5">Orders</h3>
-                <div className="dropdowns flex flex-col gap-5">
+                <div className="dropdowns flex flex-col gap-5 md:w-[80%] md:ml-auto">
                     <Dropdown
                         id="return"
                         question="What is your return policy?"
@@ -67,7 +67,7 @@ const Faqs = () => {
 
             <div className="payments">
                 <h3 className="text-dark text-[20px] font-bold mb-5">Payments</h3>
-                <div className="dropdowns flex flex-col gap-5">
+                <div className="dropdowns flex flex-col gap-5 md:w-[80%] md:ml-auto">
                     <Dropdown
                         id="modify"
                         question="Can I modify or cancel my order after placing it?"

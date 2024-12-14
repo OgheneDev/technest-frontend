@@ -75,8 +75,6 @@ const Footer = () => {
                       Track your Order
                       </Link>
                     </li>
-                    <li>Shipping & Returns</li>
-                    <li>Acessibility</li>
                 </ul>
             </div>
         </div>

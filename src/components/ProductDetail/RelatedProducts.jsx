@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useWishlist } from '../../context/WishlistContext';
+import QuickViewModal from '../ShopPage/QuickViewModal';
 import { Star, Heart, MoveRight, Search, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const RelatedProducts = ({ products }) => {
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isQuickViewModalOpen, setIsQuickViewModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const sliderRef = useRef(null);
 
   const handleNavigate = (direction) => {
@@ -41,6 +46,16 @@ const RelatedProducts = ({ products }) => {
       />
     ));
   };
+
+  const handleQuickView = (product) => {
+    setSelectedProduct(product);
+    setIsQuickViewModalOpen(true);
+  }
+
+  const closeQuickView = () => {
+    setSelectedProduct(null);
+    setIsQuickViewModalOpen(false);
+  }
 
   return (
     <div className="py-[30px]">
@@ -81,17 +96,33 @@ const RelatedProducts = ({ products }) => {
               <p className="text-[#444] font-bold text-xl">${product.price.toFixed(2)}</p>
               
               {/* Product Options (matching ProductList) */}
-              <div className="options flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
-                  <Heart size={22} />
+              <div className="options hidden md:flex flex-col gap-[15px] absolute right-[25px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+               <div 
+                  onClick={() => isInWishlist(product.id) 
+                    ? removeFromWishlist(product.id) 
+                    : addToWishlist(product)
+                  }
+                    className={`bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s] 
+                      ${isInWishlist(product.id) ? 'text-red-500' : ''}`}
+                    >
+                      <Heart size={22} />
                 </div>
                 <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
                   <MoveRight size={22} />
                 </div>
-                <div className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
-                  <Search size={22} />
+                <div 
+                  onClick={() => handleQuickView(product)}
+                  className="bg-white py-[15px] cursor-pointer rounded-full w-[50px] h-[50px] flex justify-center hover:text-white hover:bg-black transition-all ease-in-out duration-[.3s]">
+                    <Search size={22} />
                 </div>
               </div>
+              <button
+               className="bg-white md:hidden rounded-full p-[6px] border border-gray-400 w-fit absolute right-2"
+              >
+                <Link to={`/product/${product.id}`}>
+                  <ArrowRight size={15} />
+                </Link>
+              </button>
             </div>
           ))}
         </div>
@@ -106,6 +137,10 @@ const RelatedProducts = ({ products }) => {
            <ArrowRight size={15} />
         </button>
       </div>
+      {/* Render QuickViewModal */}
+      {isQuickViewModalOpen && (
+        <QuickViewModal product={selectedProduct} onClose={closeQuickView} />
+      )}
     </div>
   );
 };
