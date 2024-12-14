@@ -15,6 +15,7 @@ import BlogPage from "./pages/BlogPage";
 import OrderTrackingPage from "./pages/OrderTrackingPage";
 import WishlistPage from "./pages/WishlistPage";
 import ContactUsPage from "./pages/ContactUsPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/order-tracking" element={<OrderTrackingPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Route>
     )
   );

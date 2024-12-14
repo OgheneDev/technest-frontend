@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { ArrowRight } from 'lucide-react';
 
@@ -54,10 +55,12 @@ const Proceed = () => {
             <p>Total</p>
             <h2 className='text-2xl'>${totalWithShipping.toFixed(2)}</h2>
           </div>
+          <Link to='/checkout'>
           <button className='bg-dark py-4 px-6 flex items-center gap-3 md:justify-between text-[16px] font-semibold uppercase text-white'>
             Proceed to Checkout
             <ArrowRight size={20} />
           </button>
+          </Link>
         </>
       )}
     </div>
