@@ -43,7 +43,7 @@ const WishlistPage = () => {
             Looks like you haven't added any items to your wishlist yet.
           </p>
           <Link 
-            to="/products" 
+            to="/shop" 
             className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition"
           >
             Continue Shopping
