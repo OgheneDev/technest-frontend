@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../firebaseConfig'; // Adjust the path to your Firebase config
 
-// Create the context with a default value
+// Create the context
 const AuthContext = createContext({
   user: null,
   loading: true,
@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       setUser(userCredential.user);
+      return userCredential; // Ensure this always returns a valid userCredential
     } catch (error) {
       console.error('Sign up error:', error);
       throw error;
@@ -39,6 +40,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       setUser(userCredential.user);
+      return userCredential; // Optional: Return userCredential
     } catch (error) {
       console.error('Sign in error:', error);
       throw error;
@@ -73,7 +75,6 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     });
 
-    // Cleanup subscription
     return () => unsubscribe();
   }, []);
 
@@ -97,10 +98,10 @@ export const AuthProvider = ({ children }) => {
 // Custom hook to use the auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
+
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  
+
   return context;
 };
