@@ -14,7 +14,12 @@ const renderStars = (rating) =>
 
 const ProductInfo = ({ product, id, name, rating, price, description, category, images }) => {
   const { state, dispatch } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { 
+    addToWishlist, 
+    removeFromWishlist, 
+    isInWishlist, 
+    setShowLoginPrompt 
+  } = useWishlist();
 
   const handleAddToCart = () => {
     const existingItem = state.items.find(item => item.id === id);
@@ -23,10 +28,11 @@ const ProductInfo = ({ product, id, name, rating, price, description, category, 
       type: "ADD_ITEM",
       payload: existingItem
         ? { id, quantity: 1, price }
-        : { id, name, price, quantity: 1, images }, // Include images
+        : { id, name, price, quantity: 1, images },
     });
   };
 
+  // Reconstruct the full product object
   const fullProduct = {
     id,
     name,
@@ -56,10 +62,10 @@ const ProductInfo = ({ product, id, name, rating, price, description, category, 
       <button 
         onClick={() => isInWishlist(id) 
           ? removeFromWishlist(id) 
-          : addToWishlist(fullProduct)  // Use reconstructed product object
+          : addToWishlist(fullProduct)
         }
-        className= {`flex items-center uppercase gap-2 text-[14px] mb-5 text-grey-dark
-        ${isInWishlist(id) ? 'text-red-500' : ''} `}
+        className={`flex items-center uppercase gap-2 text-[14px] mb-5 text-grey-dark
+        ${isInWishlist(id) ? 'text-red-500' : ''}`}
       >
         <Heart size={20} />
         Add to wishlist
