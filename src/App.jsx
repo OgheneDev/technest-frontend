@@ -16,6 +16,7 @@ import OrderTrackingPage from "./pages/OrderTrackingPage";
 import WishlistPage from "./pages/WishlistPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import OrderComplete from "./pages/OrderComplete";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/order-complete" element={<OrderComplete />} />
       </Route>
     )
   );
