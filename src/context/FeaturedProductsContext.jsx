@@ -13,8 +13,6 @@ export const FeaturedProductsProvider = ({ children }) => {
   const sliderRef = useRef(null);
 
   const fetchFeaturedProducts = useCallback(async (category) => {
-    console.log(`Fetching products for category: ${category}`);
-    
     try {
       setLoading(true);
       setError(null);
@@ -32,8 +30,6 @@ export const FeaturedProductsProvider = ({ children }) => {
         id: doc.id,
         ...doc.data(),
       }));
-
-      console.log(`Fetched products for ${category}:`, fetchedProducts);
 
       setProducts(fetchedProducts);
       setActiveIndex(0);
@@ -69,7 +65,6 @@ export const FeaturedProductsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("Selected category changed:", selectedCategory);
     fetchFeaturedProducts(selectedCategory);
   }, [selectedCategory, fetchFeaturedProducts]);
 

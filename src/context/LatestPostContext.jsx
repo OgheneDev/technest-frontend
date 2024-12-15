@@ -20,7 +20,6 @@ export const LatestPostsProvider = ({children}) => {
             ...doc.data()
         }));
         setPosts(fetchedPosts);
-        console.log("Posts:", fetchedPosts)
        } catch (error) {
         console.error("Error fetching featured posts: ", error);
        } finally {

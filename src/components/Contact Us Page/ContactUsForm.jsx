@@ -57,7 +57,6 @@ ${formData.message}
 
     emailjs.send(serviceId, templateId, templateParams, userId)
       .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
         Swal.fire({
           title: "Success!",
           text: "Your message has been sent successfully!",

@@ -18,7 +18,6 @@ export const FetchProductsContextProvider = ({ children }) => {
           ...doc.data(),
         }));
         setProducts(fetchedProducts);
-        console.log('Products: ', fetchedProducts);
       } catch (error) {
         console.error("Error fetching products: ", error);
       } finally {

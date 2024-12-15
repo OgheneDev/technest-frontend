@@ -7,21 +7,21 @@ const Shops = () => {
         {
             number: 1,
             name: 'Los Angeles Store',
-            address: '123 Porto Hill St, Los Angeles, CA 90000',
+            address: '123 TechNest Hill St, Los Angeles, CA 90000',
             phoneNumber: '1-888-123-1456',
             email: 'support1@technest.com'
         },
         {
             number: 2,
             name: 'New York Store',
-            address: '123 Porto Hill St, New York, NY 90000',
+            address: '123 TechNest Hill St, New York, NY 90000',
             phoneNumber: '1-888-123-1456',
             email: 'support2@technest.com'
         },
         {
             number: 3,
             name: 'Detroit Store',
-            address: '123 Porto Hill St, Detroit, MI 90000',
+            address: '123 TechNest Hill St, Detroit, MI 90000',
             phoneNumber: '1-888-123-1456',
             email: 'support3@technest.com'
         }
