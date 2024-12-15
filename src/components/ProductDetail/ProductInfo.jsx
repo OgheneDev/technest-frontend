@@ -27,6 +27,16 @@ const ProductInfo = ({ product, id, name, rating, price, description, category, 
     });
   };
 
+  const fullProduct = {
+    id,
+    name,
+    rating,
+    price,
+    description,
+    category,
+    images
+  };
+
   return (
     <div className="text-container">
       <h1 className="text-3xl font-bold mb-2">{name}</h1>
@@ -44,12 +54,12 @@ const ProductInfo = ({ product, id, name, rating, price, description, category, 
         Add to Cart
       </button>
       <button 
-      onClick={() => isInWishlist(id) 
-        ? removeFromWishlist(id) 
-        : addToWishlist(product)
-      }
-      className= {`flex items-center uppercase gap-2 text-[14px] mb-5 text-grey-dark
-                  ${isInWishlist(id) ? 'text-red-500' : ''} `}
+        onClick={() => isInWishlist(id) 
+          ? removeFromWishlist(id) 
+          : addToWishlist(fullProduct)  // Use reconstructed product object
+        }
+        className= {`flex items-center uppercase gap-2 text-[14px] mb-5 text-grey-dark
+        ${isInWishlist(id) ? 'text-red-500' : ''} `}
       >
         <Heart size={20} />
         Add to wishlist
