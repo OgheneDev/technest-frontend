@@ -50,12 +50,16 @@ const LatestPosts = () => {
   return (
     <motion.div
       initial="hidden"
-      animate="visible" // Use animate instead of whileInView for consistent behavior
+      whileInView="visible" // Changed from animate to whileInView
       variants={containerVariants}
+      viewport={{ once: true, amount: 0.1 }} // Animate only once when 10% of the component is in view
       className="px-[20px] md:px-[100px] py-[50px] pb-20"
     >
       <motion.h2
         variants={itemVariants}
+        whileInView="visible"
+        initial="hidden"
+        viewport={{ once: true }}
         className="font-bold text-xl mb-[20px] text-grey-dark md:text-3xl"
       >
         Latest Posts
@@ -73,46 +77,69 @@ const LatestPosts = () => {
               key={post.id}
               variants={itemVariants}
               initial="hidden"
-              animate="visible" // Ensure individual posts animate to visible
+              whileInView="visible" // Changed from animate to whileInView
+              viewport={{ once: true }} // Animate only once
               whileHover={{ scale: 1.05 }}
               className="w-full md:w-auto md:mb-0 cursor-pointer"
             >
               <motion.img
                 src={post.images[0]}
                 alt={post.name}
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 className="rounded-[10px] mb-[10px] h-[170px] w-full"
               />
               <div className="text-content flex flex-col gap-[15px] items-start">
                 <motion.span
                   variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                   className="text-white bg-dark py-[5px] px-[20px] rounded-full uppercase text-[11px]"
                 >
                   {post.category}
                 </motion.span>
                 <motion.h2
                   variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                   className="dark text-xl font-semibold"
                 >
                   {post.name}
                 </motion.h2>
                 <motion.p
                   variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                   className="text-[14px] text-[#9d9fa3]"
                 >
                   {post.description}
                 </motion.p>
                 <motion.div
                   variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                   className="user flex gap-[10px] items-center"
                 >
                   <motion.div
                     variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
                     className="profile bg-[#bec1c5] p-[5px] rounded-full"
                   >
                     <User className="text-white" size={25} />
                   </motion.div>
                   <motion.span
                     variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
                     className="text-dark font-semibold"
                   >
                     {post.user}
@@ -122,7 +149,13 @@ const LatestPosts = () => {
             </motion.div>
           ))
         ) : (
-          <motion.p variants={itemVariants} className="text-center">
+          <motion.p 
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center"
+          >
             No posts found.
           </motion.p>
         )}

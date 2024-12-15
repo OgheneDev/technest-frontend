@@ -87,12 +87,16 @@ const Testimonials = () => {
   return (
     <motion.section
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
       variants={containerVariants}
+      viewport={{ once: true, amount: 0.1 }}
       className="py-3 md:px-[100px]"
     >
       <motion.h2
         variants={itemVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
         className="text-grey-dark font-semibold text-xl mb-[30px] text-center"
       >
         Customer Testimonials
@@ -104,6 +108,9 @@ const Testimonials = () => {
         {currentSlide > 0 && (
           <motion.button
             variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={prevSlide}
@@ -137,12 +144,18 @@ const Testimonials = () => {
                 <motion.div
                   key={testimonial.id}
                   variants={itemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
                   whileHover={{ scale: 1.05 }}
                   className="snap-center shrink-0 w-[100vw] md:w-[49%] p-[20px] bg-white cursor-pointer"
                 >
                   <div className="flex gap-[20px] items-start">
                     <motion.img
                       variants={itemVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="w-[70px] rounded-full"
@@ -150,6 +163,9 @@ const Testimonials = () => {
                     <div className="text-content flex flex-col gap-[10px] max-w-full overflow-hidden">
                       <motion.h3
                         variants={itemVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
                         className="font-semibold text-grey-dark text-[18px]"
                       >
                         {testimonial.name}{" "}
@@ -157,11 +173,20 @@ const Testimonials = () => {
                           - {testimonial.date}
                         </span>
                       </motion.h3>
-                      <motion.div variants={itemVariants} className="flex gap-1 mb-2">
+                      <motion.div 
+                        variants={itemVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }} 
+                        className="flex gap-1 mb-2"
+                      >
                         {renderStars(testimonial.rating || 4)}
                       </motion.div>
                       <motion.p
                         variants={itemVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
                         className="text-[#9d9fa3] text-[15px] break-words whitespace-normal"
                       >
                         {testimonial.testimonial}
@@ -178,6 +203,9 @@ const Testimonials = () => {
           Math.ceil(testimonials.length / itemsPerSlide) - 1 && (
           <motion.button
             variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={nextSlide}
