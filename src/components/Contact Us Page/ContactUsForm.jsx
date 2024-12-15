@@ -26,7 +26,11 @@ const ContactUsForm = () => {
 
     // Validation: Ensure all fields are filled
     if (!formData.name || !formData.email || !formData.phone || !formData.message) {
-      alert("Please fill in all fields before submitting.");
+      Swal.fire({
+        title: "Warning!",
+        text: `Please fill in all fields before submitting.`,
+        icon: "warning"
+      });
       return;
     }
 

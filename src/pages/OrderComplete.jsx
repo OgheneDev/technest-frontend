@@ -42,8 +42,9 @@ const OrderComplete = () => {
   if (!orderDetails) return <div>Loading order details...</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div>
       <Breadcrumbs />
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="bg-white shadow-lg rounded-lg p-8">
         <div className="flex items-center justify-center mb-6">
           <Check size={48} className="text-green-500 mr-4" />
@@ -101,6 +102,7 @@ const OrderComplete = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

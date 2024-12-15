@@ -3,6 +3,7 @@ import { useCart } from '../../context/CartContext'
 import { X, Plus, Minus, CreditCard, Truck, DollarSign } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import placeholderImg from '../../assets/images/shop50-product-14-4-600x600.jpg';
+import Swal from 'sweetalert2';
 
 const Order = () => {
     const { state, dispatch } = useCart();
@@ -34,9 +35,17 @@ const Order = () => {
         const normalizedCode = promoCode.toUpperCase().trim();
         if (PROMO_CODES[normalizedCode]) {
             setDiscount(PROMO_CODES[normalizedCode]);
-            alert(`Promo code applied! ${PROMO_CODES[normalizedCode] * 100}% discount.`);
+            Swal.fire({
+             title: "Success!",
+             text: `Promo code applied! ${PROMO_CODES[normalizedCode] * 100}% discount.`,
+             icon: "success"
+            });
         } else {
-            alert('Invalid promo code');
+            Swal.fire({
+                title: "Error!",
+                text: `Invalid promo code`,
+                icon: "error"
+            });
             setDiscount(0);
         }
     };
@@ -51,13 +60,21 @@ const Order = () => {
         const billingDetails = JSON.parse(localStorage.getItem('billingDetails') || '{}');
         
         if (!billingDetails.firstName) {
-            alert('Please complete your billing details first');
+            Swal.fire({
+                title: "Warning!",
+                text: `Please complete your billing details first`,
+                icon: "warning"
+            });
             navigate('/checkout');
             return;
         }
         
         if (!paymentMethod) {
-            alert('Please select a payment method');
+            Swal.fire({
+                title: "Warning!",
+                text: `Please select a payment method`,
+                icon: "warning"
+            });
             return;
         }
 
