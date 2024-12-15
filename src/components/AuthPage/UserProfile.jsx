@@ -65,17 +65,17 @@ const UserProfile = () => {
       {user && (
         <div className="p-4">
           {/* Profile Header */}
-          <div className="flex items-center space-x-4 mb-4">
+          <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 bg-gray-300 py-2 px-5 rounded-full flex items-center justify-center text-2xl text-white">
               {userData.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
               <h2 className="text-xl font-semibold text-bs-indigo">{userData.fullName || 'User Name'}</h2>
-              <p className="text-grey text-[12px]  md:w-auto break-words flex gap-2 items-center font-semibold">
+              <p className="text-grey text-[11px]  md:w-auto break-words flex gap-2 items-center font-semibold">
                 <Mail size={15} />
                 {userData.email}
               </p>
-              <p className="text-grey text-[12px] flex gap-2 items-center font-semibold">
+              <p className="text-grey text-[11px] flex gap-2 items-center font-semibold">
                 <Phone size={15} />
                 {userData.phoneNumber}
               </p>
