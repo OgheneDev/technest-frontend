@@ -7,6 +7,7 @@ const SignUpForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
@@ -26,11 +27,14 @@ const SignUpForm = () => {
     }
 
     try {
+      setLoading(true);
       await signUp(email, password);
       navigate('/'); // Redirect to home page after successful registration
     } catch (err) {
       setError('Failed to create an account. Please try again.');
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,7 +97,11 @@ const SignUpForm = () => {
         type='submit' 
         className='bg-black text-white py-[15px] uppercase font-semibold'
       >
-        Register
+        {loading ? (
+          <span className="spinner border-white border-[3px] border-t-transparent rounded-full w-6 h-6 animate-spin"></span>
+        ) : (
+          'Register'
+        )}
       </button>
     </form>
   );

@@ -165,7 +165,7 @@ const Order = () => {
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Enter promo code"
-                    className="border p-2 flex-grow"
+                    className="border p-2"
                 />
                 <button 
                     onClick={applyPromoCode}
@@ -198,8 +198,7 @@ const Order = () => {
                 </div>
                 <div className="flex justify-between items-center py-3 mb-6 font-semibold text-dark">
                     <p>Total</p>
-                    <h2 className='text-2xl flex items-center'>
-                        <DollarSign size={20} className="mr-1" />
+                    <h2 className='text-2xl'>
                         ${totalWithShipping.toFixed(2)}
                     </h2>
                 </div>

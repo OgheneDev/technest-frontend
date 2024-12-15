@@ -6,6 +6,7 @@ const SignInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
 
@@ -14,11 +15,14 @@ const SignInForm = () => {
     setError('');
 
     try {
+      setLoading(true);
       await signIn(email, password);
       navigate('/'); // Redirect to home page after successful login
     } catch (err) {
       setError('Failed to sign in. Please check your credentials.');
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,7 +84,11 @@ const SignInForm = () => {
         type='submit' 
         className='bg-black text-white py-[15px] uppercase font-semibold'
       >
-        Login
+        {loading ? (
+          <span className="spinner border-white border-[3px] border-t-transparent rounded-full w-6 h-6 animate-spin"></span>
+        ) : (
+          'Login'
+        )}
       </button>
     </form>
   );

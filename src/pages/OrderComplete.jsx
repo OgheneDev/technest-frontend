@@ -39,7 +39,11 @@ const OrderComplete = () => {
     dispatch({ type: 'CLEAR_CART' });
   }, [dispatch]);
 
-  if (!orderDetails) return <div>Loading order details...</div>;
+  if (!orderDetails) return (
+    <div className="flex items-center justify-center w-full h-[700px]">
+      <div className="spinner-border animate-spin inline-block w-10 h-10 border-4 rounded-full text-bs-indigo"></div>
+    </div>
+  );
 
   return (
     <div>
