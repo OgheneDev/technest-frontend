@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useFeaturedProducts } from "../../context/FeaturedProductsContext";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 
 const FeaturedProducts = () => {
+  const [skeletonCount, setSkeletonCount] = useState(4); 
+
   const {
     products = [],
     activeIndex = 0,
@@ -52,6 +54,24 @@ const FeaturedProducts = () => {
   };
 
   const categories = ["cases", "chargers", "cables"];
+
+  // Dynamically adjust the skeleton count based on screen size
+  useEffect(() => {
+    const updateSkeletonCount = () => {
+      if (window.innerWidth <= 768) {
+        setSkeletonCount(2); // Show 2 skeletons on mobile
+      } else if (window.innerWidth <= 1024) {
+        setSkeletonCount(3); // Show 3 skeletons on tablets
+      } else {
+        setSkeletonCount(4); // Default to 4 on larger screens
+      }
+    };
+
+    updateSkeletonCount();
+    window.addEventListener("resize", updateSkeletonCount);
+    return () => window.removeEventListener("resize", updateSkeletonCount);
+  }, []);
+
 
   return (
     <motion.div
@@ -114,17 +134,17 @@ const FeaturedProducts = () => {
         >
           {loading ? (
             // Skeleton loader
-            Array.from({ length: 4 }).map((_, index) => (
+            Array.from({ length: skeletonCount }).map((_, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="product-skeleton animate-pulse w-[90%] p-[20px] h-[380px] mx-auto rounded-[15px]"
+                className="product-skeleton animate-pulse w-[90%] md:w-[24%] p-[10px] md:p-[20px] h-[200px] md:h-[380px] mx-auto rounded-[15px]"
               >
-                <div className="skeleton-image w-[100%] bg-gray-300 h-[200px] mb-[20px] rounded-[15px]"></div>
-                <div className="skeleton-category w-[30%] mx-auto bg-gray-300 h-[10px] mb-[5px] rounded-[5px]"></div>
-                <div className="skeleton-title w-[70%] mx-auto bg-gray-300 h-[20px] mb-[10px] rounded-[5px]"></div>
-                <div className="skeleton-rating w-[40%] mx-auto bg-gray-300 h-[20px] mb-[15px] rounded-[5px]"></div>
-                <div className="skeleton-price w-[45%] mx-auto bg-gray-300 h-[20px] rounded-[5px]"></div>
+                <div className="skeleton-image w-[100%] bg-gray-300 h-[100px] md:h-[200px] mb-[10px] md:mb-[20px] rounded-[15px]"></div>
+                <div className="skeleton-category w-[50%] md:w-[30%] mx-auto bg-gray-300 h-[10px] mb-[5px] rounded-[5px]"></div>
+                <div className="skeleton-title w-[80%] md:w-[70%] mx-auto bg-gray-300 h-[15px] md:h-[20px] mb-[8px] md:mb-[10px] rounded-[5px]"></div>
+                <div className="skeleton-rating w-[60%] md:w-[40%] mx-auto bg-gray-300 h-[10px] md:h-[20px] mb-[10px] md:mb-[15px] rounded-[5px]"></div>
+                <div className="skeleton-price w-[50%] md:w-[45%] mx-auto bg-gray-300 h-[15px] md:h-[20px] rounded-[5px]"></div>
               </motion.div>
             ))
           ) : error ? (
