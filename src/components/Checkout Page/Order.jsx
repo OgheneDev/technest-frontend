@@ -159,17 +159,17 @@ const Order = () => {
             </div>
 
             {/* Promo Code Section */}
-            <div className="promo-section flex items-center gap-2 mb-5">
+            <div className="promo-section flex flex-col md:flex-row items-center gap-2 mb-5">
                 <input 
                     type="text" 
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Enter promo code"
-                    className="border p-2"
+                    className="border p-2 w-full md:w-auto"
                 />
                 <button 
                     onClick={applyPromoCode}
-                    className="bg-dark text-white px-4 py-2"
+                    className="bg-dark text-white px-4 py-2 w-full md:w-auto"
                 >
                     Apply
                 </button>

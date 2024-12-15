@@ -105,19 +105,19 @@ const Navbar = () => {
 
         <nav className="p-4">
           <ul className="categories space-y-5">
-            <li className="border-b pb-2">
+            <li className="border-b pb-2" onClick={() => setIsMenuOpen(false)}>
               <Link to="/account" className="flex items-center gap-2">
                 <User size={20} />
                 My Account
               </Link>
             </li>
-            <li className="border-b pb-2">
+            <li className="border-b pb-2" onClick={() => setIsMenuOpen(false)}>
               <Link to="/wishlist" className="flex items-center gap-2">
                 <Heart size={20} />
                 Wishlist
               </Link>
             </li>
-            <li className="border-b pb-2">
+            <li className="border-b pb-2" onClick={() => setIsMenuOpen(false)}>
               <Link to="/order-tracking" className="flex items-center gap-2">
                 <Box size={20} />
                 Track Order
