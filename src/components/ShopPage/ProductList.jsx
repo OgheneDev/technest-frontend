@@ -324,7 +324,10 @@ const ProductList = () => {
   <div className="pagination flex justify-center items-center gap-2 mt-[30px]">
     {/* Left arrow */}
     <button 
-      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      onClick={() => {
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+        window.scrollTo(0, 0);
+      }}
       disabled={currentPage === 1}
       className="px-3 py-1 border rounded disabled:opacity-50"
     >
@@ -340,7 +343,10 @@ const ProductList = () => {
         <React.Fragment key={number}>
           {showEllipsisBefore && <span className="px-2">...</span>}
           <button
-            onClick={() => setCurrentPage(number)}
+            onClick={() => {
+              setCurrentPage(number);
+              window.scrollTo(0, 0);
+            }}
             className={`px-3 py-1 border rounded ${
               currentPage === number
                 ? 'bg-black text-white'
@@ -355,7 +361,10 @@ const ProductList = () => {
 
     {/* Right arrow */}
     <button 
-      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+      onClick={() => {
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+        window.scrollTo(0, 0);
+      }}
       disabled={currentPage === totalPages}
       className="px-3 py-1 border rounded disabled:opacity-50"
     >
