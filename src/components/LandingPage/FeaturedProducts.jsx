@@ -74,199 +74,133 @@ const FeaturedProducts = () => {
 
   return (
     <motion.div
-      key={`${selectedCategory}-${loading}`} // Re-render container when category changes
+      key={`${selectedCategory}-${loading}`}
       initial="hidden"
       whileInView="visible"
       variants={containerVariants}
       viewport={{ once: true, amount: 0.1 }}
-      className="relative max-w-full mx-auto py-8 md:px-[120px] px-[20px]"
+      className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 bg-gray-50"
     >
       {/* Header and category buttons */}
-      <div className="flex flex-col md:flex-row justify-center items-start md:justify-between mb-6">
-        <motion.h2
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="text-lg md:text-3xl font-semibold mb-4 text-center mx-auto md:mx-0"
-        >
-          Featured Products
-        </motion.h2>
-        <motion.div
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="toggle-buttons flex gap-[15px] justify-center"
-        >
+      <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+        <motion.div variants={itemVariants} className="text-center md:text-left mb-6 md:mb-0">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Featured Products</h2>
+          <p className="text-gray-600">Discover our most popular items</p>
+        </motion.div>
+        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3">
           {categories.map((category) => (
-            <motion.button
+            <button
               key={category}
-              variants={itemVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`uppercase text-dark border rounded-full py-[5px] px-[20px] font-bold text-[13px] ${
-                selectedCategory === category ? "bg-[#6610f2] text-white" : ""
-              }`}
+              className={`
+                px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200
+                ${selectedCategory === category 
+                  ? 'bg-gray-900 text-white shadow-lg scale-105' 
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                }
+              `}
               onClick={() => setSelectedCategory(category)}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
-            </motion.button>
+            </button>
           ))}
         </motion.div>
       </div>
 
-      {/* Slider */}
+      {/* Slider Container */}
       <div className="relative">
-        {/* Previous button */}
+        {/* Navigation Buttons */}
         {activeIndex > 0 && (
           <motion.button
             variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className="absolute -left-4 top-1/2 -translate-y-1/2 p-3 bg-white rounded-full shadow-lg hover:bg-gray-900 hover:text-white transition-all duration-200 z-10"
             onClick={() => handleNavigate("prev")}
-            className="z-[1000] absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
-            style={{ zIndex: 1000 }}
           >
-            <ArrowLeft size={15} />
+            <ArrowLeft size={20} />
           </motion.button>
         )}
 
-        {/* Product slider */}
-        <div
-          className="product-slider testimonial-slider flex overflow-x-auto snap-x snap-mandatory gap-[20px] px-4"
-          ref={sliderRef}
-        >
-          {loading ? (
-            // Skeleton loader
-            Array.from({ length: skeletonCount }).map((_, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="product-skeleton animate-pulse w-[90%] md:w-[24%] p-[10px] md:p-[20px] h-[200px] md:h-[380px] mx-auto rounded-[15px]"
-              >
-                <div className="skeleton-image w-[100%] bg-gray-300 h-[100px] md:h-[200px] mb-[10px] md:mb-[20px] rounded-[15px]"></div>
-                <div className="skeleton-category w-[50%] md:w-[30%] mx-auto bg-gray-300 h-[10px] mb-[5px] rounded-[5px]"></div>
-                <div className="skeleton-title w-[80%] md:w-[70%] mx-auto bg-gray-300 h-[15px] md:h-[20px] mb-[8px] md:mb-[10px] rounded-[5px]"></div>
-                <div className="skeleton-rating w-[60%] md:w-[40%] mx-auto bg-gray-300 h-[10px] md:h-[20px] mb-[10px] md:mb-[15px] rounded-[5px]"></div>
-                <div className="skeleton-price w-[50%] md:w-[45%] mx-auto bg-gray-300 h-[15px] md:h-[20px] rounded-[5px]"></div>
-              </motion.div>
-            ))
-          ) : error ? (
-            <div className="w-full text-center py-8 text-red-500">{error}</div>
-          ) : products.length === 0 ? (
-            <div className="w-full text-center py-8">
-              <p>No products found in {selectedCategory} category.</p>
-            </div>
-          ) : (
-            // Actual product display
-            products.map((product) => (
-              <motion.div
-                key={product.id}
-                variants={itemVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05 }}
-                className="snap-center text-center cursor-pointer flex flex-col gap-[10px] relative shrink-0 w-[43vw] md:w-[24%] p-[20px] bg-[#F4F4F4] rounded-[15px]"
-              >
-                <Link to={`/product/${product.id}`}>
-                  <motion.img
-                    variants={itemVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full rounded"
-                  />
-                </Link>
-                <motion.span
+        {/* Product Cards Container */}
+        <div ref={sliderRef} className="overflow-hidden">
+          <div className="flex gap-6 transition-transform duration-500 ease-out">
+            {loading ? (
+              // Skeleton loader
+              Array.from({ length: skeletonCount }).map((_, index) => (
+                <motion.div
+                  key={index}
                   variants={itemVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="uppercase text-gray-600 text-[11px] font-bold"
+                  className="w-full md:w-[calc(25%-1.5rem)] shrink-0"
                 >
-                  {product.category}
-                </motion.span>
-                <motion.h4 
-                  variants={itemVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="font-bold text-dark truncate w-full"
-                >
-                  {product.name}
-                </motion.h4>
-                <motion.div 
-                  variants={itemVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="flex gap-1 mb-2 justify-center"
-                >
-                  {renderStars(product.rating)}
+                  <div className="bg-white rounded-2xl p-6 shadow-sm">
+                    <div className="aspect-square rounded-xl bg-gray-200 animate-pulse mb-4" />
+                    <div className="space-y-3">
+                      <div className="w-1/3 h-4 bg-gray-200 rounded animate-pulse" />
+                      <div className="w-2/3 h-4 bg-gray-200 rounded animate-pulse" />
+                      <div className="w-1/4 h-4 bg-gray-200 rounded animate-pulse" />
+                    </div>
+                  </div>
                 </motion.div>
-                <motion.p
+              ))
+            ) : error ? (
+              <div className="w-full text-center py-8 text-red-500">{error}</div>
+            ) : products.length === 0 ? (
+              <div className="w-full text-center py-8 text-gray-500">
+                No products found in {selectedCategory} category.
+              </div>
+            ) : (
+              products.map((product) => (
+                <motion.div
+                  key={product.id}
                   variants={itemVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="font-bold text-dark"
-                >
-                  ${product.price.toFixed(2)}
-                </motion.p>
-                <motion.span
-                  variants={itemVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="bg-red-600 text-white uppercase text-[11px] py-[2px] px-[10px] absolute rounded-full"
-                >
-                  Hot
-                </motion.span>
-                <motion.button
-                  variants={itemVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="bg-white rounded-full p-[6px] border border-gray-400 w-fit absolute right-2"
+                  className="w-full md:w-[calc(25%-1.5rem)] shrink-0"
                 >
                   <Link to={`/product/${product.id}`}>
-                    <ArrowRight size={15} />
+                    <div className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300">
+                      {product.isHot && (
+                        <span className="absolute top-4 left-4 bg-red-500 text-white text-xs font-medium px-3 py-1 rounded-full">
+                          Hot
+                        </span>
+                      )}
+                      <div className="aspect-square rounded-xl bg-gray-50 p-4 mb-4 group-hover:bg-gray-100 transition-colors">
+                        <img 
+                          src={product.images[0]} 
+                          alt={product.name}
+                          className="w-full h-full object-contain mix-blend-multiply"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-gray-500 uppercase">
+                          {product.category}
+                        </p>
+                        <h3 className="font-semibold text-gray-900 truncate">
+                          {product.name}
+                        </h3>
+                        <div className="flex gap-1">
+                          {renderStars(product.rating)}
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <p className="text-lg font-bold text-gray-900">
+                            ${product.price.toFixed(2)}
+                          </p>
+                          <span className="p-2 rounded-full bg-gray-100 group-hover:bg-gray-900 group-hover:text-white transition-all duration-300">
+                            <ArrowRight size={18} />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </Link>
-                </motion.button>
-              </motion.div>
-            ))
-          )}
+                </motion.div>
+              ))
+            )}
+          </div>
         </div>
 
-        {/* Next button */}
         {activeIndex < products.length - 1 && (
           <motion.button
             variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className="absolute -right-4 top-1/2 -translate-y-1/2 p-3 bg-white rounded-full shadow-lg hover:bg-gray-900 hover:text-white transition-all duration-200 z-10"
             onClick={() => handleNavigate("next")}
-            className="z-[100] absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-[#6610f2] hover:text-white"
-            style={{ zIndex: 100 }}
           >
-            <ArrowRight size={15} />
+            <ArrowRight size={20} />
           </motion.button>
         )}
       </div>

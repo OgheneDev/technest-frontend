@@ -88,4 +88,31 @@ body, button, input{
   }
 }
 
+/* Navbar Styles */
+.nav-icon-link {
+  @apply hidden md:flex items-center gap-2 text-white/90 hover:text-white transition-colors;
+}
+
+.nav-icon-text {
+  @apply text-sm font-medium;
+}
+
+.mobile-menu-item {
+  @apply rounded-lg hover:bg-gray-50 transition-colors;
+}
+
+.mobile-menu-link {
+  @apply flex items-center gap-3 px-4 py-3 text-gray-700;
+}
+
+/* Hide scrollbar but maintain functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 
