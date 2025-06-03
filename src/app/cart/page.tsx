@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import Image from "next/image"
 import Link from "next/link"
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, Loader2 } from "lucide-react"
-import { getCart } from '@/api/cart/requests'
+import { getCart, deleteCartItem, updateCartQuantity, clearCart } from '@/api/cart/requests'
 import { formatPrice } from '@/utils/formatPrice'
+import Swal from 'sweetalert2'
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -51,6 +52,73 @@ export default function CartPage() {
 
     fetchCart();
   }, []);
+
+  const handleQuantityUpdate = async (productId: string, newQuantity: number) => {
+    try {
+      await updateCartQuantity(productId, newQuantity);
+      const updatedCart = await getCart();
+      setCartData(updatedCart);
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: error instanceof Error ? error.message : 'Failed to update quantity',
+        icon: 'error',
+      });
+    }
+  };
+
+  const handleDeleteItem = async (productId: string) => {
+    try {
+      await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4F46E5',
+        cancelButtonColor: '#EF4444',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await deleteCartItem(productId);
+          const updatedCart = await getCart();
+          setCartData(updatedCart);
+          Swal.fire('Deleted!', 'Item has been removed.', 'success');
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to delete item',
+        icon: 'error',
+      });
+    }
+  };
+
+  const handleClearCart = async () => {
+    try {
+      await Swal.fire({
+        title: 'Clear entire cart?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4F46E5',
+        cancelButtonColor: '#EF4444',
+        confirmButtonText: 'Yes, clear it!'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await clearCart();
+          setCartData({ products: [], totalPrice: 0 });
+          Swal.fire('Cleared!', 'Your cart has been cleared.', 'success');
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to clear cart',
+        icon: 'error',
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -122,7 +190,15 @@ export default function CartPage() {
                           <h3 className="font-semibold">{item.product?.name || 'Unavailable Product'}</h3>
                           <div className="flex items-center justify-between mt-4">
                             <div className="flex items-center gap-2">
-                              <Button variant="outline" size="icon" className="h-8 w-8">
+                              <Button 
+                                variant="outline" 
+                                size="icon" 
+                                className="h-8 w-8"
+                                onClick={() => {
+                                  const newQuantity = Math.max(1, item.quantity - 1);
+                                  handleQuantityUpdate(item.product?._id || '', newQuantity);
+                                }}
+                              >
                                 <Minus className="h-4 w-4" />
                               </Button>
                               <Input 
@@ -130,8 +206,17 @@ export default function CartPage() {
                                 value={item.quantity} 
                                 className="w-16 h-8 text-center text-white" 
                                 min="1" 
+                                onChange={(e) => {
+                                  const newQuantity = parseInt(e.target.value) || 1;
+                                  handleQuantityUpdate(item.product?._id || '', newQuantity);
+                                }}
                               />
-                              <Button variant="outline" size="icon" className="h-8 w-8">
+                              <Button 
+                                variant="outline" 
+                                size="icon" 
+                                className="h-8 w-8"
+                                onClick={() => handleQuantityUpdate(item.product?._id || '', item.quantity + 1)}
+                              >
                                 <Plus className="h-4 w-4" />
                               </Button>
                             </div>
@@ -139,7 +224,12 @@ export default function CartPage() {
                               <span className="font-semibold">
                                 ₦{formatPrice(calculateItemPrice(item))}
                               </span>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 text-red-500"
+                                onClick={() => handleDeleteItem(item.product?._id || '')}
+                              >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
@@ -182,6 +272,15 @@ export default function CartPage() {
                       <Link href="/shop" className="text-sm text-gray-600 hover:underline">
                         Continue Shopping
                       </Link>
+                    </div>
+                    <div className="space-y-3">
+                      <Button 
+                        variant="outline" 
+                        className="w-full mt-2 text-red-500 hover:bg-red-50"
+                        onClick={handleClearCart}
+                      >
+                        Clear Cart
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

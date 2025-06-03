@@ -6,7 +6,7 @@ import { Badge } from '../ui/badge'
 import Image from 'next/image'
 import { ShoppingCart, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { addToCart } from '@/api/cart/requests'
+import { getCart, addToCart } from '@/api/cart/requests'
 import Swal from 'sweetalert2'
 import { AddToCartParams } from '@/types/cart';
 
@@ -30,17 +30,41 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
       return;
     }
 
-    const cartData: AddToCartParams = {
-      productId: product._id,
-      quantity: 1
-    };
-
     setIsAddingToCart(true);
     try {
+      const currentCart = await getCart();
+      const existingItem = currentCart.products.find(
+        (item: { product: string | { _id: string }, quantity: number }) => {
+          // Handle both populated and unpopulated product references
+          const productId = typeof item.product === 'string' 
+            ? item.product 
+            : item.product?._id;
+          return productId === product._id;
+        }
+      );
+
+      const newQuantity = existingItem ? existingItem.quantity + 1 : 1;
+
+      // Check if requested quantity is available
+      if (newQuantity > product.stock) {
+        Swal.fire({
+          title: 'Stock Limit Reached',
+          text: 'Cannot add more of this item',
+          icon: 'warning',
+          confirmButtonColor: '#4F46E5'
+        });
+        return;
+      }
+
+      const cartData: AddToCartParams = {
+        productId: product._id,
+        quantity: newQuantity
+      };
+
       await addToCart(cartData);
       Swal.fire({
         title: 'Success!',
-        text: 'Item added to cart',
+        text: existingItem ? 'Cart quantity updated' : 'Item added to cart',
         icon: 'success',
         confirmButtonColor: '#4F46E5',
         timer: 2000,
