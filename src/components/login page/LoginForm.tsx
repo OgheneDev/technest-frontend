@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import Swal from 'sweetalert2'
 import { Mail, Lock, LogIn, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react'
+import { login } from '../../api/auth/requests'
 
 interface FormData {
   email: string;
@@ -35,7 +36,10 @@ const LoginForm = () => {
     setError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      await login({
+        email: formData.email,
+        password: formData.password
+      });
       await Swal.fire({
         title: 'Success!',
         text: 'Logged in successfully',

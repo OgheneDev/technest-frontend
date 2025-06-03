@@ -99,7 +99,14 @@ const RegisterForm = () => {
     }
 
     try {
-      //await register({username, email, password});
+      await register({
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+        role: 'user'
+      });
       await Swal.fire({
         title: 'Success!',
         text: 'Your account has been created successfully',

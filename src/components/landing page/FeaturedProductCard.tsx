@@ -1,17 +1,73 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Product } from '@/types/products'
 import { Card, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import Image from 'next/image'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { addToCart } from '@/api/cart/requests'
+import Swal from 'sweetalert2'
+import { AddToCartParams } from '@/types/cart';
 
 interface FeaturedProductCardProps {
     product: Product
 }
 
 const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  const handleAddToCart = async () => {
+    if (isAddingToCart) return;
+    
+    if (product.stock < 1) {
+      Swal.fire({
+        title: 'Out of Stock',
+        text: 'This item is currently unavailable',
+        icon: 'error',
+        confirmButtonColor: '#4F46E5'
+      });
+      return;
+    }
+
+    const cartData: AddToCartParams = {
+      productId: product._id,
+      quantity: 1
+    };
+
+    setIsAddingToCart(true);
+    try {
+      await addToCart(cartData);
+      Swal.fire({
+        title: 'Success!',
+        text: 'Item added to cart',
+        icon: 'success',
+        confirmButtonColor: '#4F46E5',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to add item to cart';
+      if (errorMessage.includes('quantity not available')) {
+        Swal.fire({
+          title: 'Not Enough Stock',
+          text: 'The requested quantity is not available',
+          icon: 'error',
+          confirmButtonColor: '#4F46E5'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonColor: '#4F46E5'
+        });
+      }
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -73,8 +129,14 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
                 <Button 
                   size="sm" 
                   className="rounded-full cursor-pointer p-2 bg-gray-50 hover:bg-blue-600 hover:text-white transition-colors"
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart || product.stock < 1}
                 >
-                  <ShoppingCart className="h-4 w-4" />
+                  {isAddingToCart ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <ShoppingCart className="h-4 w-4" />
+                  )}
                   <span className="sr-only">Add to cart</span>
                 </Button>
               </motion.div>

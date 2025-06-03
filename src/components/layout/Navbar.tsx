@@ -1,11 +1,13 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, User, ShoppingCart, X, Heart, Box, Search } from "lucide-react";
+import { Menu, User, ShoppingCart, X, Heart, Search } from "lucide-react";
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getCart } from "@/api/cart/requests";
+
 
 // Add logo import
 import logo from '@/assets/images/logo.png'; // Adjust path as needed
@@ -15,9 +17,24 @@ interface Category {
   name: string;
 }
 
+interface CartItem {
+  _id: string;
+  quantity: number;
+}
+
+interface CartData {
+  products: {
+    product: string;
+    quantity: number;
+  }[];
+  totalPrice: number;
+}
+
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [cartItems, setCartItems] = useState([]);
+  const [cartCount, setCartCount] = useState<number>(0);
   const router = useRouter();
 
   const categories: Category[] = [
@@ -33,6 +50,23 @@ const Navbar: React.FC = () => {
      { id: 10, name: 'Laptops' },
      { id: 11, name: 'Accessories' }
   ];
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const cartData = await getCart();
+        if (cartData && cartData.products) {
+          const totalItems = cartData.products.reduce((total: number, item: { product: string; quantity: number }) => total + item.quantity, 0);
+          setCartCount(totalItems);
+        }
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+        setCartCount(0);
+      }
+    };
+
+    fetchCartItems();
+  }, [cartItems])
 
   const handleCategoryClick = (categoryName: string): void => {
     const urlFriendlyCategoryName = categoryName
@@ -105,9 +139,11 @@ const Navbar: React.FC = () => {
               </Link>
               <Link href="/cart" className="relative group">
                 <ShoppingCart size={25} className="text-white transform group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
-                  2
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
