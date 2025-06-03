@@ -3,6 +3,7 @@ import PopularCategoriesSlider from "@/components/landing page/PopularCategories
 import FeaturedProductsSection from "@/components/landing page/FeaturedProductsSection";
 import HurryUpDeals from "@/components/landing page/HurryUpDeals";
 import Testimonials from "@/components/landing page/Testimonials";
+import StayUpdated from "@/components/landing page/StayUpdated";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <FeaturedProductsSection />
       <HurryUpDeals />
       <Testimonials />
+      <StayUpdated />
     </div>
   );
 }
