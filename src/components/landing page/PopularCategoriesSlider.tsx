@@ -83,6 +83,35 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
         }
     };
 
+    // Add these new event handlers
+    const handleInteractionStart = (e: React.TouchEvent | React.MouseEvent) => {
+        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        touchStartRef.current = clientX;
+    };
+
+    const handleInteractionMove = (e: React.TouchEvent | React.MouseEvent) => {
+        if (touchStartRef.current === 0) return;
+        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        touchEndRef.current = clientX;
+    };
+
+    const handleInteractionEnd = () => {
+        if (touchStartRef.current === 0) return;
+        const diff = touchStartRef.current - touchEndRef.current;
+        
+        if (Math.abs(diff) > 50) { // Minimum swipe distance
+            if (diff > 0 && currentSlide < maxSlideIndex) {
+                nextSlide();
+            } else if (diff < 0 && currentSlide > 0) {
+                prevSlide();
+            }
+        }
+        
+        // Reset touch positions
+        touchStartRef.current = 0;
+        touchEndRef.current = 0;
+    };
+
     const popularCategories = [
         { id: 1, name: 'Cases', stock: 11, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-1_mh7sca.jpg' },
         { id: 2, name: 'Screen Protectors', stock: 4, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-2_bbyzwf.jpg' },
@@ -143,7 +172,16 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
                 Popular Categories
             </motion.h2>
             
-            <div className="slider-wrapper overflow-hidden relative">
+            <div 
+                className="slider-wrapper overflow-hidden relative"
+                onTouchStart={handleInteractionStart}
+                onTouchMove={handleInteractionMove}
+                onTouchEnd={handleInteractionEnd}
+                onMouseDown={handleInteractionStart}
+                onMouseMove={handleInteractionMove}
+                onMouseUp={handleInteractionEnd}
+                onMouseLeave={handleInteractionEnd}
+            >
                 <motion.div
                     className="slider-inner flex gap-4 md:gap-1 transition-transform duration-500 ease-in-out"
                     style={{ transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)` }}

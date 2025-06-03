@@ -21,7 +21,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
     >
       <Card className="group relative overflow-hidden md:w-[300px] bg-white hover:shadow-xl transition-shadow duration-300">
         <motion.div 
-          className="relative aspect-square"
+          className="relative aspect-square cursor-pointer"
           whileHover={{ scale: 1.02 }}
           transition={{ type: "tween", duration: 0.2 }}
         >
@@ -64,7 +64,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
                 className="font-bold text-lg bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent"
                 whileHover={{ scale: 1.05 }}
               >
-                ${product.price}
+                ₦{product.price}
               </motion.span>
               <motion.div
                 whileHover={{ scale: 1.1 }}
@@ -72,7 +72,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
               >
                 <Button 
                   size="sm" 
-                  className="rounded-full p-2 bg-gray-50 hover:bg-blue-600 hover:text-white transition-colors"
+                  className="rounded-full cursor-pointer p-2 bg-gray-50 hover:bg-blue-600 hover:text-white transition-colors"
                 >
                   <ShoppingCart className="h-4 w-4" />
                   <span className="sr-only">Add to cart</span>

@@ -46,13 +46,13 @@ const HeroSection = () => {
 				))}
 			</div>
 
-			<div className="container relative z-10 px-6 md:px-12 py-24">
+			<div className="container relative z-10 px-6 md:px-12 py-18 md:py-24">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5 }}
-						className="space-y-8"
+						className="space-y-8 text-center md:text-start"
 					>
 						<motion.div
 							initial={{ opacity: 0 }}
@@ -96,7 +96,7 @@ const HeroSection = () => {
 						>
 							<Button
 								size="lg"
-								className="bg-gradient-to-r cursor-pointer from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white group"
+								className="bg-gradient-to-r cursor-pointer w-full md:w-fit from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white group"
 							>
 								Shop Collection
 								<ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -104,7 +104,7 @@ const HeroSection = () => {
 							<Button
 								size="lg"
 								variant="outline"
-								className="border-2 hover:bg-gray-50 cursor-pointer"
+								className="border-2 hover:bg-gray-50 w-full md:w-fit cursor-pointer"
 							>
 								View Deals
 							</Button>

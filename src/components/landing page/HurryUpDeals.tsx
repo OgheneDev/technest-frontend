@@ -64,7 +64,7 @@ const HurryUpDeals = () => {
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className='bg-white text-purple-500 rounded-full py-[5px] px-[20px]'
+                className='bg-white text-purple-500 rounded-full py-[5px] px-[20px] cursor-pointer'
               >
                 Shop Now
               </motion.button>
@@ -108,7 +108,7 @@ const HurryUpDeals = () => {
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className='bg-white text-purple-500 rounded-full py-[5px] w-fit px-[25px]'
+                className='bg-white text-purple-500 rounded-full py-[5px] w-fit px-[25px] cursor-pointer'
               >
                 Shop Now
               </motion.button>
