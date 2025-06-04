@@ -179,7 +179,7 @@ export default function CartPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Shopping Cart
             {cartData && cartData.products.length > 0 && (
-              <span className="ml-2 text-lg sm:text-xl font-normal text-gray-500">
+              <span className="ml-2 text-lg hidden md:block sm:text-xl font-normal text-gray-500">
                 ({cartData.products.length} {cartData.products.length === 1 ? 'item' : 'items'})
               </span>
             )}
@@ -189,7 +189,7 @@ export default function CartPage() {
             <Button 
               variant="ghost" 
               size="sm"
-              className="text-red-500 hover:text-red-700 cursor-pointer hover:bg-red-50 hidden sm:inline-flex"
+              className="text-red-500  hover:text-red-700 cursor-pointer hover:bg-red-50 hidden"
               onClick={handleClearCart}
             >
               <X className="h-4 w-4 mr-1" />
@@ -214,7 +214,7 @@ export default function CartPage() {
             {/* Cart Items */}
             <div className="lg:col-span-2 xl:col-span-3 space-y-4">
               {/* Mobile Clear All Button */}
-              <div className="sm:hidden flex justify-end mb-4">
+              <div className="hidden  justify-end mb-4">
                 <Button 
                   variant="ghost" 
                   size="sm"
@@ -228,7 +228,7 @@ export default function CartPage() {
 
               {cartData.products.map((item) => (
                 <Card key={item.product?._id || 'temp-id'} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4 sm:p-6">
+                  <CardContent className="mt-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
                       {/* Product Image */}
                       <div className="relative h-32 w-full sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">

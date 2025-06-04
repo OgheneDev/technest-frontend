@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, User, ShoppingCart, X, Heart, Search } from "lucide-react";
+import { Menu, User, ShoppingCart, X, Heart, Search, LogIn } from "lucide-react";
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext'
+import { useAuthStore } from '@/store/useAuthStore';
 
 // Add logo import
 import logo from '@/assets/images/logo.png'; // Adjust path as needed
@@ -17,9 +18,11 @@ interface Category {
 }
 
 const Navbar: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { cartCount } = useCart();
+  const { isAuthenticated } = useAuthStore();
   
   const categories: Category[] = [
      { id: 1, name: 'Cases' },
@@ -60,6 +63,32 @@ const Navbar: React.FC = () => {
     })
   };
 
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      if (!isAuthenticated) {
+        return;
+      }
+      try {
+        // const cartData = await getCart();
+        // ...existing cart count logic...
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+
+    fetchCartCount();
+  }, [isAuthenticated]);
+
+  // Add mounted state to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Return null on first render to avoid hydration mismatch
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="sticky top-0 z-50">
       <nav className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg">
@@ -97,23 +126,35 @@ const Navbar: React.FC = () => {
               </div>
             </div>
 
-            <div className=" items-center gap-6 flex">
-              <Link href="/account" className="nav-icon-link hidden md:block">
-                <User size={22} className="text-white" />
-                <span className="nav-icon-text text-sm">Account</span>
-              </Link>
-              <Link href="/wishlist" className="nav-icon-link hidden md:block">
-                <Heart size={22} className="text-white" />
-                <span className="nav-icon-text text-sm">Wishlist</span>
-              </Link>
-              <Link href="/cart" className="relative group">
-                <ShoppingCart size={25} className="text-white transform group-hover:scale-110 transition-transform" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+            <div className="items-center gap-6 flex">
+              {mounted && (isAuthenticated ? (
+                <>
+                  <Link href="/account" className="nav-icon-link hidden md:flex items-center gap-2 text-white hover:text-gray-200">
+                    <User size={22} />
+                    <span className="text-sm">Account</span>
+                  </Link>
+                  <Link href="/wishlist" className="nav-icon-link hidden md:flex items-center gap-2 text-white hover:text-gray-200">
+                    <Heart size={22} />
+                    <span className="text-sm">Wishlist</span>
+                  </Link>
+                  <Link href="/cart" className="relative group flex items-center text-white hover:text-gray-200">
+                    <ShoppingCart size={25} className="transform group-hover:scale-110 transition-transform" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </>
+              ) : (
+                <Link 
+                  href="/login"
+                  className="text-white hover:text-gray-200 transition-colors flex items-center gap-2"
+                >
+                  <LogIn size={22} />
+                  <span>Login</span>
+                </Link>
+              ))}
             </div>
           </div>
 

@@ -9,8 +9,9 @@ export const getWishlist = async () => {
     }
     
     return response.data.data;
-  } catch (error) {
-    console.error('Error fetching wishlist:', error);
+  } catch (error: any) {
+    console.error('Error fetching wishlist:', error.response?.data || error);
+    // Return empty wishlist structure instead of throwing
     return { products: [] };
   }
 }; 
@@ -23,6 +24,10 @@ export const addToWishlist = async (productId: string) => {
 
     if (response.status !== 200) {
       throw new Error(response.data?.message || 'Failed to update wishlist');
+    }
+
+    if (response.data?.error) {
+      throw new Error(response.data.error);
     }
 
     return response.data.data;

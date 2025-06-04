@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Product } from '@/types/products'
 import { Card, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
@@ -7,11 +7,13 @@ import Image from 'next/image'
 import { ShoppingCart, Loader2, Heart } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getCart, addToCart } from '@/api/cart/requests'
-import { addToWishlist, removeFromWishlist } from '@/api/wishlist/requests'
+import { addToWishlist, removeFromWishlist, getWishlist } from '@/api/wishlist/requests'
 import Swal from 'sweetalert2'
 import { AddToCartParams } from '@/types/cart';
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/utils/formatPrice'
+import { useAuthStore } from '@/store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface FeaturedProductCardProps {
     product: Product
@@ -22,8 +24,31 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
   const { updateCartCount } = useCart();
+  const { isAuthenticated } = useAuthStore();
+  const router = useRouter();
+
+  const handleAuthRequired = (action: 'cart' | 'wishlist') => {
+    if (!isAuthenticated) {
+      Swal.fire({
+        title: 'Authentication Required',
+        text: `Please login to add items to your ${action}`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#4F46E5',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push('/login');
+        }
+      });
+      return false;
+    }
+    return true;
+  };
 
   const handleAddToCart = async () => {
+    if (!handleAuthRequired('cart')) return;
     if (isAddingToCart) return;
     
     if (product.stock < 1) {
@@ -99,37 +124,53 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
     }
   };
 
+  // Add check for initial wishlist state
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      if (!isAuthenticated) return;
+      
+      try {
+        const wishlistData = await getWishlist();
+        const isProductInWishlist = wishlistData.products.some(
+          (item: any) => item.product._id === product._id
+        );
+        setIsInWishlist(isProductInWishlist);
+      } catch (error) {
+        console.error('Error checking wishlist status:', error);
+      }
+    };
+
+    checkWishlistStatus();
+  }, [product._id, isAuthenticated]);
+
   const handleWishlistClick = async () => {
+    if (!handleAuthRequired('wishlist')) return;
     if (isUpdatingWishlist) return;
     
     setIsUpdatingWishlist(true);
     try {
       if (isInWishlist) {
-        const result = await removeFromWishlist(product._id);
-        if (result) {
-          setIsInWishlist(false);
-          Swal.fire({
-            title: 'Removed',
-            text: 'Item removed from wishlist',
-            icon: 'success',
-            confirmButtonColor: '#4F46E5',
-            timer: 2000,
-            showConfirmButton: false
-          });
-        }
+        await removeFromWishlist(product._id);
+        setIsInWishlist(false);
+        Swal.fire({
+          title: 'Removed',
+          text: 'Item removed from wishlist',
+          icon: 'success',
+          confirmButtonColor: '#4F46E5',
+          timer: 2000,
+          showConfirmButton: false
+        });
       } else {
-        const result = await addToWishlist(product._id);
-        if (result) {
-          setIsInWishlist(true);
-          Swal.fire({
-            title: 'Added',
-            text: 'Item added to wishlist',
-            icon: 'success',
-            confirmButtonColor: '#4F46E5',
-            timer: 2000,
-            showConfirmButton: false
-          });
-        }
+        await addToWishlist(product._id);
+        setIsInWishlist(true);
+        Swal.fire({
+          title: 'Added',
+          text: 'Item added to wishlist',
+          icon: 'success',
+          confirmButtonColor: '#4F46E5',
+          timer: 2000,
+          showConfirmButton: false
+        });
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to update wishlist';
@@ -140,7 +181,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
         confirmButtonColor: '#4F46E5'
       });
       // Reset state if operation failed
-      setIsInWishlist(prev => prev);
+      setIsInWishlist(prev => !prev);
     } finally {
       setIsUpdatingWishlist(false);
     }
