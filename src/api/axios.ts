@@ -30,7 +30,7 @@ export const tokenUtils = {
 // Create the axios instance
 const axiosInstance = axios.create({
   baseURL: "https://technest-ohai.onrender.com",
-  timeout: 10000,
+  timeout: 3600000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json"
