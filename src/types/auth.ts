@@ -16,6 +16,11 @@ export interface LoginResponse {
     token: string;
 }
 
+export interface ForgotPasswordCredentials {
+    email: string;
+}
+
+
 export interface ResetPasswordCredentials {
     password: string;
 }
@@ -26,8 +31,9 @@ export interface UpdatePasswordCredentials {
 }
   
 export interface UpdateDetailsCredentials {
-    username?: string;
-    bio?: string;
+    firstName?: string;
+    lastName?: string;
+    avatar?: string;
 }
   
 export interface DeleteAccountCredentials {
