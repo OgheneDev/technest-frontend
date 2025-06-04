@@ -4,12 +4,14 @@ import { Card, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import Image from 'next/image'
-import { ShoppingCart, Loader2 } from 'lucide-react'
+import { ShoppingCart, Loader2, Heart } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { getCart, addToCart } from '@/api/cart/requests'
+import { addToWishlist, removeFromWishlist } from '@/api/wishlist/requests'
 import Swal from 'sweetalert2'
 import { AddToCartParams } from '@/types/cart';
 import { useCart } from '@/context/CartContext'
+import { formatPrice } from '@/utils/formatPrice'
 
 interface FeaturedProductCardProps {
     product: Product
@@ -17,6 +19,8 @@ interface FeaturedProductCardProps {
 
 const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
   const { updateCartCount } = useCart();
 
   const handleAddToCart = async () => {
@@ -95,6 +99,53 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
     }
   };
 
+  const handleWishlistClick = async () => {
+    if (isUpdatingWishlist) return;
+    
+    setIsUpdatingWishlist(true);
+    try {
+      if (isInWishlist) {
+        const result = await removeFromWishlist(product._id);
+        if (result) {
+          setIsInWishlist(false);
+          Swal.fire({
+            title: 'Removed',
+            text: 'Item removed from wishlist',
+            icon: 'success',
+            confirmButtonColor: '#4F46E5',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        }
+      } else {
+        const result = await addToWishlist(product._id);
+        if (result) {
+          setIsInWishlist(true);
+          Swal.fire({
+            title: 'Added',
+            text: 'Item added to wishlist',
+            icon: 'success',
+            confirmButtonColor: '#4F46E5',
+            timer: 2000,
+            showConfirmButton: false
+          });
+        }
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update wishlist';
+      Swal.fire({
+        title: 'Error',
+        text: errorMessage,
+        icon: 'error',
+        confirmButtonColor: '#4F46E5'
+      });
+      // Reset state if operation failed
+      setIsInWishlist(prev => prev);
+    } finally {
+      setIsUpdatingWishlist(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -147,9 +198,10 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
                 className="font-bold text-lg bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent"
                 whileHover={{ scale: 1.05 }}
               >
-                ₦{product.price}
+                ₦{formatPrice(product.price)}
               </motion.span>
-              <motion.div
+              <div className='flex items-center gap-5'>
+                <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -167,6 +219,24 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
                   <span className="sr-only">Add to cart</span>
                 </Button>
               </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  size="sm" 
+                  className="rounded-full cursor-pointer p-2 bg-gray-50 hover:bg-rose-100 transition-colors"
+                  onClick={handleWishlistClick}
+                  disabled={isUpdatingWishlist}
+                >
+                  <Heart 
+                    className={`h-4 w-4 ${
+                      isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-gray-500'
+                    } transition-colors`}
+                  />
+                </Button>
+              </motion.div>
+              </div>
             </div>
           </motion.div>
         </CardContent>
