@@ -9,6 +9,7 @@ import { motion } from 'framer-motion'
 import { getCart, addToCart } from '@/api/cart/requests'
 import Swal from 'sweetalert2'
 import { AddToCartParams } from '@/types/cart';
+import { useCart } from '@/context/CartContext'
 
 interface FeaturedProductCardProps {
     product: Product
@@ -16,6 +17,7 @@ interface FeaturedProductCardProps {
 
 const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { updateCartCount } = useCart();
 
   const handleAddToCart = async () => {
     if (isAddingToCart) return;
@@ -62,6 +64,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
       };
 
       await addToCart(cartData);
+      await updateCartCount();
       Swal.fire({
         title: 'Success!',
         text: existingItem ? 'Cart quantity updated' : 'Item added to cart',

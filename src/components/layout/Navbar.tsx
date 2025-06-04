@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { Menu, User, ShoppingCart, X, Heart, Search } from "lucide-react";
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getCart } from "@/api/cart/requests";
-
+import { useCart } from '@/context/CartContext'
 
 // Add logo import
 import logo from '@/assets/images/logo.png'; // Adjust path as needed
@@ -17,30 +16,15 @@ interface Category {
   name: string;
 }
 
-interface CartItem {
-  _id: string;
-  quantity: number;
-}
-
-interface CartData {
-  products: {
-    product: string;
-    quantity: number;
-  }[];
-  totalPrice: number;
-}
-
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState<number>(0);
-  const router = useRouter();
-
+  const { cartCount } = useCart();
+  
   const categories: Category[] = [
      { id: 1, name: 'Cases' },
      { id: 2, name: 'Screen Protectors' },
-     { id: 3, name: 'MagSafe' },
+     { id: 3, name: 'MagSafe' }, 
      { id: 4, name: 'Cables' },
      { id: 5, name: 'Chargers' },
      { id: 6, name: 'Power Banks' },
@@ -51,22 +35,7 @@ const Navbar: React.FC = () => {
      { id: 11, name: 'Accessories' }
   ];
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const cartData = await getCart();
-        if (cartData && cartData.products) {
-          const totalItems = cartData.products.reduce((total: number, item: { product: string; quantity: number }) => total + item.quantity, 0);
-          setCartCount(totalItems);
-        }
-      } catch (error) {
-        console.error('Error fetching cart:', error);
-        setCartCount(0);
-      }
-    };
-
-    fetchCartItems();
-  }, [cartItems])
+  const router = useRouter();
 
   const handleCategoryClick = (categoryName: string): void => {
     const urlFriendlyCategoryName = categoryName
