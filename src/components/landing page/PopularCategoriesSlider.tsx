@@ -7,7 +7,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 // Custom hook for scroll-based animation (reused from Services Section)
 const useScrollAnimation = (threshold = 0.1) => {
   const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,9 +55,23 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
         return () => window.removeEventListener('resize', updateItemsPerSlide);
     }, []);
 
+    const popularCategories = [
+        { id: 1, name: 'Cases', stock: 11, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-1_mh7sca.jpg' },
+        { id: 2, name: 'Screen Protectors', stock: 4, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-2_bbyzwf.jpg' },
+        { id: 3, name: 'MagSafe', stock: 2, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-3_r12qoc.jpg' },
+        { id: 4, name: 'Cables', stock: 10, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-4_iav9sb.jpg' },
+        { id: 5, name: 'Chargers', stock: 7, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-5_uqrrzi.jpg' },
+        { id: 6, name: 'Power Banks', stock: 14, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-6_ruo9b8.jpg' },
+        { id: 7, name: 'Headphones', stock: 3, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-7_yvcx6k.jpg' },
+    ];
+
+    // Fixed calculation: Total slides needed = total items - items per slide + 1
+    const maxSlideIndex = Math.max(popularCategories.length - itemsPerSlide, 0);
+    const totalSlides = maxSlideIndex + 1;
+
     const nextSlide = () => {
         setCurrentSlide(prev => 
-            prev < popularCategories.length - itemsPerSlide ? prev + 1 : prev
+            prev < maxSlideIndex ? prev + 1 : prev
         );
     };
 
@@ -65,33 +79,14 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
         setCurrentSlide(prev => prev > 0 ? prev - 1 : prev);
     };
 
-    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-        const clientX = e.type === 'touchstart' ? (e as React.TouchEvent<HTMLDivElement>).touches[0].clientX : (e as React.MouseEvent<HTMLDivElement>).clientX;
+    const handleInteractionStart = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const clientX = 'touches' in e ? (e as React.TouchEvent<HTMLDivElement>).touches[0].clientX : (e as React.MouseEvent<HTMLDivElement>).clientX;
         touchStartRef.current = clientX;
     };
 
-    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-        const clientX = e.type === 'touchmove' ? (e as React.TouchEvent<HTMLDivElement>).touches[0].clientX : (e as React.MouseEvent<HTMLDivElement>).clientX;
-        touchEndRef.current = clientX;
-    };
-
-    const handleTouchEnd = () => {
-        const diff = touchStartRef.current - touchEndRef.current;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) nextSlide();
-            else prevSlide();
-        }
-    };
-
-    // Add these new event handlers
-    const handleInteractionStart = (e: React.TouchEvent | React.MouseEvent) => {
-        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-        touchStartRef.current = clientX;
-    };
-
-    const handleInteractionMove = (e: React.TouchEvent | React.MouseEvent) => {
+    const handleInteractionMove = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (touchStartRef.current === 0) return;
-        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const clientX = 'touches' in e ? (e as React.TouchEvent<HTMLDivElement>).touches[0].clientX : (e as React.MouseEvent<HTMLDivElement>).clientX;
         touchEndRef.current = clientX;
     };
 
@@ -112,25 +107,13 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
         touchEndRef.current = 0;
     };
 
-    const popularCategories = [
-        { id: 1, name: 'Cases', stock: 11, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-1_mh7sca.jpg' },
-        { id: 2, name: 'Screen Protectors', stock: 4, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-2_bbyzwf.jpg' },
-        { id: 3, name: 'MagSafe', stock: 2, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-3_r12qoc.jpg' },
-        { id: 4, name: 'Cables', stock: 10, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-4_iav9sb.jpg' },
-        { id: 5, name: 'Chargers', stock: 7, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-5_uqrrzi.jpg' },
-        { id: 6, name: 'Power Banks', stock: 14, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-6_ruo9b8.jpg' },
-        { id: 7, name: 'Headphones', stock: 3, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-7_yvcx6k.jpg' },
-    ];
-
-    const maxSlideIndex = Math.max(popularCategories.length - itemsPerSlide, 0);
-
     // Combine refs
-    const combinedRef = (node: HTMLDivElement) => {
-        scrollRef.current = node as unknown as null;
+    const combinedRef = (node: HTMLDivElement | null) => {
+        scrollRef.current = node;
         if (typeof ref === 'function') {
             ref(node);
         } else if (ref) {
-            ref.current = node;
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }
     };
 
@@ -184,14 +167,17 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
             >
                 <motion.div
                     className="slider-inner flex gap-4 md:gap-1 transition-transform duration-500 ease-in-out"
-                    style={{ transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)` }}
+                    style={{ 
+                        transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)`,
+                        width: `${(popularCategories.length / itemsPerSlide) * 100}%`
+                    }}
                 >
                     {popularCategories.map((category) => (
                         <motion.div
                             key={category.id}
                             variants={itemVariants}
                             className="flex flex-col items-center cursor-pointer p-4 flex-shrink-0 text-center hover:scale-95 transition-all"
-                            style={{ width: `${100 / itemsPerSlide}%` }}
+                            style={{ width: `${100 / popularCategories.length}%` }}
                         >
                             <motion.img 
                                 src={category.image} 

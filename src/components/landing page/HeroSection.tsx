@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '../ui/button'
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles } from 'lucide-react'
@@ -94,20 +95,24 @@ const HeroSection = () => {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.5 }}
 						>
-							<Button
+							<Link href='/shop'>
+							  <Button
 								size="lg"
 								className="bg-gradient-to-r cursor-pointer w-full md:w-fit from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white group"
 							>
 								Shop Collection
 								<ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
 							</Button>
-							<Button
+							</Link>
+							<Link href='/shop'>
+							  <Button
 								size="lg"
 								variant="outline"
 								className="border-2 hover:bg-gray-50 w-full md:w-fit cursor-pointer"
 							>
 								View Deals
 							</Button>
+							</Link>
 						</motion.div>
 					</motion.div>
 

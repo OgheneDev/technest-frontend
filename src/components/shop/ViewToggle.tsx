@@ -12,25 +12,25 @@ export const ViewToggle = ({ layout, onLayoutChange }: ViewToggleProps) => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex items-center gap-2 bg-white p-1 rounded-lg shadow-sm"
+      className="flex items-center gap-2 bg-white  p-1 rounded-lg shadow-sm"
     >
       <Button
         variant={layout === 'grid' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => onLayoutChange('grid')}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 cursor-pointer"
       >
         <LayoutGrid className="h-4 w-4" />
-        <span className="hidden sm:inline">Grid</span>
+        <span className="hidden sm:inline ">Grid</span>
       </Button>
       <Button
         variant={layout === 'list' ? 'default' : 'ghost'}
         size="sm"
         onClick={() => onLayoutChange('list')}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 cursor-pointe"
       >
         <List className="h-4 w-4" />
-        <span className="hidden sm:inline">List</span>
+        <span className="hidden sm:inline ">List</span>
       </Button>
     </motion.div>
   )

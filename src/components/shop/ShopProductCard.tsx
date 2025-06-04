@@ -2,15 +2,14 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Product } from '@/types/products'
 import { Button } from '../ui/button'
-import { StarRating } from './StarRating'
 import { formatPrice } from '@/utils/formatPrice'
-import { useState } from 'react'
-import { ShoppingCart, Heart, Loader2, Star } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { ShoppingCart, Heart, Loader2, Star, Eye, Zap } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useRouter } from 'next/navigation'
 import { addToCart } from '@/api/cart/requests'
-import { addToWishlist, removeFromWishlist } from '@/api/wishlist/requests'
+import { addToWishlist, removeFromWishlist, getWishlist } from '@/api/wishlist/requests'
 import Swal from 'sweetalert2'
 
 interface ShopProductCardProps {
@@ -21,9 +20,30 @@ interface ShopProductCardProps {
 export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [isInWishlist, setIsInWishlist] = useState(false)
+  const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
   const { updateCartCount } = useCart()
   const { isAuthenticated } = useAuthStore()
   const router = useRouter()
+
+  // Add useEffect for initial wishlist check
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      if (!isAuthenticated) return
+      
+      try {
+        const wishlistData = await getWishlist()
+        const isProductInWishlist = wishlistData.products.some(
+          (item: any) => item.product._id === product._id
+        )
+        setIsInWishlist(isProductInWishlist)
+      } catch (error) {
+        console.error('Error checking wishlist status:', error)
+      }
+    }
+
+    checkWishlistStatus()
+  }, [product._id, isAuthenticated])
 
   const handleAuthRequired = (action: 'cart' | 'wishlist') => {
     if (!isAuthenticated) {
@@ -53,7 +73,14 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
       const cartItem = { productId: product._id, quantity: 1 }
       await addToCart(cartItem)
       updateCartCount()
-      Swal.fire('Added to cart', '', 'success')
+      Swal.fire({
+        title: 'Added to cart!',
+        text: product.name,
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      })
     } catch (error) {
       console.error('Error adding to cart:', error)
       Swal.fire('Error', 'Could not add to cart', 'error')
@@ -65,25 +92,54 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
   const handleWishlistClick = async () => {
     if (!handleAuthRequired('wishlist')) return
 
-    setIsInWishlist((prev) => !prev)
-    const action = isInWishlist ? removeFromWishlist : addToWishlist
-    const successMessage = isInWishlist ? 'Removed from wishlist' : 'Added to wishlist'
-
+    setIsUpdatingWishlist(true)
     try {
-      await action(product._id)
-      Swal.fire(successMessage, '', 'success')
+      if (isInWishlist) {
+        await removeFromWishlist(product._id)
+        setIsInWishlist(false)
+        Swal.fire({
+          title: 'Removed',
+          text: 'Item removed from wishlist',
+          icon: 'success',
+          confirmButtonColor: '#4F46E5',
+          timer: 2000,
+          showConfirmButton: false
+        })
+      } else {
+        await addToWishlist(product._id)
+        setIsInWishlist(true)
+        Swal.fire({
+          title: 'Added',
+          text: 'Item added to wishlist',
+          icon: 'success',
+          confirmButtonColor: '#4F46E5',
+          timer: 2000,
+          showConfirmButton: false
+        })
+      }
     } catch (error) {
-      console.error('Wishlist action error:', error)
-      setIsInWishlist((prev) => !prev) // Revert state on error
-      Swal.fire('Error', 'Could not update wishlist', 'error')
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update wishlist'
+      Swal.fire({
+        title: 'Error',
+        text: errorMessage,
+        icon: 'error',
+        confirmButtonColor: '#4F46E5'
+      })
+      setIsInWishlist(prev => !prev)
+    } finally {
+      setIsUpdatingWishlist(false)
     }
+  }
+
+  const handleQuickView = () => {
+    router.push(`/products/${product._id}`)
   }
 
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, index) => (
       <Star
         key={index}
-        className={`h-4 w-4 ${
+        className={`h-3.5 w-3.5 ${
           index < Math.floor(rating)
             ? 'fill-yellow-400 text-yellow-400'
             : 'fill-gray-200 text-gray-200'
@@ -92,76 +148,152 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
     ))
   }
 
+  const isOutOfStock = product.stock < 1
+  const isLowStock = product.stock > 0 && product.stock <= 5
+
   return layout === 'grid' ? (
-    <motion.div layout className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative aspect-square">
+    <motion.div 
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300"
+    >
+      <div className="relative aspect-square overflow-hidden">
+        <div className={`absolute inset-0 bg-gray-200 animate-pulse ${imageLoaded ? 'hidden' : ''}`} />
         <Image
           src={product.images[0]}
           alt={product.name}
           fill
-          className="object-cover"
+          className={`object-cover transition-transform cursor-pointer duration-300 group-hover:scale-105 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
         />
-        <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors" />
-        <div className="absolute top-2 right-2 space-y-2">
-          {/* Wishlist and Quick Actions */}
+        
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Stock badge */}
+        {isOutOfStock && (
+          <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+            Out of Stock
+          </div>
+        )}
+        {isLowStock && (
+          <div className="absolute top-3 left-3 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+            <Zap className="h-3 w-3" />
+            Only {product.stock} left
+          </div>
+        )}
+        
+        {/* Action buttons */}
+        <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
           <Button
             size="icon"
-            variant="outline"
-            className="bg-white/80 backdrop-blur-sm"
+            variant="default"
+            className="bg-white/90 backdrop-blur-sm cursor-pointer hover:bg-white shadow-lg"
             onClick={handleWishlistClick}
           >
-            <Heart className={isInWishlist ? 'fill-rose-500 text-rose-500' : ''} />
+            <Heart className={`h-4 w-4 transition-colors ${
+              isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-gray-600'
+            }`} />
+          </Button>
+          <Button
+            size="icon"
+            variant="default"
+            className="bg-white/90 backdrop-blur-sm cursor-pointer hover:bg-white shadow-lg"
+            onClick={handleQuickView}
+          >
+            <Eye className="h-4 w-4 text-gray-600" />
           </Button>
         </div>
       </div>
       
       {/* Product Info */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold">{product.name}</h3>
-        <div className="flex items-center gap-1">
-          {renderStars(product.rating)}
+      <div className="p-4 space-y-3">
+        <div>
+          <h3 className="font-semibold text-gray-900 line-clamp-2 mb-1 group-hover:text-indigo-600 transition-colors">
+            {product.name}
+          </h3>
+          <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
         </div>
-        <p className="text-gray-500">{product.description}</p>
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-xl font-bold">{formatPrice(product.price)}</span>
-          <Button
-            onClick={handleAddToCart}
-            disabled={isAddingToCart}
-            className="flex items-center gap-2 text-sm"
-          >
-            {isAddingToCart ? <Loader2 className="animate-spin" /> : <ShoppingCart />}
-            Add to cart
-          </Button>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            {renderStars(product.rating)}
+            <span className="text-xs text-gray-500 ml-1">({product.rating.toFixed(1)})</span>
+          </div>
+          <span className="text-lg font-bold text-indigo-600">
+            ₦{formatPrice(product.price)}
+          </span>
         </div>
+        
+        <Button
+          onClick={handleAddToCart}
+          disabled={isAddingToCart || isOutOfStock}
+          className={`w-full transition-all duration-300 cursor-pointer ${
+            isOutOfStock 
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+              : 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 hover:shadow-lg transform hover:-translate-y-0.5'
+          }`}
+        >
+          {isAddingToCart ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+          ) : (
+            <ShoppingCart className="h-4 w-4 mr-2" />
+          )}
+          {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+        </Button>
       </div>
     </motion.div>
   ) : (
     <motion.div 
       layout
-      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3 }}
+      className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300"
     >
-      <div className="flex gap-6 p-4">
-        {/* List View Image */}
-        <div className="relative w-48 h-48">
+      <div className="flex flex-col sm:flex-row gap-4 p-4">
+        {/* Image - Responsive */}
+        <div className="relative w-full sm:w-48 h-48 sm:h-48 flex-shrink-0">
+          <div className={`absolute inset-0 bg-gray-200 animate-pulse rounded-lg ${imageLoaded ? 'hidden' : ''}`} />
           <Image
             src={product.images[0]}
             alt={product.name}
             fill
-            className="object-cover rounded-lg"
+            className={`object-cover rounded-lg transition-transform cursor-pointer duration-300 group-hover:scale-105 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
           />
+          
+          {/* Stock badges */}
+          {isOutOfStock && (
+            <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+              Out of Stock
+            </div>
+          )}
+          {isLowStock && (
+            <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+              <Zap className="h-3 w-3" />
+              {product.stock} left
+            </div>
+          )}
         </div>
 
-        {/* List View Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        {/* Content - Responsive */}
+        <div className="flex-1 min-w-0 flex flex-col">
+          <div className="flex justify-between items-start gap-3 mb-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
                 {product.name}
               </h3>
-              <p className="text-gray-600 line-clamp-2 mb-4">
+              <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-3 mb-3">
                 {product.description}
               </p>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-2">
                 <div className="flex">
                   {renderStars(product.rating)}
                 </div>
@@ -170,44 +302,83 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
                 </span>
               </div>
             </div>
+            
+            {/* Wishlist button - Desktop */}
             <Button
               size="icon"
               variant="ghost"
-              className="hover:bg-rose-50"
+              className="hidden sm:flex cursor-pointer hover:bg-rose-50 flex-shrink-0"
               onClick={handleWishlistClick}
             >
               <Heart 
-                className={`h-5 w-5 transition-colors ${
-                  isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-gray-400'
+                className={`h-5 w-5 transition-colors  ${
+                  isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-gray-400 hover:text-rose-500'
                 }`} 
               />
             </Button>
           </div>
 
-          <div className="flex items-end justify-between mt-auto">
-            <div className="space-y-1">
-              <p className="text-2xl font-bold text-indigo-600">
-                ₦{formatPrice(product.price)}
-              </p>
-              <p className="text-sm text-gray-500">
-                {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-              </p>
+          {/* Bottom section - Price and Actions */}
+          <div className="mt-auto">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-xl sm:text-2xl font-bold text-indigo-600">
+                  ₦{formatPrice(product.price)}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+                </p>
+              </div>
+              
+              {/* Actions */}
+              <div className="flex gap-2">
+                {/* Mobile wishlist button */}
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="sm:hidden cursor-pointer flex-shrink-0"
+                  onClick={handleWishlistClick}
+                >
+                  <Heart 
+                    className={`h-4 w-4 transition-colors ${
+                      isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-gray-400'
+                    }`} 
+                  />
+                </Button>
+                
+                {/* Quick view button */}
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="flex-shrink-0"
+                  onClick={handleQuickView}
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>
+                
+                {/* Add to cart button */}
+                <Button
+                  size="lg"
+                  onClick={handleAddToCart}
+                  disabled={isAddingToCart || isOutOfStock}
+                  className={`flex-1 sm:flex-initial text-sm cursor-pointer transition-all duration-300 ${
+                    isOutOfStock 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 hover:shadow-lg transform hover:-translate-y-0.5'
+                  }`}
+                >
+                  {isAddingToCart ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      <span className="hidden sm:inline">Add to Cart</span>
+                      <span className="sm:hidden">Add</span>
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
-            <Button
-              size="lg"
-              onClick={handleAddToCart}
-              disabled={isAddingToCart || product.stock < 1}
-              className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700"
-            >
-              {isAddingToCart ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <>
-                  <ShoppingCart className="h-5 w-5 mr-2" />
-                  Add to Cart
-                </>
-              )}
-            </Button>
           </div>
         </div>
       </div>

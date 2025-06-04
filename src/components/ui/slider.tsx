@@ -26,7 +26,7 @@ export function Slider({
     return ((value - min) / (max - min)) * 100
   }
 
-  const updateValue = (clientX: number) => {
+  const handleMove = (clientX: number) => {
     if (!trackRef.current || isDragging === null) return
 
     const { left, width } = trackRef.current.getBoundingClientRect()
@@ -46,23 +46,37 @@ export function Slider({
     onChange?.(newValues)
   }
 
+  // Handle both mouse and touch events
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => updateValue(e.clientX)
-    const handleMouseUp = () => setIsDragging(null)
+    if (isDragging === null) return
 
-    if (isDragging !== null) {
-      document.addEventListener("mousemove", handleMouseMove)
-      document.addEventListener("mouseup", handleMouseUp)
+    const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX)
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault() // Prevent scrolling while dragging
+      handleMove(e.touches[0].clientX)
     }
+    const handleEnd = () => setIsDragging(null)
+
+    // Mouse events
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleEnd)
+
+    // Touch events
+    document.addEventListener("touchmove", handleTouchMove, { passive: false })
+    document.addEventListener("touchend", handleEnd)
+    document.addEventListener("touchcancel", handleEnd)
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleMouseUp)
+      document.removeEventListener("mouseup", handleEnd)
+      document.removeEventListener("touchmove", handleTouchMove)
+      document.removeEventListener("touchend", handleEnd)
+      document.removeEventListener("touchcancel", handleEnd)
     }
   }, [isDragging, value])
 
   return (
-    <div className={`relative h-11 w-full ${className}`}>
+    <div className={`relative h-11 w-full touch-none ${className}`}>
       <div
         ref={trackRef}
         className="absolute top-1/2 h-1.5 w-full -translate-y-1/2 rounded-full bg-gray-200"
@@ -79,9 +93,10 @@ export function Slider({
       {[0, 1].map((index) => (
         <div
           key={index}
-          className="absolute top-1/2 h-4 w-4 cursor-pointer rounded-full border border-indigo-600 bg-white -translate-x-1/2 -translate-y-1/2 transition-shadow hover:shadow-lg focus:outline-none"
+          className="absolute top-1/2 h-6 w-6 cursor-pointer rounded-full border border-indigo-600 bg-white -translate-x-1/2 -translate-y-1/2 transition-shadow hover:shadow-lg focus:outline-none touch-none"
           style={{ left: `${getPercentage(value[index])}%` }}
           onMouseDown={() => setIsDragging(index)}
+          onTouchStart={() => setIsDragging(index)}
           role="slider"
           aria-valuemin={min}
           aria-valuemax={max}
