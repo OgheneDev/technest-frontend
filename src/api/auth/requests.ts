@@ -141,6 +141,9 @@ export const updatePassword = async ({ currentPassword, newPassword }: UpdatePas
 
 export const updateDetails = async (details: FormData): Promise<any> => {
   try {
+    // Log FormData contents for debugging
+    console.log('Sending FormData:', Object.fromEntries(details));
+
     const response = await axiosInstance.put(
       '/api/auth/updatedetails',
       details,
@@ -150,15 +153,14 @@ export const updateDetails = async (details: FormData): Promise<any> => {
         },
       }
     );
-    
-    if (response.status === 200) {
-      return response.data.data;
-    }
+
+    return response.data.data;
   } catch (error: any) {
-    const errorMessage = error.response?.data?.error || error.message;
-    throw new Error(errorMessage || 'Failed to update profile details');
+    console.error('Update details error:', error.response?.data || error.message);
+    const errorMessage = error.response?.data?.error || error.message || 'Failed to update profile details';
+    throw new Error(errorMessage);
   }
-}
+};
 
 export const deleteAccount = async ({ password }: DeleteAccountCredentials): Promise<void> => {
   try {
