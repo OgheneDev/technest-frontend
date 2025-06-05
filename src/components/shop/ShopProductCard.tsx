@@ -132,7 +132,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
   }
 
   const handleQuickView = () => {
-    router.push(`/products/${product._id}`)
+    router.push(`/product/${product._id}`)
   }
 
   const renderStars = (rating: number) => {
