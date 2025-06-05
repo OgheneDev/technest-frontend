@@ -135,10 +135,10 @@ const FeaturedProductsSection = () => {
             </motion.h2>
             
             <motion.div variants={buttonVariants}>
-                <Link href='/shop'>
+                <Link href='/shop' className='hidden md:block'>
                     <Button
                         size='lg'
-                        className='bg-gradient-to-r text-sm cursor-pointer w-fit from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white group transition-all duration-300 hover:shadow-lg hover:scale-105'
+                        className='bg-gradient-to-r text-sm cursor-pointer w-fit from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white group  transition-all duration-300 hover:shadow-lg hover:scale-105'
                     >
                         View All
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />

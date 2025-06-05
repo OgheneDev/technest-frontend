@@ -30,6 +30,21 @@ export default function ShopPage() {
     fetchProducts()
   }, [])
 
+  // Add search params handling
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const categoryParam = searchParams.get('category');
+    
+    if (categoryParam) {
+      handleFilterChange({
+        categories: [categoryParam],
+        priceRange: [0, 1000000],
+        rating: 0,
+        inStock: false
+      });
+    }
+  }, []);
+
   const handleFilterChange = (filters: any) => {
     let filtered = [...products]
 

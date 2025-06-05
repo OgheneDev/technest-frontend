@@ -41,12 +41,14 @@ const Navbar: React.FC = () => {
   const router = useRouter();
 
   const handleCategoryClick = (categoryName: string): void => {
-    const urlFriendlyCategoryName = categoryName
-      .toLowerCase()
-      .replace(/\s+/g, '-');
-    
+    setIsMenuOpen(false); // Close mobile menu
+    router.push(`/shop?category=${categoryName}`);
+  };
+
+  // Add click handler for mobile menu links
+  const handleMobileMenuClick = (path: string) => {
     setIsMenuOpen(false);
-    router.push(`/category/${urlFriendlyCategoryName}`);
+    router.push(path);
   };
 
   const menuVariants = {
@@ -224,24 +226,21 @@ const Navbar: React.FC = () => {
                       variants={listItemVariants}
                       className="mobile-menu-item border-b border-gray-100 pb-3"
                     >
-                      <Link 
-                        href={`/${item}`} 
-                        className="mobile-menu-link hover:bg-gray-50 p-2 rounded-lg flex items-center gap-3 transition-colors"
+                      <div 
+                        onClick={() => handleMobileMenuClick(`/${item}`)}
+                        className="mobile-menu-link hover:bg-gray-50 p-2 rounded-lg flex items-center gap-3 transition-colors cursor-pointer"
                       >
                         {item === "account" && <User size={20} className="text-gray-600" />}
                         {item === "wishlist" && <Heart size={20} className="text-gray-600" />}
                         <span className="capitalize text-gray-700 font-medium">
                           {item.split("-").join(" ")}
                         </span>
-                      </Link>
+                      </div>
                     </motion.li>
                   ))}
 
-                  <motion.li
-                    variants={listItemVariants}
-                    custom={4}
-                    className="pt-4"
-                  >
+                  {/* Categories in mobile menu */}
+                  <motion.li variants={listItemVariants} custom={4} className="pt-4">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
                       Categories
                     </h3>
