@@ -134,7 +134,7 @@ const FeaturedProductsSection = () => {
 
         <div className='relative z-10 flex items-center justify-between mb-8'>
             <motion.h2 
-                className='text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4 text-white'
+                className='text-xl md:text-3xl font-bold mb-4 pl-4 text-white'
                 variants={headerVariants}
             >
                 Featured Products
@@ -144,7 +144,7 @@ const FeaturedProductsSection = () => {
                 <Link href='/shop' className='hidden md:block'>
                     <Button
                         size='lg'
-                        className='bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-cyan-400/50 text-white group transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/20 hover:scale-105'
+                        className='bg-white/10 backdrop-blur-sm text-sm border border-white/20 hover:bg-white/20 hover:border-cyan-400/50 text-white group transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/20 hover:scale-105'
                     >
                         View All
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />

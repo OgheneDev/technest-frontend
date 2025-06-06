@@ -39,7 +39,7 @@ const HurryUpDeals = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
       variants={containerVariants}
-      className='relative pb-[50px] px-[20px] md:px-[60px] bg-gradient-to-b from-black to-gray-900 overflow-hidden'
+      className='relative py-[50px] px-[20px] md:px-[60px] bg-gradient-to-b from-black to-gray-900 overflow-hidden'
     >
       {/* Background effects */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />

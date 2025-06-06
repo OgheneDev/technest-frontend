@@ -57,7 +57,7 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
 
     const popularCategories = [
         { id: 1, name: 'Cases', stock: 11, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-1_mh7sca.jpg' },
-        { id: 2, name: 'Screen Protectors', stock: 4, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-2_bbyzwf.jpg' },
+        { id: 2, name: 'Protectors', stock: 4, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-2_bbyzwf.jpg' },
         { id: 3, name: 'MagSafe', stock: 2, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-3_r12qoc.jpg' },
         { id: 4, name: 'Cables', stock: 10, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-4_iav9sb.jpg' },
         { id: 5, name: 'Chargers', stock: 7, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-5_uqrrzi.jpg' },
@@ -154,7 +154,7 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
             
             <motion.h2 
                 variants={itemVariants}
-                className="relative z-10 text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4 text-white"
+                className="relative z-10 text-xl font-bold md:text-3xl md:font-bold mb-4 pl-4 text-white"
             >
                 Popular Categories
             </motion.h2>
@@ -170,7 +170,7 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
                 onMouseLeave={handleInteractionEnd}
             >
                 <motion.div
-                    className="slider-inner flex gap-4 md:gap-1 transition-transform duration-500 ease-in-out"
+                    className="slider-inner flex gap-1 md:gap-1 transition-transform duration-500 ease-in-out"
                     style={{ 
                         transform: `translateX(-${currentSlide * (100 / itemsPerSlide)}%)`,
                         width: `${(popularCategories.length / itemsPerSlide) * 100}%`
@@ -180,7 +180,7 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
                         <motion.div
                             key={category.id}
                             variants={itemVariants}
-                            className="group flex flex-col items-center cursor-pointer p-4 flex-shrink-0 text-center hover:scale-105 transition-all duration-300"
+                            className="group flex flex-col items-center cursor-pointer p-1 md:p-4 flex-shrink-0 text-center hover:scale-105 transition-all duration-300"
                             style={{ width: `${100 / popularCategories.length}%` }}
                             whileHover={{ y: -5 }}
                         >

@@ -88,7 +88,7 @@ const Testimonials = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : -50 }}
           transition={{ duration: 0.7 }}
-          className='text-sm md:text-base text-white/70 md:px-[200px] leading-relaxed'
+          className='text-sm md:text-base text-white/70 md:px-[200px] px-5 leading-relaxed'
         >
           Our seasoned team excels in real estate with years of successful market navigation, offering informed decisions and optimal results.
         </motion.p>
