@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '../ui/button'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface PaginationProps {
   totalItems: number
@@ -12,15 +12,14 @@ export const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
 
-  if (totalPages <= 1) return null
-
   return (
-    <div className="flex justify-center gap-2 mt-8">
+    <div className="flex justify-center items-center gap-2">
       <Button
         variant="outline"
         size="icon"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:bg-white/5 disabled:text-white/30"
       >
         <ChevronLeft className="h-4 w-4" />
       </Button>
@@ -28,9 +27,14 @@ export const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange
       {pages.map((page) => (
         <Button
           key={page}
-          variant={currentPage === page ? 'default' : 'outline'}
+          variant="outline"
+          size="icon"
           onClick={() => onPageChange(page)}
-          className="w-10"
+          className={`${
+            currentPage === page
+              ? 'bg-cyan-500 text-white border-cyan-500'
+              : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+          }`}
         >
           {page}
         </Button>
@@ -41,6 +45,7 @@ export const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange
         size="icon"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
+        className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:bg-white/5 disabled:text-white/30"
       >
         <ChevronRight className="h-4 w-4" />
       </Button>

@@ -133,7 +133,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
 
   const handleQuickView = () => {
     router.push(`/products/${product._id}`)
-  }
+  } 
 
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, index) => (
@@ -152,15 +152,16 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
   const isLowStock = product.stock > 0 && product.stock <= 5
 
   return layout === 'grid' ? (
-    <motion.div 
+    <motion.div
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300"
+      className="group bg-white/10 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300"
     >
       <div className="relative aspect-square overflow-hidden">
-        <div className={`absolute inset-0 bg-gray-200 animate-pulse ${imageLoaded ? 'hidden' : ''}`} />
+        {/* Product Image */}
+        <div className={`absolute inset-0 bg-black/20 ${imageLoaded ? 'hidden' : ''}`} />
         <Image
           src={product.images[0]}
           alt={product.name}
@@ -171,17 +172,14 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
           onLoad={() => setImageLoaded(true)}
         />
         
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
-        {/* Stock badge */}
+        {/* Stock badges */}
         {isOutOfStock && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+          <div className="absolute top-3 left-3 bg-red-500/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
             Out of Stock
           </div>
         )}
         {isLowStock && (
-          <div className="absolute top-3 left-3 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+          <div className="absolute top-3 left-3 bg-orange-500/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
             <Zap className="h-3 w-3" />
             Only {product.stock} left
           </div>
@@ -192,20 +190,20 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
           <Button
             size="icon"
             variant="default"
-            className="bg-white/90 backdrop-blur-sm cursor-pointer hover:bg-white shadow-lg"
+            className="bg-white/20 backdrop-blur-sm border border-white/10 hover:bg-white/30 text-white cursor-pointer shadow-lg"
             onClick={handleWishlistClick}
           >
             <Heart className={`h-4 w-4 transition-colors ${
-              isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-gray-600'
+              isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-blue-800'
             }`} />
           </Button>
           <Button
             size="icon"
             variant="default"
-            className="bg-white/90 backdrop-blur-sm cursor-pointer hover:bg-white shadow-lg"
+            className="bg-white/20 backdrop-blur-sm border border-white/10 hover:bg-white/30 text-white cursor-pointer shadow-lg"
             onClick={handleQuickView}
           >
-            <Eye className="h-4 w-4 text-gray-600" />
+            <Eye className="h-4 w-4 text-blue-800" />
           </Button>
         </div>
       </div>
@@ -213,18 +211,18 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
       {/* Product Info */}
       <div className="p-4 space-y-3">
         <div>
-          <h3 className="font-semibold text-gray-900 line-clamp-2 mb-1 group-hover:text-indigo-600 transition-colors">
+          <h3 className="font-semibold text-white line-clamp-2 mb-1 group-hover:text-cyan-400 transition-colors">
             {product.name}
           </h3>
-          <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
+          <p className="text-sm text-white/70 line-clamp-2">{product.description}</p>
         </div>
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             {renderStars(product.rating)}
-            <span className="text-xs text-gray-500 ml-1">({product.rating.toFixed(1)})</span>
+            <span className="text-xs text-white/50 ml-1">({product.rating.toFixed(1)})</span>
           </div>
-          <span className="text-lg font-bold text-indigo-600">
+          <span className="text-lg font-bold text-cyan-400">
             ₦{formatPrice(product.price)}
           </span>
         </div>
@@ -234,8 +232,8 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
           disabled={isAddingToCart || isOutOfStock}
           className={`w-full transition-all duration-300 cursor-pointer ${
             isOutOfStock 
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-              : 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 hover:shadow-lg transform hover:-translate-y-0.5'
+              ? 'bg-gray-800/50 text-gray-400 cursor-not-allowed border border-gray-700' 
+              : 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white hover:border-cyan-500/50'
           }`}
         >
           {isAddingToCart ? (
@@ -253,7 +251,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300"
+      className="group bg-white/10 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300"
     >
       <div className="flex flex-col sm:flex-row gap-4 p-4">
         {/* Image - Responsive */}

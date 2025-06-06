@@ -23,15 +23,15 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
       className="relative w-full sm:w-96"
     >
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+        <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/50" />
         <Input
           type="text"
           placeholder="Search products..."
           value={searchValue}
           onChange={handleSearch}
-          className="w-full pl-10 pr-4 bg-white outline-none py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
         />
-      </div>
+      </div> 
     </motion.div>
   )
 }

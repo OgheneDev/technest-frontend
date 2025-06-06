@@ -1,6 +1,5 @@
-import { LayoutGrid, List } from 'lucide-react'
-import { Button } from '../ui/button'
-import { motion } from 'framer-motion'
+import { LayoutGrid, List } from "lucide-react"
+import { Button } from "../ui/button"
 
 interface ViewToggleProps {
   layout: 'grid' | 'list'
@@ -9,29 +8,31 @@ interface ViewToggleProps {
 
 export const ViewToggle = ({ layout, onLayoutChange }: ViewToggleProps) => {
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="flex items-center gap-2 bg-white  p-1 rounded-lg shadow-sm"
-    >
+    <div className="flex gap-2">
       <Button
-        variant={layout === 'grid' ? 'default' : 'ghost'}
-        size="sm"
+        variant="outline"
+        size="icon"
         onClick={() => onLayoutChange('grid')}
-        className="flex items-center gap-2 cursor-pointer"
+        className={`${
+          layout === 'grid' 
+            ? 'bg-cyan-500 text-white border-cyan-500' 
+            : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+        }`}
       >
         <LayoutGrid className="h-4 w-4" />
-        <span className="hidden sm:inline ">Grid</span>
       </Button>
       <Button
-        variant={layout === 'list' ? 'default' : 'ghost'}
-        size="sm"
+        variant="outline"
+        size="icon"
         onClick={() => onLayoutChange('list')}
-        className="flex items-center gap-2 cursor-pointe"
+        className={`${
+          layout === 'list' 
+            ? 'bg-cyan-500 text-white border-cyan-500' 
+            : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+        }`}
       >
         <List className="h-4 w-4" />
-        <span className="hidden sm:inline ">List</span>
       </Button>
-    </motion.div>
+    </div>
   )
 }

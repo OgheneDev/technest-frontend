@@ -17,7 +17,7 @@ export default function ShopPage() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [layout, setLayout] = useState<'grid' | 'list'>('grid')
   const [currentPage, setCurrentPage] = useState(1)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true) 
 
   // Fetch products
   useEffect(() => {
@@ -99,21 +99,17 @@ export default function ShopPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filters Skeleton */}
             <div className="lg:w-1/4">
               <FiltersSkeleton />
             </div>
-
-            {/* Products Grid Skeleton */}
             <div className="lg:w-3/4 space-y-6">
               <div className="flex justify-between items-center">
-                <div className="h-10 bg-gray-200 rounded w-48 animate-pulse" />
-                <div className="h-10 bg-gray-200 rounded w-32 animate-pulse" />
+                <div className="h-10 bg-white/10 rounded w-48 animate-pulse" />
+                <div className="h-10 bg-white/10 rounded w-32 animate-pulse" />
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(8)].map((_, i) => (
                   <ProductSkeleton key={i} layout="grid" />
@@ -127,10 +123,17 @@ export default function ShopPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 text-black">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
+      
+      {/* Floating orbs */}
+      <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
+
+      <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Panel */}
           <div className="lg:w-1/4">
             <FiltersPanel 
               onFilterChange={handleFilterChange}
@@ -138,7 +141,6 @@ export default function ShopPage() {
             />
           </div>
 
-          {/* Main Content */}
           <div className="lg:w-3/4 space-y-6">
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
               <SearchBar onSearch={handleSearch} />
@@ -162,6 +164,13 @@ export default function ShopPage() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .bg-grid-white\\/\\[0\\.02\\] {
+          background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), 
+          linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+        }
+      `}</style>
     </div>
   )
 }

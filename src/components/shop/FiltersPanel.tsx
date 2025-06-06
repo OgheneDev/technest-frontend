@@ -16,7 +16,7 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
   const [showInStock, setShowInStock] = useState(false)
 
   const handleFilterChange = () => {
-    onFilterChange({
+    onFilterChange({ 
       priceRange,
       categories: selectedCategories,
       rating: selectedRatings.length ? Math.max(...selectedRatings) : 0,
@@ -45,53 +45,44 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
   }, [priceRange, showInStock]);
 
   return (
-    <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      className="bg-white p-6 rounded-lg shadow-lg space-y-6"
-    >
-      <div className="flex items-center gap-2 mb-6">
-        <Filter className="h-5 w-5 text-indigo-600" />
-        <h2 className="text-lg font-semibold">Filters</h2>
+    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6">
+      <h2 className="text-xl font-semibold mb-6 text-white">Filters</h2>
+      
+      {/* Categories */}
+      <div className="space-y-4 mb-8">
+        <h3 className="text-lg font-medium text-white/90">Categories</h3>
+        <div className="space-y-2">
+          {categories.map((category) => (
+            <label key={category} className="flex items-center space-x-2 text-white/70 hover:text-white">
+              <Checkbox
+                checked={selectedCategories.includes(category)}
+                onChange={() => handleCategoryChange(category)}
+              />
+              <span className="text-sm">{category}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
       {/* Price Range */}
-      <div className="space-y-4">
-        <h3 className="font-medium">Price Range</h3>
+      <div className="space-y-4 mb-8">
+        <h3 className="text-lg font-medium text-white/90">Price Range</h3>
         <Slider
-          value={priceRange}
           min={0}
           max={1000000}
-          step={1000}
-          onChange={setPriceRange}
+          value={priceRange}
+          onChange={(value) => setPriceRange(value)}
+          className="mt-2"
         />
-        <div className="flex justify-between text-sm text-gray-600">
+        <div className="flex justify-between text-sm text-white/70">
           <span>₦{priceRange[0].toLocaleString()}</span>
           <span>₦{priceRange[1].toLocaleString()}</span>
         </div>
       </div>
 
-      {/* Categories */}
-      <div className="space-y-3">
-        <h3 className="font-medium">Categories</h3>
-        <div className="space-y-2">
-          {categories.map((category) => (
-            <div key={category} className="flex items-center">
-              <Checkbox
-                checked={selectedCategories.includes(category)}
-                onChange={() => handleCategoryChange(category)}
-              />
-              <label className="ml-2 text-sm text-gray-600">
-                {category}
-              </label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Ratings */}
-      <div className="space-y-3">
-        <h3 className="font-medium">Rating</h3>
+      {/* Rating Filter */}
+      <div className="space-y-4 mb-8">
+        <h3 className="text-lg font-medium text-white/90">Rating</h3>
         <div className="space-y-2">
           {[5, 4, 3, 2, 1].map((rating) => (
             <div key={rating} className="flex items-center">
@@ -120,21 +111,18 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
         </div>
       </div>
 
-      {/* Stock Status */}
-      <div className="space-y-3">
-        <h3 className="font-medium">Availability</h3>
-        <div className="flex items-center">
+      {/* Availability */}
+      <div className="space-y-4">
+        <label className="flex items-center space-x-2 text-white/70 hover:text-white">
           <Checkbox
             checked={showInStock}
             onChange={(checked) => {
               setShowInStock(checked);
             }}
           />
-          <label className="ml-2 text-sm text-gray-600">
-            In Stock Only
-          </label>
-        </div>
+          <span className="text-sm">In Stock Only</span>
+        </label>
       </div>
-    </motion.div>
+    </div>
   )
 }
