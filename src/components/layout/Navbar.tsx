@@ -167,7 +167,7 @@ const Navbar: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => handleCategoryClick(item.name)}
-                  className="text-white/90 hover:text-white px-3 py-1 rounded-lg hover:bg-blue-500/30 transition-all text-sm font-medium"
+                  className="text-white/90 cursor-pointer hover:text-white px-3 py-1 rounded-lg hover:bg-blue-500/30 transition-all text-sm font-medium"
                 >
                   {item.name}
                 </button>

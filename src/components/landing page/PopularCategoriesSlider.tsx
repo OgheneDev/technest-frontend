@@ -146,17 +146,21 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={containerVariants}
-            className="relative max-w-full mx-auto py-8 md:py-[50px] px-[30px] md:px-[50px] bg-white"
+            className="relative max-w-full mx-auto py-8 md:py-[50px] px-[30px] md:px-[50px] bg-gradient-to-b from-gray-900 to-black"
         >
+            {/* Subtle background effects */}
+            <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
+            
             <motion.h2 
                 variants={itemVariants}
-                className="text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4 text-gray-900"
+                className="relative z-10 text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4 text-white"
             >
                 Popular Categories
             </motion.h2>
             
             <div 
-                className="slider-wrapper overflow-hidden relative"
+                className="relative z-10 slider-wrapper overflow-hidden"
                 onTouchStart={handleInteractionStart}
                 onTouchMove={handleInteractionMove}
                 onTouchEnd={handleInteractionEnd}
@@ -176,22 +180,37 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
                         <motion.div
                             key={category.id}
                             variants={itemVariants}
-                            className="flex flex-col items-center cursor-pointer p-4 flex-shrink-0 text-center hover:scale-95 transition-all"
+                            className="group flex flex-col items-center cursor-pointer p-4 flex-shrink-0 text-center hover:scale-105 transition-all duration-300"
                             style={{ width: `${100 / popularCategories.length}%` }}
+                            whileHover={{ y: -5 }}
                         >
-                            <motion.img 
-                                src={category.image} 
-                                alt={category.name} 
-                                className="w-full h-auto rounded-lg mb-3 shadow-sm"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ type: "spring", stiffness: 300 }}
-                            />
-                            <motion.h3 variants={itemVariants} className="text-md font-medium text-gray-900">
-                                {category.name}
-                            </motion.h3>
-                            <motion.p variants={itemVariants} className="text-sm text-gray-500">
-                                {category.stock} products
-                            </motion.p>
+                            {/* Card with glassmorphism effect */}
+                            <div className="relative w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300">
+                                {/* Subtle glow on hover */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-purple-500/20 to-pink-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                                
+                                <motion.div className="relative">
+                                    <motion.img 
+                                        src={category.image} 
+                                        alt={category.name} 
+                                        className="w-full h-auto rounded-lg mb-3 shadow-lg"
+                                        whileHover={{ scale: 1.02 }}
+                                        transition={{ type: "spring", stiffness: 300 }}
+                                    />
+                                    <motion.h3 
+                                        variants={itemVariants} 
+                                        className="text-md font-medium text-white group-hover:text-cyan-300 transition-colors duration-300"
+                                    >
+                                        {category.name}
+                                    </motion.h3>
+                                    <motion.p 
+                                        variants={itemVariants} 
+                                        className="text-sm text-white/60 group-hover:text-white/80 transition-colors duration-300"
+                                    >
+                                        {category.stock} products
+                                    </motion.p>
+                                </motion.div>
+                            </div>
                         </motion.div>
                     ))}
                 </motion.div>
@@ -201,23 +220,29 @@ const PopularCategoriesSlider = forwardRef((_, ref) => {
             {currentSlide > 0 && (
                 <motion.button
                     onClick={prevSlide}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.1, x: -2 }}
                     whileTap={{ scale: 0.9 }}
-                    className="absolute left-2 cursor-pointer md:left-[90px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
+                    className="absolute left-2 cursor-pointer md:left-[90px] top-1/2 transform -translate-y-1/2 p-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full shadow-lg hover:bg-white/20 transition-all duration-300 z-20"
                 >
-                    <ArrowLeft size={15} className="text-gray-700" />
+                    <ArrowLeft size={18} className="text-white" />
                 </motion.button>
             )}
             {currentSlide < maxSlideIndex && (
                 <motion.button
                     onClick={nextSlide}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.1, x: 2 }}
                     whileTap={{ scale: 0.9 }}
-                    className="absolute cursor-pointer right-2 md:right-[70px] top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
+                    className="absolute cursor-pointer right-2 md:right-[70px] top-1/2 transform -translate-y-1/2 p-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full shadow-lg hover:bg-white/20 transition-all duration-300 z-20"
                 >
-                    <ArrowRight size={15} className="text-gray-700" />
+                    <ArrowRight size={18} className="text-white" />
                 </motion.button>
             )}
+
+            <style jsx>{`
+                .bg-grid-white\\/\\[0\\.02\\] {
+                    background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+                }
+            `}</style>
         </motion.div>
     );
 });

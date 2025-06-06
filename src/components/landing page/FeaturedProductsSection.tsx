@@ -48,9 +48,9 @@ const FeaturedProductsSection = () => {
         visible: {
             opacity: 1,
             transition: {
-                duration: 0.3,
+                duration: 0.5,
                 staggerChildren: 0.1,
-                delayChildren: 0.2
+                when: "beforeChildren"
             }
         }
     };
@@ -58,15 +58,13 @@ const FeaturedProductsSection = () => {
     const itemVariants = {
         hidden: { 
             opacity: 0, 
-            y: 30,
-            scale: 0.95
+            y: 20,
         },
         visible: { 
             opacity: 1, 
             y: 0,
-            scale: 1,
             transition: {
-                duration: 0.5,
+                duration: 0.4,
                 ease: "easeOut"
             }
         }
@@ -120,15 +118,23 @@ const FeaturedProductsSection = () => {
 
    return (
     <motion.div 
-        className="py-8 md:py-[50px] px-[30px] md:px-[50px] bg-white"
+        className="relative py-8 md:py-[50px] px-[30px] md:px-[50px] bg-gradient-to-b from-gray-900 to-black overflow-hidden"
         variants={containerVariants}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
+        viewport={{ once: true, amount: 0.1 }}
     >
-        <div className='flex items-center justify-between mb-8'>
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
+        
+        {/* Floating orbs */}
+        <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
+
+        <div className='relative z-10 flex items-center justify-between mb-8'>
             <motion.h2 
-                className='text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4 text-gray-900'
+                className='text-lg md:text-3xl md:font-bold font-semibold mb-4 pl-4 text-white'
                 variants={headerVariants}
             >
                 Featured Products
@@ -138,7 +144,7 @@ const FeaturedProductsSection = () => {
                 <Link href='/shop' className='hidden md:block'>
                     <Button
                         size='lg'
-                        className='bg-gradient-to-r text-sm cursor-pointer w-fit from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white group  transition-all duration-300 hover:shadow-lg hover:scale-105'
+                        className='bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-cyan-400/50 text-white group transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/20 hover:scale-105'
                     >
                         View All
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
@@ -148,7 +154,7 @@ const FeaturedProductsSection = () => {
         </div>
 
         <motion.div 
-            className='grid grid-cols-1 md:grid-cols-4 gap-6 mx-auto'
+            className='relative z-10 grid grid-cols-1 md:grid-cols-4 gap-6 mx-auto'
             variants={containerVariants}
         >
             {loading ? (
@@ -169,10 +175,10 @@ const FeaturedProductsSection = () => {
                     variants={errorVariants}
                 >
                     <div className='text-center'>
-                        <div className='text-red-500 text-lg font-medium mb-2'>
+                        <div className='text-red-400 text-lg font-medium mb-2'>
                             {error}
                         </div>
-                        <p className='text-gray-500 text-sm'>
+                        <p className='text-white/60 text-sm'>
                             Please try refreshing the page
                         </p>
                     </div>
@@ -182,11 +188,10 @@ const FeaturedProductsSection = () => {
                     <motion.div
                         key={product._id}
                         variants={itemVariants}
+                        initial="hidden"
+                        animate="visible"
                         custom={index}
-                        whileHover={{ 
-                            y: -5,
-                            transition: { duration: 0.2 }
-                        }}
+                        whileHover={{ y: -5 }}
                     >
                         <FeaturedProductCard product={product} />
                     </motion.div>
@@ -197,16 +202,22 @@ const FeaturedProductsSection = () => {
                     variants={errorVariants}
                 >
                     <div className='text-center'>
-                        <div className='text-gray-700 text-lg font-medium mb-2'>
+                        <div className='text-white text-lg font-medium mb-2'>
                             No Featured Products Available
                         </div>
-                        <p className='text-gray-500 text-sm'>
+                        <p className='text-white/60 text-sm'>
                             Check back later for new products
                         </p>
                     </div>
                 </motion.div>
             )}
         </motion.div>
+
+        <style jsx>{`
+            .bg-grid-white\\/\\[0\\.02\\] {
+                background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+            }
+        `}</style>
     </motion.div>
    )
 }

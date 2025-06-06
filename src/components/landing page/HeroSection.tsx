@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Sparkles, Zap, Star, ShoppingBag, Play } from 'lucide-react'
+import { ArrowRight, Sparkles, Zap, Star, ShoppingCart, Play } from 'lucide-react'
 
 const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -25,7 +25,7 @@ const HeroSection = () => {
     { icon: Zap, color: 'text-yellow-400', delay: 0, x: '15%', y: '20%' },
     { icon: Star, color: 'text-pink-400', delay: 1.2, x: '85%', y: '15%' },
     { icon: Sparkles, color: 'text-blue-400', delay: 2.1, x: '10%', y: '80%' },
-    { icon: ShoppingBag, color: 'text-purple-400', delay: 0.8, x: '90%', y: '75%' },
+    { icon: ShoppingCart, color: 'text-purple-400', delay: 0.8, x: '90%', y: '75%' },
   ]
 
   const gradientBalls = [
