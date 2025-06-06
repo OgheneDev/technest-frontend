@@ -49,6 +49,12 @@ const HeroSection = () => {
     },
   ]
 
+  const stats = [
+    { number: "50K+", label: "Happy Customers" },
+    { number: "99%", label: "Satisfaction Rate" },
+    { number: "24/7", label: "Support" }
+  ];
+
   return (
     <section className="relative min-h-screen bg-black overflow-hidden">
       {/* Dynamic gradient background */}
@@ -137,13 +143,13 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <h1 className="text-4xl md:text-8xl font-black leading-none">
+              <h1 className="text-5xl md:text-6xl font-black leading-none">
                 <span className="block text-white mb-4">NEXT-GEN</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-gradient-x">
                   TECH
                 </span>
                 <motion.span 
-                  className="block text-white/60 text-2xl md:text-3xl font-light mt-4"
+                  className="block text-white/60 text-xl md:text-2xl font-light mt-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
@@ -158,7 +164,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="text-xl text-white/70 max-w-lg leading-relaxed"
+              className="text-[16px] text-white/70 max-w-lg leading-relaxed"
             >
               Experience the future with our cutting-edge collection of revolutionary gadgets and smart devices that redefine possibility.
             </motion.p>
@@ -175,7 +181,7 @@ const HeroSection = () => {
                 whileTap={{ scale: 0.95 }}
                 onHoverStart={() => setIsHovered(true)}
                 onHoverEnd={() => setIsHovered(false)}
-                className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl text-white font-semibold text-lg overflow-hidden"
+                className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl text-white font-semibold text-sm overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative flex items-center justify-center gap-2">
@@ -192,7 +198,7 @@ const HeroSection = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl text-white font-semibold text-lg hover:bg-white/10 transition-all duration-300"
+                className="group px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl text-white font-semibold text-sm hover:bg-white/10 transition-all duration-300"
               >
                 <div className="flex items-center justify-center gap-2">
                   <Play className="w-5 h-5" />
@@ -201,21 +207,21 @@ const HeroSection = () => {
               </motion.button>
             </motion.div>
 
-            {/* Stats */}
+            {/* Stats section */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
-              className="flex gap-8 pt-8"
+              className="grid grid-cols-3 gap-4 sm:gap-8 pt-8 max-w-md"
             >
-              {[
-                { number: "50K+", label: "Happy Customers" },
-                { number: "99%", label: "Satisfaction Rate" },
-                { number: "24/7", label: "Support" }
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-2xl font-bold text-white">{stat.number}</div>
-                  <div className="text-white/60 text-sm">{stat.label}</div>
+              {stats.map((stat, i) => (
+                <div key={i} className="text-center px-2">
+                  <div className="text-lg sm:text-2xl font-bold text-white">
+                    {stat.number}
+                  </div>
+                  <div className="text-xs sm:text-sm text-white/60 whitespace-nowrap">
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </motion.div>
