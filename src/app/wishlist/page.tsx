@@ -10,7 +10,8 @@ import { addToCart } from '@/api/cart/requests'
 import { formatPrice } from '@/utils/formatPrice'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/context/CartContext'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2' 
+import { WishlistSkeleton } from '@/components/wishlist/WishlistSkeleton'
 
 interface WishlistProduct {
   _id: string;
@@ -84,11 +85,7 @@ export default function WishlistPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
-      </div>
-    )
+    return <WishlistSkeleton />
   }
 
   return (

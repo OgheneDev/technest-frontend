@@ -8,6 +8,7 @@ import { getCart, deleteCartItem, updateCartQuantity, clearCart } from '@/api/ca
 import { formatPrice } from '@/utils/formatPrice'
 import Swal from 'sweetalert2'
 import { useCart } from '@/context/CartContext'
+import { CartSkeleton } from '@/components/cart/CartSkeleton'
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -126,14 +127,7 @@ export default function CartPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-indigo-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading your cart...</p>
-        </div>
-      </div>
-    );
+    return <CartSkeleton />
   }
 
   if (error) {
