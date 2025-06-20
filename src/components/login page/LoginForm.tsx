@@ -46,7 +46,7 @@ const LoginForm = () => {
         icon: 'success',
         confirmButtonColor: '#4F46E5'
       });
-      router.push('/');
+      window.location.href = '/'
     } catch (err) {
       const error = err as Error;
       setError(error.message);

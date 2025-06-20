@@ -16,7 +16,7 @@ export const tokenUtils = {
       localStorage.setItem("authToken", token)
     } catch (error) {
       console.error("Error setting token:", error)
-    }
+    } 
   },
   removeToken: () => {
     try {

@@ -9,7 +9,7 @@ const FeaturedProductCardSkeleton = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="group relative overflow-hidden md:w-[300px] bg-white">
+      <Card className="group relative overflow-hidden md:w-[300px] bg-gray-900">
         <div className="relative aspect-square overflow-hidden">
           <Skeleton className="absolute inset-0" />
           {/* Badge skeleton */}
@@ -17,7 +17,7 @@ const FeaturedProductCardSkeleton = () => {
         </div>
 
         <CardContent className="mt-4">
-          <div className="space-y-3">
+          <div className="space-y-3"> 
             {/* Title skeleton */}
             <Skeleton className="h-4 w-3/4" />
             

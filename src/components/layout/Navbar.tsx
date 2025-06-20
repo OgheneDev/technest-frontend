@@ -9,8 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext'
 import { useAuthStore } from '@/store/useAuthStore';
 
-// Add logo import
-import logo from '@/assets/images/logo.png'; // Adjust path as needed
+import logo from '@/assets/images/logo.png'; 
 
 interface Category {
   id: number;
