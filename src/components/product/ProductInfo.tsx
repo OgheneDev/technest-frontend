@@ -106,14 +106,22 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     }
   }
 
+  const renderStars = (rating: number) => (
+    <div className="flex items-center">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} className={`h-4 w-4 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-white/20'}`} />
+      ))}
+    </div>
+  )
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-white">
       {/* Category & Title */}
       <div>
-        <Badge variant="outline" className="mb-2 text-gray-700">
+        <Badge variant="outline" className="mb-2 text-white/70 border-white/10">
           {product.category}
         </Badge>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+        <h1 className="text-2xl md:text-3xl font-bold text-white">
           {product.name}
         </h1>
       </div>
@@ -127,36 +135,36 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
                 key={i}
                 className={`h-5 w-5 ${
                   i < Math.floor(product.rating)
-                    ? 'fill-yellow-400 text-yellow-400'
-                    : 'fill-gray-200 text-gray-200'
+                    ? 'text-yellow-400'
+                    : 'text-white/20'
                 }`}
               />
             ))}
           </div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-white/70">
             ({product.rating.toFixed(1)} rating)
           </div>
         </div>
-        <Badge variant={product.stock > 0 ? "default" : "secondary"}>
+        <Badge variant={product.stock > 0 ? 'default' : 'secondary'}>
           {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
         </Badge>
       </div>
 
       {/* Price & Quantity */}
       <div className="space-y-4">
-        <div className="text-3xl font-bold text-indigo-600">
+        <div className="text-3xl font-bold text-cyan-400">
           ₦{formatPrice(product.price)}
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Quantity</label>
+          <label className="text-sm font-medium text-white/80">Quantity</label>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
               disabled={quantity <= 1}
-              className='cursor-pointer'
+              className='cursor-pointer bg-white/5 text-white'
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -165,14 +173,14 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
               min="1"
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-20 text-center border rounded-md text-gray-700"
+              className="w-20 text-center border rounded-md text-white bg-white/5"
             />
             <Button
               variant="outline"
               size="icon"
               onClick={() => setQuantity(quantity + 1)}
               disabled={quantity >= product.stock}
-              className='cursor-pointer'
+              className='cursor-pointer bg-white/5 text-white'
             >
               <Plus className="h-4 w-4" />
             </Button>
@@ -184,7 +192,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
       <div className="flex flex-col sm:flex-row gap-4">
         <Button
           size="lg"
-          className="flex-1 cursor-pointer text-sm"
+          className="flex-1 cursor-pointer text-sm bg-cyan-500 text-white"
           onClick={handleAddToCart}
           disabled={isAddingToCart || product.stock < 1}
         >
@@ -200,22 +208,23 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           variant="outline"
           onClick={handleWishlistToggle}
           disabled={isUpdatingWishlist}
+          className="bg-white/5 text-white"
         >
           <Heart className={`h-5 w-5 ${isInWishlist ? 'fill-rose-500 text-rose-500' : ''}`} />
         </Button>
       </div>
 
       {/* Delivery Info */}
-      <div className="space-y-4 border-t pt-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+      <div className="space-y-4 border-t pt-6 border-white/6">
+        <div className="flex items-center gap-2 text-sm text-white/70">
           <Package className="h-5 w-5" />
           <span>Free delivery on orders over ₦100,000</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-white/70">
           <RefreshCw className="h-5 w-5" />
           <span>30-day return policy</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-white/70">
           <Truck className="h-5 w-5" />
           <span>Same-day dispatch for orders before 2pm</span>
         </div>

@@ -33,7 +33,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black overflow-hidden py-8">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-8">
           <ProductImageGallery images={product.images} />

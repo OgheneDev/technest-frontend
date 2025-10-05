@@ -66,17 +66,17 @@ export default function SecuritySettings() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-white">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Security Settings</h2>
-        <p className="text-sm text-gray-500 mt-1">Update your password</p>
+        <h2 className="text-xl font-semibold text-white">Security Settings</h2>
+        <p className="text-sm text-white/70 mt-1">Update your password</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Lock className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <Lock className="h-4 w-4 text-white/60" />
               Current Password
             </label>
             <div className="relative">
@@ -85,24 +85,25 @@ export default function SecuritySettings() {
                 value={formData.currentPassword}
                 onChange={(e) => setFormData(prev => ({ ...prev, currentPassword: e.target.value }))}
                 placeholder="Enter current password"
+                className="bg-white/5 text-white placeholder:text-white/60"
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 cursor-pointer -translate-y-1/2"
                 onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
               >
                 {showPasswords.current ? (
-                  <EyeOff className="h-4 w-4 text-gray-400" />
+                  <EyeOff className="h-4 w-4 text-white/60" />
                 ) : (
-                  <Eye className="h-4 w-4 text-gray-400" />
+                  <Eye className="h-4 w-4 text-white/60" />
                 )}
               </button>
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Lock className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <Lock className="h-4 w-4 text-white/60" />
               New Password
             </label>
             <div className="relative">
@@ -111,24 +112,25 @@ export default function SecuritySettings() {
                 value={formData.newPassword}
                 onChange={(e) => setFormData(prev => ({ ...prev, newPassword: e.target.value }))}
                 placeholder="Enter new password"
+                className="bg-white/5 text-white placeholder:text-white/60"
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 cursor-pointer -translate-y-1/2"
                 onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
               >
                 {showPasswords.new ? (
-                  <EyeOff className="h-4 w-4 text-gray-400" />
+                  <EyeOff className="h-4 w-4 text-white/60" />
                 ) : (
-                  <Eye className="h-4 w-4 text-gray-400" />
+                  <Eye className="h-4 w-4 text-white/60" />
                 )}
               </button>
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Lock className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <Lock className="h-4 w-4 text-white/60" />
               Confirm New Password
             </label>
             <div className="relative">
@@ -137,16 +139,17 @@ export default function SecuritySettings() {
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                 placeholder="Confirm new password"
+                className="bg-white/5 text-white placeholder:text-white/60"
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 cursor-pointer -translate-y-1/2"
                 onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
               >
                 {showPasswords.confirm ? (
-                  <EyeOff className="h-4 w-4 text-gray-400" />
+                  <EyeOff className="h-4 w-4 text-white/60" />
                 ) : (
-                  <Eye className="h-4 w-4 text-gray-400" />
+                  <Eye className="h-4 w-4 text-white/60" />
                 )}
               </button>
             </div>
@@ -156,7 +159,7 @@ export default function SecuritySettings() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto bg-cyan-500 text-sm cursor-pointer text-white border-none hover:brightness-105"
         >
           {isLoading ? (
             <>

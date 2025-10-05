@@ -125,18 +125,18 @@ export default function AccountDetails({ userData, setUserData }: AccountDetails
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-white">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Account Details</h2>
-          <p className="text-sm text-gray-500 mt-1">Update your personal information</p>
+          <h2 className="text-xl font-semibold text-white">Account Details</h2>
+          <p className="text-sm text-white/70 mt-1">Update your personal information</p>
         </div>
 
         {/* Avatar Upload */}
         <div className="relative group">
           <div 
             onClick={handleAvatarClick}
-            className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer group"
+            className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer group bg-white/5 border border-white/8"
           >
             {avatarPreview ? (
               <Image
@@ -146,8 +146,8 @@ export default function AccountDetails({ userData, setUserData }: AccountDetails
                 className="object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                <User className="h-8 w-8 text-gray-400" />
+              <div className="w-full h-full bg-white/6 flex items-center justify-center">
+                <User className="h-8 w-8 text-white/60" />
               </div>
             )}
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -167,53 +167,53 @@ export default function AccountDetails({ userData, setUserData }: AccountDetails
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <User className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <User className="h-4 w-4 text-white/60" />
               First Name
             </label>
             <Input
               value={formData.firstName}
               onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
               placeholder="First Name"
-              className="bg-white placeholder:text-gray-600"
+              className="bg-white/5 placeholder:text-white/60 text-white"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <User className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <User className="h-4 w-4 text-white/60" />
               Last Name
             </label>
             <Input
               value={formData.lastName}
               onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
               placeholder="Last Name"
-              className="bg-white placeholder:text-gray-600"
+              className="bg-white/5 placeholder:text-white/60 text-white"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Mail className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <Mail className="h-4 w-4 text-white/60" />
               Email
             </label>
             <Input
               value={userData?.email || ''}
               disabled
-              className="bg-gray-50 text-gray-500"
+              className="bg-white/6 text-white/60"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-              <Phone className="h-4 w-4 text-gray-400" />
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
+              <Phone className="h-4 w-4 text-white/60" />
               Phone Number
             </label>
             <Input
               value={formData.phoneNumber}
               onChange={(e) => setFormData(prev => ({ ...prev, phoneNumber: e.target.value }))}
               placeholder="Phone Number"
-              className="bg-white placeholder:text-gray-600"
+              className="bg-white/5 placeholder:text-white/60 text-white"
             />
           </div>
         </div>
@@ -221,7 +221,7 @@ export default function AccountDetails({ userData, setUserData }: AccountDetails
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full sm:w-auto cursor-pointer"
+          className="w-full sm:w-auto text-sm cursor-pointer bg-cyan-500 text-white border-none hover:brightness-105"
         >
           {isLoading ? (
             <>

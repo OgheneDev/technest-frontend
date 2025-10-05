@@ -146,7 +146,7 @@ export default function WishlistPage() {
       <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
 
       {/* Navigation Bar */}
-      <div className="relative z-20 bg-white/5 backdrop-blur-sm border-b border-white/10 sticky top-0">
+      <div className="z-20 bg-white/5 backdrop-blur-sm border-b border-white/10 sticky top-0">
         <div className="container mx-auto px-4">
           <div className="flex items-center h-16">
             <Link
@@ -174,7 +174,7 @@ export default function WishlistPage() {
             {wishlistData?.products.length === 1 ? "item" : "items"})
           </div>
 
-          <h1 className="text-2xl md:text-4xl font-bold text-white mb-3">
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">
             Saved Items
           </h1>
         </motion.div>

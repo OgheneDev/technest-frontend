@@ -85,6 +85,7 @@ export const resetPassword = async (resetToken: string, { password }: ResetPassw
 export const getMe = async () => {
     try {
       const response = await axiosInstance.get('/api/auth/me');
+      console.log('User', response)
       const { data, status } = response
         if (response.status !== 200) {
         throw new Error('Failed to fetch user');

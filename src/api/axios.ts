@@ -1,31 +1,41 @@
-// lib/axios.ts
-import axios from "axios"
+// src/api/axios.ts
+import axios from "axios";
 
 // Token utilities
 export const tokenUtils = {
   getToken: () => {
     try {
-      return localStorage.getItem("authToken")
+      // Check if running in the browser
+      if (typeof window !== "undefined") {
+        return localStorage.getItem("authToken");
+      }
+      return null; // Return null if running on the server
     } catch (error) {
-      console.error("Error reading token:", error)
-      return null
+      console.error("Error reading token:", error);
+      return null;
     }
   },
   setToken: (token: string) => {
     try {
-      localStorage.setItem("authToken", token)
+      // Check if running in the browser
+      if (typeof window !== "undefined") {
+        localStorage.setItem("authToken", token);
+      }
     } catch (error) {
-      console.error("Error setting token:", error)
-    } 
+      console.error("Error setting token:", error);
+    }
   },
   removeToken: () => {
     try {
-      localStorage.removeItem("authToken")
+      // Check if running in the browser
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("authToken");
+      }
     } catch (error) {
-      console.error("Error removing token:", error)
+      console.error("Error removing token:", error);
     }
-  }
-}
+  },
+};
 
 // Create the axios instance
 const axiosInstance = axios.create({
@@ -33,23 +43,22 @@ const axiosInstance = axios.create({
   timeout: 3600000,
   headers: {
     "Content-Type": "application/json",
-    Accept: "application/json"
-  }
-})
+    Accept: "application/json",
+  },
+});
 
-// ✅ Request interceptor: add token to headers
+// Request interceptor: add token to headers
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = tokenUtils.getToken()
+    const token = tokenUtils.getToken();
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return config
+    return config;
   },
   (error) => {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
-
-export default axiosInstance
+export default axiosInstance;

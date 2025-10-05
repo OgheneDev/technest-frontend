@@ -13,7 +13,7 @@ export const ViewToggle = ({ layout, onLayoutChange }: ViewToggleProps) => {
         variant="outline"
         size="icon"
         onClick={() => onLayoutChange('grid')}
-        className={`${
+        className={`cursor-pointer ${
           layout === 'grid' 
             ? 'bg-cyan-500 text-white border-cyan-500' 
             : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
@@ -25,7 +25,7 @@ export const ViewToggle = ({ layout, onLayoutChange }: ViewToggleProps) => {
         variant="outline"
         size="icon"
         onClick={() => onLayoutChange('list')}
-        className={`${
+        className={`cursor-pointer ${
           layout === 'list' 
             ? 'bg-cyan-500 text-white border-cyan-500' 
             : 'bg-white/10 border-white/20 text-white hover:bg-white/20'

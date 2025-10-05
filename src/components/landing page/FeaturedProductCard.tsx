@@ -14,6 +14,7 @@ import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/utils/formatPrice'
 import { useAuthStore } from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'
 
 interface FeaturedProductCardProps {
     product: Product
@@ -214,12 +215,15 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
           whileHover={{ scale: 1.02 }}
           transition={{ type: "tween", duration: 0.2 }}
         >
-          <Image
+          <Link href={`products/${product._id}`}>
+            <Image
             src={product.images[0]}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-500"
           />
+          </Link>
+
           <motion.div
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 1 }}

@@ -230,7 +230,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
         <Button
           onClick={handleAddToCart}
           disabled={isAddingToCart || isOutOfStock}
-          className={`w-full transition-all duration-300 cursor-pointer ${
+          className={`w-full transition-all duration-300 cursor-pointer text-sm ${
             isOutOfStock 
               ? 'bg-gray-800/50 text-gray-400 cursor-not-allowed border border-gray-700' 
               : 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white hover:border-cyan-500/50'
@@ -348,7 +348,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
                 <Button
                   size="icon"
                   variant="outline"
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 cursor-pointer"
                   onClick={handleQuickView}
                 >
                   <Eye className="h-4 w-4" />
