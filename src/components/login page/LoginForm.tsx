@@ -44,7 +44,9 @@ const LoginForm = () => {
         title: 'Success!',
         text: 'Logged in successfully',
         icon: 'success',
-        confirmButtonColor: '#4F46E5'
+        confirmButtonColor: '#4F46E5',
+        background: "#1f2937",
+        color: "#fff",
       });
       window.location.href = '/'
     } catch (err) {

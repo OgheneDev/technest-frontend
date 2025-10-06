@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 // Custom hook for scroll-based animation
 const useScrollAnimation = (threshold = 0.1) => {
@@ -35,6 +36,7 @@ const useScrollAnimation = (threshold = 0.1) => {
 
 const PopularCategories = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const router = useRouter();
 
   const popularCategories = [
     { id: 1, name: 'Cases', stock: 11, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988491/shop50-category-1_mh7sca.jpg' },
@@ -43,6 +45,10 @@ const PopularCategories = () => {
     { id: 4, name: 'Power Banks', stock: 14, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-6_ruo9b8.jpg' },
     { id: 5, name: 'Headphones', stock: 3, image: 'https://res.cloudinary.com/dgc8cd67w/image/upload/v1730988492/shop50-category-7_yvcx6k.jpg' },
   ];
+
+  const handlePopularCategoryClick = (categoryName: string): void => {
+    router.push(`/shop?category=${categoryName}`)
+  }
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -93,6 +99,7 @@ const PopularCategories = () => {
             variants={itemVariants}
             className="group flex flex-col items-center cursor-pointer p-4 text-center hover:scale-105 transition-all duration-300 w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.33%-1rem)] lg:w-[calc(25%-1rem)] xl:w-[calc(20%-1rem)]"
             whileHover={{ y: -5 }}
+            onClick={() => handlePopularCategoryClick(category.name)}
           >
             {/* Card with glassmorphism effect */}
             <div className="relative w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300">

@@ -262,7 +262,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
             <div className="flex-1 min-w-0 flex flex-col">
               <div className="flex justify-between items-start gap-3 mb-3">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
                     {product.name}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-3 mb-3">

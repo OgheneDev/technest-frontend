@@ -111,6 +111,8 @@ const RegisterForm = () => {
         title: 'Success!',
         text: 'Your account has been created successfully',
         icon: 'success',
+        background: "#1f2937",
+        color: "#fff",
         confirmButtonColor: '#0ea5e9'
       });
       router.push('/login');

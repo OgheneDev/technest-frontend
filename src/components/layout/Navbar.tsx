@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
     return null;
   }
 
-  return (
+  return ( 
     <div className="sticky top-0 z-50">
       <nav className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -190,7 +190,8 @@ const Navbar: React.FC = () => {
               {/* Mobile Menu Header */}
               <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <Link href="/">
+                  <button onClick={() => setIsMenuOpen(false)}>
+                    <Link href="/">
                     <Image 
                       src={logo} 
                       alt="Logo" 
@@ -198,7 +199,8 @@ const Navbar: React.FC = () => {
                       height={40}
                       className="brightness-200 contrast-200" 
                     />
-                  </Link>
+                    </Link>
+                  </button>
                   <button 
                     onClick={() => setIsMenuOpen(false)}
                     className="p-2 hover:bg-gray-700/30 rounded-lg transition-colors"

@@ -8,7 +8,7 @@ interface ViewToggleProps {
 
 export const ViewToggle = ({ layout, onLayoutChange }: ViewToggleProps) => {
   return (
-    <div className="flex gap-2">
+    <div className="hidden md:flex gap-2 ">
       <Button
         variant="outline"
         size="icon"
