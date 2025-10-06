@@ -15,6 +15,7 @@ import { formatPrice } from '@/utils/formatPrice'
 import { useAuthStore } from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
+import { showToast } from '@/store/toastStore'
 
 interface FeaturedProductCardProps {
     product: Product
@@ -99,37 +100,10 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
 
       await addToCart(cartData);
       await updateCartCount();
-      Swal.fire({
-        title: 'Success!',
-        text: existingItem ? 'Cart quantity updated' : 'Item added to cart',
-        icon: 'success',
-        confirmButtonColor: '#06B6D4',
-        timer: 2000,
-        showConfirmButton: false,
-        background: '#1F2937',
-        color: '#F9FAFB'
-      });
+      showToast(existingItem ? 'Cart quantity updated' : 'Item added to cart', 'success', 2500)
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to add item to cart';
-      if (errorMessage.includes('quantity not available')) {
-        Swal.fire({
-          title: 'Not Enough Stock',
-          text: 'The requested quantity is not available',
-          icon: 'error',
-          confirmButtonColor: '#06B6D4',
-          background: '#1F2937',
-          color: '#F9FAFB'
-        });
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: errorMessage,
-          icon: 'error',
-          confirmButtonColor: '#06B6D4',
-          background: '#1F2937',
-          color: '#F9FAFB'
-        });
-      }
+      showToast(errorMessage, 'error', 3500)
     } finally {
       setIsAddingToCart(false);
     }
@@ -162,40 +136,15 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
       if (isInWishlist) {
         await removeFromWishlist(product._id);
         setIsInWishlist(false);
-        Swal.fire({
-          title: 'Removed',
-          text: 'Item removed from wishlist',
-          icon: 'success',
-          confirmButtonColor: '#06B6D4',
-          timer: 2000,
-          showConfirmButton: false,
-          background: '#1F2937',
-          color: '#F9FAFB'
-        });
+        showToast('Removed from wishlist', 'success', 2500)
       } else {
         await addToWishlist(product._id);
         setIsInWishlist(true);
-        Swal.fire({
-          title: 'Added',
-          text: 'Item added to wishlist',
-          icon: 'success',
-          confirmButtonColor: '#06B6D4',
-          timer: 2000,
-          showConfirmButton: false,
-          background: '#1F2937',
-          color: '#F9FAFB'
-        });
+        showToast('Added to wishlist', 'success', 2500)
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to update wishlist';
-      Swal.fire({
-        title: 'Error',
-        text: errorMessage,
-        icon: 'error',
-        confirmButtonColor: '#06B6D4',
-        background: '#1F2937',
-        color: '#F9FAFB'
-      });
+      showToast(errorMessage, 'error', 3500)
       setIsInWishlist(prev => !prev);
     } finally {
       setIsUpdatingWishlist(false);
@@ -298,6 +247,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
           </motion.div>
         </CardContent>
       </Card>
+      {/* global showToast used for notifications */}
     </motion.div>
   )
 }

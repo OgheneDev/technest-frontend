@@ -10,7 +10,7 @@ import { addToCart } from "@/api/cart/requests"
 import { formatPrice } from "@/utils/formatPrice"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/CartContext"
-import Swal from "sweetalert2"
+import { showToast } from '@/store/toastStore'
 import { WishlistSkeleton } from "@/components/wishlist/WishlistSkeleton"
 
 interface WishlistProduct {
@@ -33,8 +33,8 @@ export default function WishlistPage() {
   const [wishlistData, setWishlistData] = useState<WishlistData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [addingToCart, setAddingToCart] = useState<string | null>(null)
-  const { updateCartCount } = useCart()
   const sectionRef = useRef(null)
+  const { updateCartCount } = useCart()
   const [inView, setInView] = useState(false)
 
   useEffect(() => {
@@ -95,21 +95,9 @@ export default function WishlistPage() {
     try {
       await addToCart({ productId: product._id, quantity: 1 })
       await updateCartCount()
-      Swal.fire({
-        title: "Success!",
-        text: "Item added to cart",
-        icon: "success",
-        confirmButtonColor: "#4F46E5",
-        timer: 2000,
-        showConfirmButton: false,
-      })
+      showToast('Item added to cart', 'success', 2500)
     } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: error instanceof Error ? error.message : "Failed to add to cart",
-        icon: "error",
-        confirmButtonColor: "#4F46E5",
-      })
+      showToast(error instanceof Error ? error.message : 'Failed to add to cart', 'error', 3500)
     } finally {
       setAddingToCart(null)
     }
@@ -248,6 +236,8 @@ export default function WishlistPage() {
           </motion.div>
         )}
       </div>
+
+      {/* global showToast used for notifications */}
 
       <style jsx>{`
         .bg-grid-white\\/\\[0\\.02\\] {

@@ -6,7 +6,6 @@ import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { Star, Minus, Plus, ShoppingCart, Heart, Loader2, Package, RefreshCw, Truck } from 'lucide-react'
 import { formatPrice } from '@/utils/formatPrice'
-import { motion } from 'framer-motion'
 import { addToCart } from '@/api/cart/requests'
 import { addToWishlist, removeFromWishlist } from '@/api/wishlist/requests'
 import { useCart } from '@/context/CartContext'
@@ -14,6 +13,7 @@ import { useAuthStore } from '@/store/useAuthStore'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
 import { getWishlist } from '@/api/wishlist/requests'
+import { showToast } from '@/store/toastStore'
 
 interface ProductInfoProps {
   product: Product
@@ -68,18 +68,9 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     try {
       await addToCart({ productId: product._id, quantity })
       await updateCartCount()
-      Swal.fire({
-        title: 'Added to cart!',
-        icon: 'success',
-        timer: 2000,
-        showConfirmButton: false
-      })
+      showToast('Added to cart', 'success', 2500)
     } catch (error) {
-      Swal.fire({
-        title: 'Error',
-        text: error instanceof Error ? error.message : 'Failed to add to cart',
-        icon: 'error'
-      })
+      showToast(error instanceof Error ? error.message : 'Failed to add to cart', 'error', 3500)
     } finally {
       setIsAddingToCart(false)
     }
@@ -94,12 +85,15 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
       if (isInWishlist) {
         await removeFromWishlist(product._id)
         setIsInWishlist(false)
+        showToast('Removed from wishlist', 'success', 2500)
       } else {
         await addToWishlist(product._id)
         setIsInWishlist(true)
+        showToast('Added to wishlist', 'success', 2500)
       }
     } catch (error) {
       console.error('Wishlist error:', error)
+      showToast(error instanceof Error ? error.message : 'Wishlist error', 'error', 3500)
     } finally {
       setIsUpdatingWishlist(false)
     }
