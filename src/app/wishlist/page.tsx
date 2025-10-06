@@ -213,14 +213,16 @@ export default function WishlistPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   className="bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-cyan-500/30 transition-all hover:shadow-lg hover:shadow-cyan-500/10"
                 >
-                  <div className="relative aspect-square">
-                    <Image
-                      src={product.images[0] || "/placeholder.svg"}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                  <Link href={`/products/${product._id}`}>
+                    <div className="relative aspect-square">
+                     <Image
+                       src={product.images[0] || "/placeholder.svg"}
+                       alt={product.name}
+                       fill
+                       className="object-cover"
+                      />
+                    </div>
+                  </Link>
                   <div className="p-4">
                     <h3 className="font-medium text-white mb-2 line-clamp-2">{product.name}</h3>
                     <div className="flex items-center justify-between">
