@@ -73,7 +73,7 @@ const PopularCategories = () => {
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
       variants={containerVariants}
-      className="relative max-w-full mx-auto py-8 md:py-[50px] px-[30px] md:px-[50px] bg-gradient-to-b from-gray-900 to-black"
+      className="relative max-w-full mx-auto py-8 md:py-[50px] px-5 md:px-[50px] bg-gradient-to-b from-gray-900 to-black"
     >
       {/* Subtle background effects */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
@@ -81,7 +81,7 @@ const PopularCategories = () => {
       
       <motion.h2 
         variants={itemVariants}
-        className="relative z-10 text-xl font-bold md:text-3xl md:font-bold mb-4 pl-4 text-white"
+        className="relative z-10 text-xl text-center md:text-start font-bold md:text-3xl md:font-bold mb-4 pl-4 text-white"
       >
         Popular Categories
       </motion.h2>

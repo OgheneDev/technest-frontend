@@ -97,7 +97,7 @@ const StayUpdated = () => {
       <motion.form
         variants={itemVariants}
         onSubmit={handleSubmit}
-        className='flex flex-col md:flex-row items-center justify-center gap-4 max-w-xl mx-auto'
+        className='flex flex-col md:flex-row md:items-center justify-center gap-4 max-w-xl mx-auto'
       >
         <input
           type="email"

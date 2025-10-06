@@ -8,10 +8,12 @@ const HeroSection = () => {
   const [isHovered, setIsHovered] = useState(false)
 
   const stats = [
-    { number: "50K+", label: "Happy Customers" },
-    { number: "99%", label: "Satisfaction Rate" },
-    { number: "24/7", label: "Support" }
-  ]
+  { number: "50K+", label: "Happy Customers" },
+  { number: "99%", label: "Satisfaction Rate" },
+  { number: "24/7", label: "Support" },
+  { number: "10+", label: "Years of Experience" }
+];
+
 
   return (
     <section className="relative min-h-screen bg-black overflow-hidden">
@@ -22,7 +24,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
 
       {/* Main content */}
-      <div className="relative z-10 container mx-auto px-6 py-20 min-h-screen flex items-center">
+      <div className="relative z-10 container mx-auto px-6 py-10 md:py-20 min-h-screen flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
           {/* Left content */}
           <motion.div 
@@ -65,7 +67,7 @@ const HeroSection = () => {
                 whileTap={{ scale: 0.95 }}
                 onHoverStart={() => setIsHovered(true)}
                 onHoverEnd={() => setIsHovered(false)}
-                className="group px-8 cursor-pointer py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl text-white font-semibold text-sm"
+                className="group px-8 w-full cursor-pointer py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl text-white font-semibold text-sm"
               >
                 <div className="flex items-center justify-center gap-2">
                   <span>Explore Collection</span>
@@ -92,7 +94,7 @@ const HeroSection = () => {
             </div>
 
             {/* Stats section */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-8 max-w-md">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 pt-8 max-w-md">
               {stats.map((stat, i) => (
                 <div key={i} className="text-center px-2">
                   <div className="text-lg sm:text-2xl font-bold text-white">

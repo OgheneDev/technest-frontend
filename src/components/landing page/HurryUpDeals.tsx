@@ -51,7 +51,7 @@ const HurryUpDeals = () => {
 
       <motion.h3
         variants={itemVariants}
-        className="relative z-10 font-bold text-xl md:text-3xl mb-[20px] text-white"
+        className="relative z-10 font-bold text-xl text-center md:text-start md:text-3xl mb-[30px] text-white"
       >
         Hurry Up Deals
       </motion.h3>

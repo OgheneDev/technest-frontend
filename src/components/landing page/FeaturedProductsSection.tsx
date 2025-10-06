@@ -132,9 +132,9 @@ const FeaturedProductsSection = () => {
         <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
 
-        <div className='relative z-10 flex items-center justify-between mb-8'>
+        <div className='relative z-10 flex items-center justify-center md:justify-between mb-8'>
             <motion.h2 
-                className='text-xl md:text-3xl font-bold mb-4 pl-4 text-white'
+                className='text-xl md:text-3xl  font-bold mb-4 pl-4 text-white'
                 variants={headerVariants}
             >
                 Featured Products
