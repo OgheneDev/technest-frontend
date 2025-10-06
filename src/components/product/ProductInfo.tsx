@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { Product } from '@/types/products'
 import { Button } from '../ui/button'
-import { Input } from '../ui/input'
 import { Badge } from '../ui/badge'
 import { Star, Minus, Plus, ShoppingCart, Heart, Loader2, Package, RefreshCw, Truck } from 'lucide-react'
 import { formatPrice } from '@/utils/formatPrice'
@@ -164,23 +163,26 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
               size="icon"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
               disabled={quantity <= 1}
-              className='cursor-pointer bg-white/5 text-white'
+              className="cursor-pointer bg-white/5 text-white hover:bg-white/10 border-white/10"
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-20 text-center border rounded-md text-white bg-white/5"
-            />
+            <div className="relative w-20">
+              <input
+                type="number"
+                min="1"
+                max={product.stock}
+                value={quantity}
+                onChange={(e) => setQuantity(Math.max(1, Math.min(parseInt(e.target.value) || 1, product.stock)))}
+                className="w-full text-center bg-white/5 text-white border border-white/10 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
+            </div>
             <Button
               variant="outline"
               size="icon"
               onClick={() => setQuantity(quantity + 1)}
               disabled={quantity >= product.stock}
-              className='cursor-pointer bg-white/5 text-white'
+              className="cursor-pointer bg-white/5 text-white hover:bg-white/10 border-white/10"
             >
               <Plus className="h-4 w-4" />
             </Button>
@@ -189,10 +191,10 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex gap-4">
         <Button
           size="lg"
-          className="flex-1 cursor-pointer text-sm bg-cyan-500 text-white"
+          className="flex-1 cursor-pointer py-3 text-sm bg-cyan-500 text-white hover:bg-cyan-600"
           onClick={handleAddToCart}
           disabled={isAddingToCart || product.stock < 1}
         >
@@ -208,7 +210,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           variant="outline"
           onClick={handleWishlistToggle}
           disabled={isUpdatingWishlist}
-          className="bg-white/5 text-white"
+          className="bg-white/5 text-white hover:bg-white/10 border-white/10"
         >
           <Heart className={`h-5 w-5 ${isInWishlist ? 'fill-rose-500 text-rose-500' : ''}`} />
         </Button>
