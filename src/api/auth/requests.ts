@@ -105,7 +105,7 @@ export const logout = () => {
   document.cookie = "frontendToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   
   // Redirect to login page
-  window.location.href = '/login';
+  window.location.href = '/';
 }
 
 // New functions for user management

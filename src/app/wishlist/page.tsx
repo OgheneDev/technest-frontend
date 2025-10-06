@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Heart, Loader2, ShoppingCart, ArrowLeft } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { getWishlist } from "@/api/wishlist/requests"
+import { getWishlist, removeFromWishlist } from "@/api/wishlist/requests"
 import { addToCart } from "@/api/cart/requests"
 import { formatPrice } from "@/utils/formatPrice"
 import { Button } from "@/components/ui/button"
@@ -33,6 +33,7 @@ export default function WishlistPage() {
   const [wishlistData, setWishlistData] = useState<WishlistData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [addingToCart, setAddingToCart] = useState<string | null>(null)
+  const [removingId, setRemovingId] = useState<string | null>(null)
   const sectionRef = useRef(null)
   const { updateCartCount } = useCart()
   const [inView, setInView] = useState(false)
@@ -66,26 +67,29 @@ export default function WishlistPage() {
     }
   }, [])
 
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const data = await getWishlist()
-        if (data && data.products) {
-          // Ensure we're getting populated product data
-          const validProducts = data.products.filter((item: WishlistItem) => item.product)
-          setWishlistData({ products: validProducts })
-        } else {
-          setWishlistData({ products: [] })
-        }
-      } catch (error) {
-        console.error("Error fetching wishlist:", error)
+  // Reusable fetch function (moved out so other handlers can call it)
+  const fetchWishlistData = async () => {
+    setIsLoading(true)
+    try {
+      const data = await getWishlist()
+      if (data && data.products) {
+        // Ensure we're getting populated product data
+        const validProducts = data.products.filter((item: WishlistItem) => item.product)
+        setWishlistData({ products: validProducts })
+      } else {
         setWishlistData({ products: [] })
-      } finally {
-        setIsLoading(false)
       }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error)
+      setWishlistData({ products: [] })
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    fetchWishlist()
+  useEffect(() => {
+    // Initial fetch
+    fetchWishlistData()
   }, [])
 
   const handleAddToCart = async (product: WishlistProduct) => {
@@ -100,6 +104,21 @@ export default function WishlistPage() {
       showToast(error instanceof Error ? error.message : 'Failed to add to cart', 'error', 3500)
     } finally {
       setAddingToCart(null)
+    }
+  }
+
+  const handleRemoveFromWishlist = async (productId: string) => {
+    if (removingId) return
+    setRemovingId(productId)
+    try {
+      await removeFromWishlist(productId)
+      // Re-fetch the wishlist to ensure authoritative state
+      await fetchWishlistData()
+      showToast('Removed from wishlist', 'success', 2200)
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Failed to remove item', 'error', 3500)
+    } finally {
+      setRemovingId(null)
     }
   }
 
@@ -180,7 +199,7 @@ export default function WishlistPage() {
             <p className="text-white/70 mb-6">Start adding items you love!</p>
             <Button
               asChild
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-none"
+              className="bg-gradient-to-r text-sm from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-none"
             >
               <Link href="/shop">Explore Products</Link>
             </Button>
@@ -215,19 +234,35 @@ export default function WishlistPage() {
                     <h3 className="font-medium text-white mb-2 line-clamp-2">{product.name}</h3>
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-cyan-300">₦{formatPrice(product.price)}</span>
-                      <Button
-                        size="sm"
-                        onClick={() => handleAddToCart(product)}
-                        disabled={addingToCart === product._id}
-                        className="bg-white/20 hover:bg-white/30 text-white border-none"
-                      >
-                        {addingToCart === product._id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <ShoppingCart className="h-4 w-4" />
-                        )}
-                        <span className="ml-2">Add to Cart</span>
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleAddToCart(product)}
+                          disabled={addingToCart === product._id}
+                          className="bg-white/20 hover:bg-white/30 text-white border-none"
+                        >
+                          {addingToCart === product._id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <ShoppingCart className="h-4 w-4" />
+                          )}
+                          <span className="ml-2">Add</span>
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleRemoveFromWishlist(product._id)}
+                          disabled={removingId === product._id}
+                          className="text-white bg-white/5 border-white/10 cursor-pointer hover:bg-white/10"
+                        >
+                          {removingId === product._id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <span className="text-sm">Remove</span>
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </motion.div>

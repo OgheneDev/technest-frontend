@@ -12,7 +12,7 @@ import { Loader2 } from 'lucide-react'
 // Define UserData type or import it if it exists elsewhere
 type UserData = {
   _id: string
-  firstName: string
+  firstName: string 
   lastName: string
   phoneNumber: string
   email: string

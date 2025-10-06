@@ -3,14 +3,13 @@
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, X } from "lucide-react"
+import { Minus, Plus, Trash2, ArrowLeft, ShoppingCart, X } from "lucide-react"
 import { getCart, deleteCartItem, updateCartQuantity, clearCart } from "@/api/cart/requests"
 import { formatPrice } from "@/utils/formatPrice"
 import Swal from "sweetalert2"
 import { useCart } from "@/context/CartContext"
 import { CartSkeleton } from "@/components/cart/CartSkeleton"
 import { motion } from "framer-motion"
-
 import { Button } from "@/components/ui/button"
 import { CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -293,7 +292,7 @@ export default function CartPage() {
               className="text-center py-12 sm:py-16"
             >
               <div className="max-w-md mx-auto bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 p-8">
-                <ShoppingBag className="mx-auto h-16 w-16 text-cyan-400/70 mb-6" />
+                <ShoppingCart className="mx-auto h-16 w-16 text-cyan-400/70 mb-6" />
                 <h2 className="text-xl sm:text-2xl font-semibold mb-3 text-white">Your cart is empty</h2>
                 <p className="text-white/70 mb-8 text-sm sm:text-base">
                   Discover amazing products and add them to your cart
@@ -301,7 +300,7 @@ export default function CartPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-none"
+                  className="bg-gradient-to-r text-sm from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-none"
                 >
                   <Link href="/shop">Start Shopping</Link>
                 </Button>
