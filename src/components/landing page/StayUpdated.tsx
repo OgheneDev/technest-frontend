@@ -97,7 +97,7 @@ const StayUpdated = () => {
       <motion.form
         variants={itemVariants}
         onSubmit={handleSubmit}
-        className='flex flex-col md:flex-row justify-center gap-4 max-w-xl mx-auto'
+        className='flex flex-col md:flex-row items-center justify-center gap-4 max-w-xl mx-auto'
       >
         <input
           type="email"
@@ -112,8 +112,7 @@ const StayUpdated = () => {
         />
         <Button
           disabled={isLoading}
-          className='w-full md:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700
-                    transition-colors duration-200'
+          className='w-full md:w-auto px-8 py-3 bg-gray-900'
         >
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

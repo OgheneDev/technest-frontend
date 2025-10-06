@@ -74,6 +74,12 @@ const HurryUpDeals = () => {
             >
               Airpods <br /> Experience
             </motion.h3>
+            <motion.p 
+              variants={itemVariants}
+              className='hidden md:block'
+            >
+              Get a new one today!
+            </motion.p>
             <Link href='/shop'>
               <motion.button 
                 whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(168, 85, 247, 0.4)" }}

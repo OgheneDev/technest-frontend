@@ -210,20 +210,18 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
       transition={{ duration: 0.3 }}
     >
       <Card className="group relative overflow-hidden md:w-[300px] bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/[0.15] hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-300">
-        <motion.div 
+        <Link href={`/products/${product._id}`}>
+                  <motion.div 
           className="relative aspect-square cursor-pointer"
           whileHover={{ scale: 1.02 }}
           transition={{ type: "tween", duration: 0.2 }}
         >
-          <Link href={`products/${product._id}`}>
-            <Image
+          <Image
             src={product.images[0]}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-500"
           />
-          </Link>
-
           <motion.div
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 1 }}
@@ -244,7 +242,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
             </p>
           </motion.div>
         </motion.div>
-
+        </Link>
         <CardContent className="mt-4 bg-transparent">
           <motion.div layout className="space-y-2">
             <motion.h3 

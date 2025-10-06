@@ -19,7 +19,7 @@ export function Button({
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
 
   const variants = {
-    default: "bg-cyan-400 text-white hover:bg-gray-900 cursor-pointer",
+    default: "bg-cyan-400 text-white cursor-pointer",
     outline: "border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white",
     ghost: "hover:bg-cyan-400 text-gray-300",
   }
