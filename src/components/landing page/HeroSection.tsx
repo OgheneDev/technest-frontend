@@ -10,7 +10,7 @@ const HeroSection = () => {
   const stats = [
   { number: "50K+", label: "Happy Customers" },
   { number: "99%", label: "Satisfaction Rate" },
-  { number: "24/7", label: "Support" },
+  { number: "24/7", label: "Customer Support" },
   { number: "10+", label: "Years of Experience" }
 ];
 
@@ -22,6 +22,10 @@ const HeroSection = () => {
       
       {/* Subtle grid overlay */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
+
+      {/* Pulsating background orbs (subtle, behind content) */}
+      <div className="absolute top-10 left-8 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse opacity-60 pointer-events-none" />
+      <div className="absolute bottom-12 right-8 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse opacity-60 pointer-events-none" />
 
       {/* Main content */}
       <div className="relative z-10 container mx-auto px-6 py-10 md:py-20 min-h-screen flex items-center">
@@ -94,7 +98,7 @@ const HeroSection = () => {
             </div>
 
             {/* Stats section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 pt-8 max-w-md">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 pt-8 max-w-md">
               {stats.map((stat, i) => (
                 <div key={i} className="text-center px-2">
                   <div className="text-lg sm:text-2xl font-bold text-white">
