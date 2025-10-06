@@ -112,7 +112,7 @@ const StayUpdated = () => {
         />
         <Button
           disabled={isLoading}
-          className='w-full md:w-auto px-8 py-3 bg-gray-900'
+          className='w-full md:w-auto px-8 py-3 text-sm bg-gray-900'
         >
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

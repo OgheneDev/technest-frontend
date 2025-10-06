@@ -14,25 +14,25 @@ export default function AccountNav({ activeTab, onTabChange }: AccountNavProps) 
 
   return (
     <nav className="flex border-b border-white/10 bg-transparent bg-gradient-to-b from-white/3 to-transparent">
-      {tabs.map((tab) => {
-        const Icon = tab.icon
-        return (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`flex-1 px-4 py-4 text-sm cursor-pointer font-medium text-center transition-colors relative
-              ${activeTab === tab.id
-                ? 'text-cyan-300 border-b-2 border-cyan-400 bg-white/5'
-                : 'text-white/70 hover:text-white/90 hover:bg-white/3'}
-            `}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Icon className="h-4 w-4" />
-              {tab.label}
-            </div>
-          </button>
-        )
-      })}
-    </nav>
+  {tabs.map((tab) => {
+    const Icon = tab.icon
+    return (
+      <button
+        key={tab.id}
+        onClick={() => onTabChange(tab.id)}
+        className={`flex-1 px-2 sm:px-4 py-3 text-xs sm:text-sm cursor-pointer font-medium text-center transition-colors relative
+          ${activeTab === tab.id
+            ? 'text-cyan-300 border-b-2 border-cyan-400 bg-white/5'
+            : 'text-white/70 hover:text-white/90 hover:bg-white/3'}`}
+      >
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+          <Icon className="h-4 w-4" />
+          <span className="hidden sm:inline">{tab.label}</span>
+        </div>
+      </button>
+    )
+  })}
+</nav>
+
   )
 }
