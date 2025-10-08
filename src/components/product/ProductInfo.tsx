@@ -225,6 +225,11 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           <span>Same-day dispatch for orders before 2pm</span>
         </div>
       </div>
+
+      {/* Description */}
+      <div>
+        <p className='text-white/70'>{product.description}</p>
+      </div>
     </div>
   )
 }
