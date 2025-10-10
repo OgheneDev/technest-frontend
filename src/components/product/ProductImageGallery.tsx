@@ -52,7 +52,7 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
             <Button
               size="icon"
               variant="ghost"
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm cursor-pointer"
               onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
             >
               <ChevronLeft className="h-4 w-4 text-white/80" />
@@ -60,7 +60,7 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
             <Button
               size="icon"
               variant="ghost"
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm cursor-pointer"
               onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
             >
               <ChevronRight className="h-4 w-4 text-white/80" />

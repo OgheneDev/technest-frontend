@@ -228,7 +228,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
 
       {/* Description */}
       <div>
-        <p className='text-white/70'>{product.description}</p>
+        <p className='text-white/70 text-sm'>{product.description}</p>
       </div>
     </div>
   )

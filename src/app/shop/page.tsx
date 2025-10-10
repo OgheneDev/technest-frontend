@@ -1,101 +1,114 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { getProducts } from '@/api/products/requests'
-import { FiltersPanel } from '@/components/shop/FiltersPanel'
-import { ProductGrid } from '@/components/shop/ProductGrid'
-import { SearchBar } from '@/components/shop/SearchBar'
-import { ViewToggle } from '@/components/shop/ViewToggle'
-import { Pagination } from '@/components/shop/Pagination'
-import { Product } from '@/types/products'
-import { ProductSkeleton } from '@/components/shop/ProductSkeleton'
-import { FiltersSkeleton } from '@/components/shop/FiltersSkeleton'
+import { useState, useEffect } from 'react';
+import { getProducts } from '@/api/products/requests';
+import { FiltersPanel } from '@/components/shop/FiltersPanel';
+import { ProductGrid } from '@/components/shop/ProductGrid';
+import { SearchBar } from '@/components/shop/SearchBar';
+import { ViewToggle } from '@/components/shop/ViewToggle';
+import { Pagination } from '@/components/shop/Pagination';
+import { Product } from '@/types/products';
+import { ProductSkeleton } from '@/components/shop/ProductSkeleton';
+import { FiltersSkeleton } from '@/components/shop/FiltersSkeleton';
 
 export default function ShopPage() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [layout, setLayout] = useState<'grid' | 'list'>('grid')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isLoading, setIsLoading] = useState(true) 
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [layout, setLayout] = useState<'grid' | 'list'>('grid');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getProducts()
-      setProducts(data)
-      setFilteredProducts(data)
-      setIsLoading(false)
-    }
-    fetchProducts()
-  }, [])
+      setIsLoading(true);
+      try {
+        const data = await getProducts();
+        setProducts(data);
+        setFilteredProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
-  // Add search params handling
+  // Handle category filter from URL
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const categoryParam = searchParams.get('category');
-    
-    if (categoryParam) {
+
+    if (categoryParam && products.length > 0) {
       handleFilterChange({
-        categories: [categoryParam],
+        categories: [categoryParam], // Ensure category is passed as an array
         priceRange: [0, 1000000],
         rating: 0,
-        inStock: false
+        inStock: false,
       });
+    } else {
+      // Reset to all products if no category param or products not loaded
+      setFilteredProducts(products);
     }
-  }, []);
+  }, [products]); // Depend on products to ensure they are loaded
 
-  const handleFilterChange = (filters: any) => {
-    let filtered = [...products]
+  const handleFilterChange = (filters: {
+    categories: string[];
+    priceRange: [number, number];
+    rating: number;
+    inStock: boolean;
+  }) => {
+    let filtered = [...products];
 
     // Apply category filter
     if (filters.categories.length > 0) {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter((product) =>
         filters.categories.includes(product.category)
-      )
+      );
     }
 
     // Apply price range filter
-    filtered = filtered.filter(product => 
-      product.price >= filters.priceRange[0] && 
-      product.price <= filters.priceRange[1]
-    )
+    filtered = filtered.filter(
+      (product) =>
+        product.price >= filters.priceRange[0] &&
+        product.price <= filters.priceRange[1]
+    );
 
     // Apply rating filter
     if (filters.rating > 0) {
-      filtered = filtered.filter(product => 
-        product.rating >= filters.rating
-      )
+      filtered = filtered.filter((product) => product.rating >= filters.rating);
     }
 
     // Apply availability filter
     if (filters.inStock) {
-      filtered = filtered.filter(product => product.stock > 0)
+      filtered = filtered.filter((product) => product.stock > 0);
     }
 
-    setFilteredProducts(filtered)
-    setCurrentPage(1)
-  }
+    setFilteredProducts(filtered);
+    setCurrentPage(1);
+  };
 
   const handleSearch = (query: string) => {
-    const searchResults = products.filter(product =>
-      product.name.toLowerCase().includes(query.toLowerCase()) ||
-      product.category.toLowerCase().includes(query.toLowerCase())
-    )
-    setFilteredProducts(searchResults)
-    setCurrentPage(1)
-  }
+    const searchResults = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.category.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProducts(searchResults);
+    setCurrentPage(1);
+  };
 
   // Extract unique categories from products
   const uniqueCategories = Array.from(
-    new Set(products.map(product => product.category))
-  ).sort()
+    new Set(products.map((product) => product.category))
+  ).sort();
 
   // Calculate pagination
-  const itemsPerPage = 12
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const paginatedProducts = filteredProducts.slice(startIndex, endIndex)
+  const itemsPerPage = 12;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   if (isLoading) {
     return (
@@ -119,16 +132,14 @@ export default function ShopPage() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black overflow-hidden">
-      {/* Background effects */}
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
       
-      {/* Floating orbs */}
       <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
 
@@ -172,5 +183,5 @@ export default function ShopPage() {
         }
       `}</style>
     </div>
-  )
+  );
 }
