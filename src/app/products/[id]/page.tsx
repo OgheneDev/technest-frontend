@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { use } from 'react'
-import { getProductById } from '@/api/products/requests'
+import { getProductById, getProductReviews, postProductReview } from '@/api/products/requests'
 import { ProductImageGallery } from '@/components/product/ProductImageGallery'
 import { ProductInfo } from '@/components/product/ProductInfo'
 import { RelatedProducts } from '@/components/product/RelatedProducts'
 import { ProductDetailsSkeleton } from '@/components/product/ProductDetailsSkeleton'
+import ProductReviews from '@/components/product/ProductReviews'
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
@@ -38,6 +39,9 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         <div className="grid lg:grid-cols-2 gap-8">
           <ProductImageGallery images={product.images} />
           <ProductInfo product={product} />
+        </div>
+        <div className="mt-12">
+          <ProductReviews productId={product._id} />
         </div>
         <RelatedProducts category={product.category} currentProductId={product._id} />
       </div>
