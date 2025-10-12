@@ -1,0 +1,64 @@
+import axiosInstance from "../axios"
+
+export const initializeCheckout = async (shippingAddress: string, paymentMethod: string) => {
+  try {
+    const response = await axiosInstance.post("/api/checkout/initialize", {
+      shippingAddress,
+      paymentMethod,
+    })
+
+    if (response.status !== 200 && response.status !== 201) {
+      throw new Error(`Unexpected status code: ${response.status}`)
+    }
+
+    return response.data.data || response.data // Adjust based on actual response structure
+  } catch (error: any) {
+    console.error("Initialize checkout error:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    })
+    const errorMessage = error.response?.data?.error || "Failed to initialize checkout"
+    throw new Error(errorMessage)
+  }
+}
+
+export const verifyPayment = async (reference: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/checkout/verify/${reference}`)
+
+    if (response.status !== 200 && response.status !== 201) {
+      throw new Error(`Unexpected status code: ${response.status}`)
+    }
+
+    return response.data.data || response.data
+  } catch (error: any) {
+    console.error("Verify payment error:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    })
+    const errorMessage = error.response?.data?.error || "Failed to verify payment"
+    throw new Error(errorMessage)
+  }
+}
+
+export const getCheckoutHistory = async () => {
+  try {
+    const response = await axiosInstance.get("/api/checkout/history")
+
+    if (response.status !== 200 && response.status !== 201) {
+      throw new Error(`Unexpected status code: ${response.status}`)
+    }
+
+    return response.data.data || response.data
+  } catch (error: any) {
+    console.error("Get checkout history error:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    })
+    const errorMessage = error.response?.data?.error || "Failed to get checkout history"
+    throw new Error(errorMessage)
+  }
+}

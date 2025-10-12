@@ -3,43 +3,68 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { getCart } from '@/api/cart/requests'
 
-interface CartContextType {
-  cartCount: number;
-  updateCartCount: () => Promise<void>;
+interface CartProduct {
+  _id: string
+  name: string
+  price: number
+  images: string[]
 }
 
-const CartContext = createContext<CartContextType>({ 
+interface CartItem {
+  product: CartProduct | null
+  quantity: number
+}
+
+interface CartData {
+  products: CartItem[]
+  totalPrice: number
+}
+
+interface CartContextType {
+  cart: CartData | null
+  cartCount: number
+  updateCartCount: () => Promise<void>
+}
+
+const CartContext = createContext<CartContextType>({
+  cart: null,
   cartCount: 0,
   updateCartCount: async () => {},
-});
+})
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState<CartData | null>(null)
+  const [cartCount, setCartCount] = useState(0)
 
   const updateCartCount = async () => {
     try {
-      const cartData = await getCart();
+      const cartData = await getCart()
+      setCart(cartData)
       if (cartData && cartData.products) {
         const totalItems = cartData.products.reduce(
-          (total: number, item: { quantity: number }) => total + item.quantity, 
+          (total: number, item: { quantity: number }) => total + item.quantity,
           0
-        );
-        setCartCount(totalItems);
+        )
+        setCartCount(totalItems)
+      } else {
+        setCartCount(0)
       }
     } catch (error) {
-      console.error('Error updating cart count:', error);
+      console.error('Error updating cart count:', error)
+      setCart(null)
+      setCartCount(0)
     }
-  };
+  }
 
   useEffect(() => {
-    updateCartCount();
-  }, []);
+    updateCartCount()
+  }, [])
 
   return (
-    <CartContext.Provider value={{ cartCount, updateCartCount }}>
+    <CartContext.Provider value={{ cart, cartCount, updateCartCount }}>
       {children}
     </CartContext.Provider>
-  );
-};
+  )
+}
 
-export const useCart = () => useContext(CartContext);
+export const useCart = () => useContext(CartContext)
