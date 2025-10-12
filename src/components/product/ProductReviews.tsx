@@ -188,7 +188,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
             <div className="p-2 bg-cyan-500/20 rounded-xl border border-cyan-500/30">
               <Sparkles className="w-5 h-5 text-cyan-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white">
+            <h3 className="text-xl md:text-2xl font-bold text-white">
               Share Your Experience
             </h3>
           </div>
@@ -216,7 +216,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                 rows={4}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 resize-none"
+                className="w-full px-5 py-4 bg-white/5 border text-sm border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 resize-none"
                 placeholder="Tell us what you loved (or didn't)..."
               />
               <div className="mt-2 text-right text-sm text-white/50">
@@ -262,7 +262,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
       <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
         <div className="flex items-center gap-3 mb-8">
           <TrendingUp className="w-6 h-6 text-cyan-400" />
-          <h3 className="text-2xl font-bold text-white">Community Reviews</h3>
+          <h3 className="text-xl md:text-2xl font-bold text-white">Community Reviews</h3>
         </div>
         
         {isLoading ? (
@@ -316,7 +316,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4 mb-3">
+                    <div className="flex flex-col md:flex-row items-start justify-between gap-4 mb-3">
                       <div>
                         <h4 className="font-bold text-white text-lg truncate">
                           {review.user?.firstName && review.user?.lastName
