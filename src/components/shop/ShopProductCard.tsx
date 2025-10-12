@@ -171,7 +171,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
                 onClick={handleWishlistClick}
               >
                 <Heart className={`h-4 w-4 transition-colors ${
-                  isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-blue-800'
+                  isInWishlist ? 'fill-rose-500 text-rose-500' : 'text-cyan-500'
                 }`} />
               </Button>
               <Button
@@ -180,7 +180,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
                 className="bg-white/20 backdrop-blur-sm border border-white/10 hover:bg-white/30 text-white cursor-pointer shadow-lg"
                 onClick={handleQuickView}
               >
-                <Eye className="h-4 w-4 text-blue-800" />
+                <Eye className="h-4 w-4 text-cyan-500" />
               </Button>
             </div>
           </div>

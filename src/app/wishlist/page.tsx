@@ -233,13 +233,13 @@ export default function WishlistPage() {
                   <div className="p-4">
                     <h3 className="font-medium text-white mb-2 line-clamp-2">{product.name}</h3>
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-cyan-300">₦{formatPrice(product.price)}</span>
+                      <span className="text-md font-bold text-cyan-300">₦{formatPrice(product.price)}</span>
                       <div className="flex items-center gap-2">
                         <Button
                           size="sm"
                           onClick={() => handleAddToCart(product)}
                           disabled={addingToCart === product._id}
-                          className="bg-white/20 hover:bg-white/30 text-white border-none"
+                          className="bg-white/20 text-sm hover:bg-white/30 text-white border-none"
                         >
                           {addingToCart === product._id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -254,7 +254,7 @@ export default function WishlistPage() {
                           variant="outline"
                           onClick={() => handleRemoveFromWishlist(product._id)}
                           disabled={removingId === product._id}
-                          className="text-white bg-white/5 border-white/10 cursor-pointer hover:bg-white/10"
+                          className="text-white bg-white/5 text-sm border-white/10 cursor-pointer hover:bg-white/10"
                         >
                           {removingId === product._id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />

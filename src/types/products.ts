@@ -6,7 +6,7 @@ export interface Product {
     price: number,
     rating: number,
     stock: number,
-    category: 'Cases' | 'Screen Protectors' | 'MagSafe' | 'Cables' | 'Chargers' | 'Powerbanks' | 'Headphones' | 'Speakers' | 'Smartwatches' | 'Tablets' | 'Laptops' | 'Accessories',
+    category: 'cases' | 'screen protectors' | 'magSafe' | 'cables' | 'chargers' | 'powerbanks' | 'headphones' | 'speakers' | 'smartwatches' | 'tablets' | 'laptops' | 'accessories',
     createdAt: string,
     updatedAt: string
 }

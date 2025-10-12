@@ -9,7 +9,7 @@ const FeaturedProductCardSkeleton = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="group relative overflow-hidden md:w-[300px] bg-white/10 backdrop-blur-sm border border-white/10">
+      <Card className="group relative overflow-hidden md:w-[270px] bg-white/10 backdrop-blur-sm border border-white/10">
         <div className="relative aspect-square overflow-hidden rounded-lg">
           <Skeleton className="absolute inset-0 bg-white/20/animate-pulse" />
           {/* Badge skeleton */}

@@ -158,7 +158,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({product}) => {
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="group relative overflow-hidden md:w-[300px] bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/[0.15] hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-300">
+      <Card className="group relative overflow-hidden md:w-[270px] bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/[0.15] hover:border-cyan-400/30 hover:shadow-2xl hover:shadow-cyan-400/10 transition-all duration-300">
         <Link href={`/products/${product._id}`}>
                   <motion.div 
           className="relative aspect-square cursor-pointer"

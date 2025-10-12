@@ -1,53 +1,64 @@
-import { useState, useEffect } from 'react'
-import { Slider } from '../ui/slider'
-import { Checkbox } from '../ui/checkbox'
-import { motion } from 'framer-motion'
-import { Filter, Star } from 'lucide-react'
+"use client";
+
+import { useState, useEffect } from 'react';
+import { Slider } from '../ui/slider';
+import { Checkbox } from '../ui/checkbox';
+import { Filter, Star } from 'lucide-react';
 
 interface FiltersPanelProps {
-  onFilterChange: (filters: any) => void;
+  onFilterChange: (filters: {
+    categories: string[];
+    priceRange: [number, number];
+    rating: number;
+    inStock: boolean;
+  }) => void;
   categories: string[];
+  initialCategories?: string[];
 }
 
-export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) => {
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [selectedRatings, setSelectedRatings] = useState<number[]>([])
-  const [showInStock, setShowInStock] = useState(false)
+export const FiltersPanel = ({ onFilterChange, categories, initialCategories = [] }: FiltersPanelProps) => {
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialCategories);
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+  const [showInStock, setShowInStock] = useState(false);
 
   const handleFilterChange = () => {
-    onFilterChange({ 
+    onFilterChange({
       priceRange,
       categories: selectedCategories,
       rating: selectedRatings.length ? Math.max(...selectedRatings) : 0,
-      inStock: showInStock
+      inStock: showInStock,
     });
   };
 
-  const handleCategoryChange = (category: string) => {
-    const updatedCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter(c => c !== category)
-      : [...selectedCategories, category];
+  const handleCategoryChange = (category: string, checked: boolean) => {
+    const updatedCategories = checked
+      ? [...new Set([...selectedCategories, category])]
+      : selectedCategories.filter((c) => c !== category);
     setSelectedCategories(updatedCategories);
-    setTimeout(handleFilterChange, 0);
   };
 
-  const handleRatingChange = (rating: number) => {
-    const updatedRatings = selectedRatings.includes(rating)
-      ? selectedRatings.filter(r => r !== rating)
-      : [...selectedRatings, rating];
+  const handleRatingChange = (rating: number, checked: boolean) => {
+    const updatedRatings = checked
+      ? [...new Set([...selectedRatings, rating])]
+      : selectedRatings.filter((r) => r !== rating);
     setSelectedRatings(updatedRatings);
-    setTimeout(handleFilterChange, 0);
   };
 
   useEffect(() => {
     handleFilterChange();
-  }, [priceRange, showInStock]);
+  }, [selectedCategories, selectedRatings, priceRange, showInStock]);
+
+  useEffect(() => {
+    if (initialCategories.length > 0) {
+      setSelectedCategories(initialCategories);
+    }
+  }, [initialCategories]);
 
   return (
     <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6">
       <h2 className="text-xl font-semibold mb-6 text-white">Filters</h2>
-      
+
       {/* Categories */}
       <div className="space-y-4 mb-8">
         <h3 className="text-lg font-medium text-white/90">Categories</h3>
@@ -56,7 +67,7 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
             <label key={category} className="flex items-center space-x-2 text-white/70 hover:text-white">
               <Checkbox
                 checked={selectedCategories.includes(category)}
-                onChange={() => handleCategoryChange(category)}
+                onChange={(checked: boolean) => handleCategoryChange(category, checked)}
               />
               <span className="text-sm">{category}</span>
             </label>
@@ -71,7 +82,7 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
           min={0}
           max={1000000}
           value={priceRange}
-          onChange={(value) => setPriceRange(value)}
+          onChange={(value: [number, number]) => setPriceRange(value)}
           className="mt-2"
         />
         <div className="flex justify-between text-sm text-white/70">
@@ -88,7 +99,7 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
             <div key={rating} className="flex items-center">
               <Checkbox
                 checked={selectedRatings.includes(rating)}
-                onChange={() => handleRatingChange(rating)}
+                onChange={(checked: boolean) => handleRatingChange(rating, checked)}
               />
               <div className="ml-2 flex items-center">
                 {[...Array(rating)].map((_, i) => (
@@ -116,13 +127,11 @@ export const FiltersPanel = ({ onFilterChange, categories }: FiltersPanelProps) 
         <label className="flex items-center space-x-2 text-white/70 hover:text-white">
           <Checkbox
             checked={showInStock}
-            onChange={(checked) => {
-              setShowInStock(checked);
-            }}
+            onChange={(checked: boolean) => setShowInStock(checked)}
           />
           <span className="text-sm">In Stock Only</span>
         </label>
       </div>
     </div>
-  )
-}
+  );
+};

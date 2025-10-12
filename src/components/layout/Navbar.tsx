@@ -14,6 +14,7 @@ import logo from '@/assets/images/logo.png';
 interface Category {
   id: number;
   name: string;
+  value?: string;
 }
 
 const Navbar: React.FC = () => {
@@ -24,17 +25,17 @@ const Navbar: React.FC = () => {
   const { isAuthenticated } = useAuthStore();
   
   const categories: Category[] = [
-     { id: 1, name: 'Cases' },
-     { id: 2, name: 'Screen Protectors' },
-     { id: 3, name: 'MagSafe' }, 
-     { id: 4, name: 'Cables' },
-     { id: 5, name: 'Chargers' },
-     { id: 6, name: 'Power Banks' },
-     { id: 7, name: 'Headphones' },
-     { id: 8, name: 'Smartwatches' },
-     { id: 9, name: 'Tablets' },
-     { id: 10, name: 'Laptops' },
-     { id: 11, name: 'Accessories' }
+     { id: 1, name: 'Cases', value: 'cases' },
+     { id: 2, name: 'Screen Protectors', value: 'screen-protectors' },
+     { id: 3, name: 'MagSafe', value: 'magsafe' }, 
+     { id: 4, name: 'Cables', value: 'cables' },
+     { id: 5, name: 'Chargers', value: 'chargers' },
+     { id: 6, name: 'Power Banks', value: 'powerbanks' },
+     { id: 7, name: 'Headphones', value: 'headphones' },
+     { id: 8, name: 'Smartwatches', value: 'smartwatches' },
+     { id: 9, name: 'Tablets', value: 'tablets' },
+     { id: 10, name: 'Laptops', value: 'laptops' },
+     { id: 11, name: 'Accessories', value: 'accessories' },
   ];
 
   const router = useRouter();
@@ -165,7 +166,7 @@ const Navbar: React.FC = () => {
               {categories.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleCategoryClick(item.name)}
+                  onClick={() => handleCategoryClick(item.value || item.name)}
                   className="text-white/90 cursor-pointer hover:text-white px-3 py-1 rounded-lg hover:bg-blue-500/30 transition-all text-sm font-medium"
                 >
                   {item.name}
@@ -251,7 +252,7 @@ const Navbar: React.FC = () => {
                           key={item.id}
                           custom={i + 5}
                           variants={listItemVariants}
-                          onClick={() => handleCategoryClick(item.name)}
+                          onClick={() => handleCategoryClick(item.value || item.name)}
                           className="w-full text-left px-4 py-3 text-gray-600 hover:bg-blue-50 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group"
                         >
                           <span>{item.name}</span>

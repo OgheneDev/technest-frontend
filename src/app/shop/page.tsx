@@ -17,6 +17,7 @@ export default function ShopPage() {
   const [layout, setLayout] = useState<'grid' | 'list'>('grid');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [initialCategory, setInitialCategory] = useState<Product['category'][]>([]);;
 
   // Fetch products
   useEffect(() => {
@@ -35,23 +36,37 @@ export default function ShopPage() {
     fetchProducts();
   }, []);
 
-  // Handle category filter from URL
+  // Extract unique categories from products
+  const uniqueCategories = Array.from(
+    new Set(products.map((product) => product.category))
+  ).sort();
+
+  // Handle URL category parameter
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const categoryParam = searchParams.get('category');
+    
+    const allowedCategories: Product['category'][] = [
+      'cases',
+      'screen protectors',
+      'magSafe',
+      'cables',
+      'chargers',
+      'powerbanks',
+      'headphones',
+      'speakers',
+      'smartwatches',
+      'tablets',
+      'laptops',
+      'accessories',
+    ];
 
-    if (categoryParam && products.length > 0) {
-      handleFilterChange({
-        categories: [categoryParam], // Ensure category is passed as an array
-        priceRange: [0, 1000000],
-        rating: 0,
-        inStock: false,
-      });
+    if (categoryParam && allowedCategories.includes(categoryParam as Product['category'])) {
+      setInitialCategory([categoryParam as Product['category']]);
     } else {
-      // Reset to all products if no category param or products not loaded
-      setFilteredProducts(products);
+      setInitialCategory([]);
     }
-  }, [products]); // Depend on products to ensure they are loaded
+  }, [products]);
 
   const handleFilterChange = (filters: {
     categories: string[];
@@ -97,12 +112,9 @@ export default function ShopPage() {
     );
     setFilteredProducts(searchResults);
     setCurrentPage(1);
+    // Clear category filters when searching
+    setInitialCategory([]);
   };
-
-  // Extract unique categories from products
-  const uniqueCategories = Array.from(
-    new Set(products.map((product) => product.category))
-  ).sort();
 
   // Calculate pagination
   const itemsPerPage = 12;
@@ -139,34 +151,28 @@ export default function ShopPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black overflow-hidden">
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
-      
       <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/4">
-            <FiltersPanel 
+            <FiltersPanel
               onFilterChange={handleFilterChange}
               categories={uniqueCategories}
+              initialCategories={initialCategory}
             />
           </div>
 
           <div className="lg:w-3/4 space-y-6">
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
               <SearchBar onSearch={handleSearch} />
-              <ViewToggle  
-                layout={layout} 
-                onLayoutChange={setLayout} 
-              />
+              <ViewToggle layout={layout} onLayoutChange={setLayout} />
             </div>
 
-            <ProductGrid 
-              products={paginatedProducts}
-              layout={layout}
-            />
+            <ProductGrid products={paginatedProducts} layout={layout} />
 
-            <Pagination 
+            <Pagination
               totalItems={filteredProducts.length}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
@@ -178,8 +184,8 @@ export default function ShopPage() {
 
       <style jsx>{`
         .bg-grid-white\\/\\[0\\.02\\] {
-          background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), 
-          linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+          background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
         }
       `}</style>
     </div>
