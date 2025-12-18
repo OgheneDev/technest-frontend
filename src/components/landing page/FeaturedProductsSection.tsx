@@ -1,225 +1,175 @@
-"use client"
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { getProducts } from '@/api/products/requests'
-import { Product } from '@/types/products'
-import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
-import FeaturedProductCard from './FeaturedProductCard'
-import FeaturedProductCardSkeleton from './FeaturedProductCardSkeleton'
-import { Button } from '../ui/button'
+"use client";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { getProducts } from "@/api/products/requests";
+import { Product } from "@/types/products";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import FeaturedProductCard from "./FeaturedProductCard";
+import FeaturedProductCardSkeleton from "./FeaturedProductCardSkeleton";
+import { Button } from "../ui/button";
 
 const FeaturedProductsSection = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-       const fetchFeaturedProducts = async () => {
-        try {
-            setLoading(true);
-            const productsData = await getProducts();
-                     
-            if (!productsData) {
-                throw new Error('No products data received');
-            }
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        setLoading(true);
+        const productsData = await getProducts();
 
-            //Ensure products are in an array
-            const validProducts = Array.isArray(productsData) ? productsData : [];
-            setProducts(validProducts);
-            setError(null);
-        } catch (error) {
-            console.error("Error fetching featured products:", error);
-            setProducts([]);
-            setError('Failed to load products');
-        } finally {
-            setLoading(false);
+        if (!productsData) {
+          throw new Error("No products data received");
         }
-       }
 
-       fetchFeaturedProducts();
-    }, []);
-
-    const recentProducts = products.slice(0,4);
-
-    // Animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                duration: 0.5,
-                staggerChildren: 0.1,
-                when: "beforeChildren"
-            }
-        }
+        const validProducts = Array.isArray(productsData) ? productsData : [];
+        setProducts(validProducts);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+        setProducts([]);
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const itemVariants = {
-        hidden: { 
-            opacity: 0, 
-            y: 20,
-        },
-        visible: { 
-            opacity: 1, 
-            y: 0,
-            transition: {
-                duration: 0.4,
-                ease: "easeOut"
-            }
-        }
-    };
+    fetchFeaturedProducts();
+  }, []);
 
-    const headerVariants = {
-        hidden: { 
-            opacity: 0, 
-            y: -20 
-        },
-        visible: { 
-            opacity: 1, 
-            y: 0,
-            transition: {
-                duration: 0.6,
-                ease: "easeOut"
-            }
-        }
-    };
+  const recentProducts = products.slice(0, 4);
 
-    const buttonVariants = {
-        hidden: { 
-            opacity: 0, 
-            x: 20 
-        },
-        visible: { 
-            opacity: 1, 
-            x: 0,
-            transition: {
-                duration: 0.5,
-                ease: "easeOut",
-                delay: 0.3
-            }
-        }
-    };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-    const errorVariants = {
-        hidden: { 
-            opacity: 0, 
-            scale: 0.8 
-        },
-        visible: { 
-            opacity: 1, 
-            scale: 1,
-            transition: {
-                duration: 0.4,
-                ease: "easeOut"
-            }
-        }
-    };
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
 
-   return (
-    <motion.div 
-        className="relative py-8 md:py-[50px] px-[30px] md:px-[50px] bg-gradient-to-b from-gray-900 to-black overflow-hidden"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible" 
-        viewport={{ once: true, amount: 0.1 }}
-    >
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
-        
-        {/* Floating orbs */}
-        <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
+  return (
+    <section className="relative py-16 bg-zinc-950 overflow-hidden">
+      {/* Add the same gradient overlay as Hero section */}
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-transparent to-amber-950/20" />
 
-        <div className='relative z-10 flex items-center justify-center md:justify-between mb-8'>
-            <motion.h2 
-                className='text-xl md:text-3xl  font-bold mb-4 pl-4 text-white'
-                variants={headerVariants}
-            >
-                Featured Products
-            </motion.h2>
-            
-            <motion.div variants={buttonVariants}>
-                <Link href='/shop' className='hidden md:block'>
-                    <Button
-                        size='lg'
-                        className='bg-white/10 cursor-pointer backdrop-blur-sm text-sm border border-white/20 hover:bg-white/20 hover:border-cyan-400/50 text-white group transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/20 hover:scale-105'
-                    >
-                        View All
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
-                </Link>
-            </motion.div>
-        </div>
-
-        <motion.div 
-            className='relative z-10 grid grid-cols-1 md:grid-cols-4 gap-6 mx-auto'
-            variants={containerVariants}
+      {/* Main content container */}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
+          <div className="flex items-center justify-between mb-12">
+            <motion.div variants={itemVariants}>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                Featured <span className="text-emerald-400">Products</span>
+              </h2>
+              <p className="text-zinc-400">
+                Discover our handpicked collection
+              </p>
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="hidden md:block">
+              <Link href="/shop">
+                <button className="bg-emerald-500 hover:bg-emerald-400 px-5 py-2 flex gap-2 items-center text-sm cursor-pointer rounded-md text-black transition-all group">
+                  View All
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            variants={containerVariants}
+          >
             {loading ? (
-                <>
-                    {[...Array(4)].map((_, index) => (
-                        <motion.div
-                            key={index}
-                            variants={itemVariants}
-                            custom={index}
-                        >
-                            <FeaturedProductCardSkeleton />
-                        </motion.div>
-                    ))}
-                </>
+              <>
+                {[...Array(4)].map((_, index) => (
+                  <motion.div key={index} variants={itemVariants}>
+                    <FeaturedProductCardSkeleton />
+                  </motion.div>
+                ))}
+              </>
             ) : error ? (
-                <motion.div 
-                    className='col-span-full flex items-center justify-center py-12'
-                    variants={errorVariants}
-                >
-                    <div className='text-center'>
-                        <div className='text-red-400 text-lg font-medium mb-2'>
-                            {error}
-                        </div>
-                        <p className='text-white/60 text-sm'>
-                            Please try refreshing the page
-                        </p>
-                    </div>
-                </motion.div>
+              <motion.div
+                className="col-span-full flex items-center justify-center py-12"
+                variants={itemVariants}
+              >
+                <div className="text-center">
+                  <div className="text-red-400 text-lg font-medium mb-2">
+                    {error}
+                  </div>
+                  <p className="text-zinc-400 text-sm">
+                    Please try refreshing the page
+                  </p>
+                </div>
+              </motion.div>
             ) : recentProducts.length > 0 ? (
-                recentProducts.map((product, index) => (
-                    <motion.div
-                        key={product._id}
-                        variants={itemVariants}
-                        initial="hidden"
-                        animate="visible"
-                        custom={index}
-                        whileHover={{ y: -5 }}
-                    >
-                        <FeaturedProductCard product={product} />
-                    </motion.div>
-                ))
-            ) : (
-                <motion.div 
-                    className='col-span-full flex items-center justify-center py-12'
-                    variants={errorVariants}
+              recentProducts.map((product, index) => (
+                <motion.div
+                  key={product._id}
+                  variants={itemVariants}
+                  whileHover={{ y: -4 }}
                 >
-                    <div className='text-center'>
-                        <div className='text-white text-lg font-medium mb-2'>
-                            No Featured Products Available
-                        </div>
-                        <p className='text-white/60 text-sm'>
-                            Check back later for new products
-                        </p>
-                    </div>
+                  <FeaturedProductCard product={product} />
                 </motion.div>
+              ))
+            ) : (
+              <motion.div
+                className="col-span-full flex items-center justify-center py-12"
+                variants={itemVariants}
+              >
+                <div className="text-center">
+                  <div className="text-white text-lg font-medium mb-2">
+                    No Featured Products Available
+                  </div>
+                  <p className="text-zinc-400 text-sm">
+                    Check back later for new products
+                  </p>
+                </div>
+              </motion.div>
             )}
+          </motion.div>
+
+          {/* Mobile View All Button */}
+          <motion.div
+            variants={itemVariants}
+            className="md:hidden mt-8 flex justify-center"
+          >
+            <Link href="/shop">
+              <Button
+                size="lg"
+                className="bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition-all group w-full"
+              >
+                View All Products
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </motion.div>
         </motion.div>
+      </div>
+    </section>
+  );
+};
 
-        <style jsx>{`
-            .bg-grid-white\\/\\[0\\.02\\] {
-                background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-            }
-        `}</style>
-    </motion.div>
-   )
-}
-
-export default FeaturedProductsSection
+export default FeaturedProductsSection;

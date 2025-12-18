@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
-import { Button } from '../ui/button'
+import { useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface ProductImageGalleryProps {
-  images: string[]
+  images: string[];
 }
 
 export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
-  const [selectedImage, setSelectedImage] = useState(0)
-  const [isZoomed, setIsZoomed] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -31,7 +31,7 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
               alt={`Product image ${selectedImage + 1}`}
               fill
               className={`object-contain transition-transform duration-300 ${
-                isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'
+                isZoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
               }`}
               onClick={() => setIsZoomed(!isZoomed)}
             />
@@ -53,7 +53,11 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
               size="icon"
               variant="ghost"
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm cursor-pointer"
-              onClick={() => setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+              onClick={() =>
+                setSelectedImage((prev) =>
+                  prev === 0 ? images.length - 1 : prev - 1
+                )
+              }
             >
               <ChevronLeft className="h-4 w-4 text-white/80" />
             </Button>
@@ -61,7 +65,11 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
               size="icon"
               variant="ghost"
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm cursor-pointer"
-              onClick={() => setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+              onClick={() =>
+                setSelectedImage((prev) =>
+                  prev === images.length - 1 ? 0 : prev + 1
+                )
+              }
             >
               <ChevronRight className="h-4 w-4 text-white/80" />
             </Button>
@@ -78,7 +86,7 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`relative aspect-square rounded-md overflow-hidden cursor-pointer ${
-                selectedImage === index ? 'ring-2 ring-cyan-400' : ''
+                selectedImage === index ? "ring-2 ring-emerald-400" : ""
               }`}
               onClick={() => setSelectedImage(index)}
             >
@@ -93,5 +101,5 @@ export const ProductImageGallery = ({ images }: ProductImageGalleryProps) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

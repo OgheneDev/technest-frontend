@@ -1,15 +1,23 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, User, ShoppingCart, X, Heart, Search, LogIn } from "lucide-react";
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '@/context/CartContext'
-import { useAuthStore } from '@/store/useAuthStore';
+import {
+  Menu,
+  User,
+  ShoppingCart,
+  X,
+  Heart,
+  Search,
+  LogIn,
+} from "lucide-react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
+import { useAuthStore } from "@/store/useAuthStore";
 
-import logo from '@/assets/images/logo.png'; 
+import logo from "@/assets/images/logo.png";
 
 interface Category {
   id: number;
@@ -21,31 +29,31 @@ const Navbar: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const { cartCount } = useCart();
   const { isAuthenticated } = useAuthStore();
-  
+
   const categories: Category[] = [
-     { id: 1, name: 'Cases', value: 'cases' },
-     { id: 2, name: 'Screen Protectors', value: 'screen-protectors' },
-     { id: 3, name: 'MagSafe', value: 'magsafe' }, 
-     { id: 4, name: 'Cables', value: 'cables' },
-     { id: 5, name: 'Chargers', value: 'chargers' },
-     { id: 6, name: 'Power Banks', value: 'powerbanks' },
-     { id: 7, name: 'Headphones', value: 'headphones' },
-     { id: 8, name: 'Smartwatches', value: 'smartwatches' },
-     { id: 9, name: 'Tablets', value: 'tablets' },
-     { id: 10, name: 'Laptops', value: 'laptops' },
-     { id: 11, name: 'Accessories', value: 'accessories' },
+    { id: 1, name: "Cases", value: "cases" },
+    { id: 2, name: "Screen Protectors", value: "screen-protectors" },
+    { id: 3, name: "MagSafe", value: "magsafe" },
+    { id: 4, name: "Cables", value: "cables" },
+    { id: 5, name: "Chargers", value: "chargers" },
+    { id: 6, name: "Power Banks", value: "powerbanks" },
+    { id: 7, name: "Headphones", value: "headphones" },
+    { id: 8, name: "Smartwatches", value: "smartwatches" },
+    { id: 9, name: "Tablets", value: "tablets" },
+    { id: 10, name: "Laptops", value: "laptops" },
+    { id: 11, name: "Accessories", value: "accessories" },
   ];
 
   const router = useRouter();
 
   const handleCategoryClick = (categoryName: string): void => {
-    setIsMenuOpen(false); // Close mobile menu
+    setIsMenuOpen(false);
     router.push(`/shop?category=${categoryName}`);
   };
 
-  // Add click handler for mobile menu links
   const handleMobileMenuClick = (path: string) => {
     setIsMenuOpen(false);
     router.push(path);
@@ -53,7 +61,7 @@ const Navbar: React.FC = () => {
 
   const menuVariants = {
     closed: { x: "-100%" },
-    open: { x: 0 }
+    open: { x: 0 },
   };
 
   const listItemVariants = {
@@ -61,8 +69,8 @@ const Navbar: React.FC = () => {
     open: (i: number) => ({
       x: 0,
       opacity: 1,
-      transition: { delay: i * 0.1 }
-    })
+      transition: { delay: i * 0.1 },
+    }),
   };
 
   useEffect(() => {
@@ -74,100 +82,131 @@ const Navbar: React.FC = () => {
         // const cartData = await getCart();
         // ...existing cart count logic...
       } catch (error) {
-        console.error('Error fetching cart:', error);
+        console.error("Error fetching cart:", error);
       }
     };
 
     fetchCartCount();
   }, [isAuthenticated]);
 
-  // Add mounted state to prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Return null on first render to avoid hydration mismatch
   if (!mounted) {
     return null;
   }
 
-  return ( 
+  return (
     <div className="sticky top-0 z-50">
-      <nav className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg">
+      <motion.nav
+        initial={false}
+        animate={{
+          backgroundColor: isScrolled
+            ? "rgba(9, 9, 11, 0.95)"
+            : "rgba(9, 9, 11, 1)",
+        }}
+        className="backdrop-blur-md border-b border-zinc-800/50 transition-all"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
+            {/* Left section */}
             <div className="flex items-center gap-4">
-              <button 
+              <button
                 onClick={() => setIsMenuOpen(true)}
-                className="md:hidden p-2 rounded-lg hover:bg-gray-700 transition-colors"
+                className="md:hidden p-2 rounded-lg hover:bg-zinc-800 transition-colors"
               >
-                <Menu size={25} className="text-white" />
+                <Menu size={24} className="text-white" />
               </button>
               <Link href="/" className="flex-shrink-0">
-                <Image 
-                  src={logo} 
-                  alt="Logo" 
-                  width={150}
-                  height={40}
-                  className="hover:opacity-90 transition-opacity brightness-200 contrast-200" 
+                <Image
+                  src={logo}
+                  alt="Logo"
+                  width={120}
+                  height={32}
+                  className="hover:opacity-80 transition-opacity"
                 />
               </Link>
             </div>
 
-            {/* Search Bar */}
-            <div className="hidden md:block flex-1 max-w-lg mx-8">
-              <div className="relative flex items-center">
+            {/* Center - Search Bar */}
+            <div className="hidden md:block flex-1 max-w-md mx-8">
+              <div className="relative">
+                <Search
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+                  size={18}
+                />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full px-4 py-2.5 rounded-full bg-gray-700/50 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
                 />
-                <Search className="absolute right-3 text-gray-400" size={20} />
               </div>
             </div>
 
-            <div className="items-center gap-6 flex">
-              {mounted && (isAuthenticated ? (
-                <>
-                  <Link href="/account" className="nav-icon-link hidden md:flex items-center gap-2 text-white hover:text-gray-200">
-                    <User size={22} />
-                    <span className="text-sm">Account</span>
+            {/* Right section */}
+            <div className="flex items-center gap-4">
+              {mounted &&
+                (isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/account"
+                      className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"
+                    >
+                      <User size={20} />
+                      <span className="text-sm font-medium">Account</span>
+                    </Link>
+                    <Link
+                      href="/wishlist"
+                      className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"
+                    >
+                      <Heart size={20} />
+                      <span className="text-sm font-medium">Wishlist</span>
+                    </Link>
+                    <Link
+                      href="/cart"
+                      className="relative p-2 rounded-lg hover:bg-zinc-800 transition-all group"
+                    >
+                      <ShoppingCart
+                        size={24}
+                        className="text-zinc-300 group-hover:text-white transition-colors"
+                      />
+                      {cartCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                          {cartCount}
+                        </span>
+                      )}
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition-all"
+                  >
+                    <LogIn size={18} />
+                    <span>Login</span>
                   </Link>
-                  <Link href="/wishlist" className="nav-icon-link hidden md:flex items-center gap-2 text-white hover:text-gray-200">
-                    <Heart size={22} />
-                    <span className="text-sm">Wishlist</span>
-                  </Link>
-                  <Link href="/cart" className="relative group flex items-center text-white hover:text-gray-200">
-                    <ShoppingCart size={25} className="transform group-hover:scale-110 transition-transform" />
-                    {cartCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
-                        {cartCount}
-                      </span>
-                    )}
-                  </Link>
-                </>
-              ) : (
-                <Link 
-                  href="/login"
-                  className="text-white hover:text-gray-200 transition-colors flex items-center gap-2"
-                >
-                  <LogIn size={22} />
-                  <span>Login</span>
-                </Link>
-              ))}
+                ))}
             </div>
           </div>
 
           {/* Categories Desktop */}
-          <div className="hidden md:block border-t border-blue-400/30">
-            <div className="flex justify-between py-3">
+          <div className="hidden md:block border-t border-zinc-800/50">
+            <div className="flex items-center gap-1 py-3 overflow-x-auto">
               {categories.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleCategoryClick(item.value || item.name)}
-                  className="text-white/90 cursor-pointer hover:text-white px-3 py-1 rounded-lg hover:bg-blue-500/30 transition-all text-sm font-medium"
+                  className="text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-all text-sm font-medium whitespace-nowrap"
                 >
                   {item.name}
                 </button>
@@ -175,7 +214,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -186,83 +225,81 @@ const Navbar: React.FC = () => {
               animate="open"
               exit="closed"
               variants={menuVariants}
-              className="fixed top-0 left-0 h-full w-full bg-white z-50 shadow-2xl overflow-auto"
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 left-0 h-full w-[85%] max-w-sm bg-zinc-950 z-50 shadow-2xl overflow-auto"
             >
               {/* Mobile Menu Header */}
-              <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6">
+              <div className="bg-zinc-900 border-b border-zinc-800 p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <button onClick={() => setIsMenuOpen(false)}>
-                    <Link href="/">
-                    <Image 
-                      src={logo} 
-                      alt="Logo" 
-                      width={150}
-                      height={40}
-                      className="brightness-200 contrast-200" 
-                    />
-                    </Link>
-                  </button>
-                  <button 
+                  <Link href="/" onClick={() => setIsMenuOpen(false)}>
+                    <Image src={logo} alt="Logo" width={120} height={32} />
+                  </Link>
+                  <button
                     onClick={() => setIsMenuOpen(false)}
-                    className="p-2 hover:bg-gray-700/30 rounded-lg transition-colors"
+                    className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
                   >
                     <X size={24} className="text-white" />
                   </button>
                 </div>
-                <div className="relative flex items-center">
+                <div className="relative">
+                  <Search
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+                    size={18}
+                  />
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-full px-4 py-2.5 rounded-full bg-gray-700/50 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                   />
-                  <Search className="absolute right-3 text-gray-400" size={20} />
                 </div>
               </div>
 
               <nav className="p-4">
-                <motion.ul className="space-y-4">
+                <motion.ul className="space-y-2">
                   {["account", "wishlist"].map((item, i) => (
                     <motion.li
                       key={item}
                       custom={i}
                       variants={listItemVariants}
-                      className="mobile-menu-item border-b border-gray-100 pb-3"
                     >
-                      <div 
+                      <div
                         onClick={() => handleMobileMenuClick(`/${item}`)}
-                        className="mobile-menu-link hover:bg-gray-50 p-2 rounded-lg flex items-center gap-3 transition-colors cursor-pointer"
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
                       >
-                        {item === "account" && <User size={20} className="text-gray-600" />}
-                        {item === "wishlist" && <Heart size={20} className="text-gray-600" />}
-                        <span className="capitalize text-gray-700 font-medium">
-                          {item.split("-").join(" ")}
+                        {item === "account" && (
+                          <User size={20} className="text-emerald-400" />
+                        )}
+                        {item === "wishlist" && (
+                          <Heart size={20} className="text-emerald-400" />
+                        )}
+                        <span className="capitalize text-white font-medium">
+                          {item}
                         </span>
                       </div>
                     </motion.li>
                   ))}
 
                   {/* Categories in mobile menu */}
-                  <motion.li variants={listItemVariants} custom={4} className="pt-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+                  <motion.li
+                    variants={listItemVariants}
+                    custom={4}
+                    className="pt-6"
+                  >
+                    <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3 px-3">
                       Categories
                     </h3>
-                    <div className="grid gap-2">
+                    <div className="space-y-1">
                       {categories.map((item, i) => (
                         <motion.button
                           key={item.id}
                           custom={i + 5}
                           variants={listItemVariants}
-                          onClick={() => handleCategoryClick(item.value || item.name)}
-                          className="w-full text-left px-4 py-3 text-gray-600 hover:bg-blue-50 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group"
+                          onClick={() =>
+                            handleCategoryClick(item.value || item.name)
+                          }
+                          className="w-full text-left px-3 py-2.5 text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg transition-all"
                         >
-                          <span>{item.name}</span>
-                          <motion.span
-                            initial={{ x: -5, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            &rarr;
-                          </motion.span>
+                          {item.name}
                         </motion.button>
                       ))}
                     </div>
@@ -275,7 +312,7 @@ const Navbar: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
               onClick={() => setIsMenuOpen(false)}
             />
           </>

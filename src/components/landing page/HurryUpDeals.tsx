@@ -1,167 +1,146 @@
-'use client'
+"use client";
 
-import { useRef } from 'react'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 
 const HurryUpDeals = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Variants for section and item animations
   const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+        staggerChildren: 0.15,
+      },
+    },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.5
-      }
-    }
+        duration: 0.4,
+      },
+    },
   };
 
   return (
-    <motion.section 
+    <motion.section
       ref={sectionRef}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
       variants={containerVariants}
-      className='relative py-[50px] px-[20px] md:px-[60px] bg-gradient-to-b from-black to-gray-900 overflow-hidden'
+      className="bg-zinc-950 py-16"
     >
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/3 via-purple-500/3 to-pink-500/3" />
-      
-      {/* Subtle floating orbs */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-cyan-400/10 to-purple-600/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-pink-400/10 to-orange-500/10 rounded-full blur-3xl" />
-
-      <motion.h3
-        variants={itemVariants}
-        className="relative z-10 font-bold text-xl text-center md:text-start md:text-3xl mb-[30px] text-white"
-      >
-        Hurry Up Deals
-      </motion.h3>
-
-      <div className="relative z-10 deals flex flex-col md:flex-row gap-[20px]">
-        <motion.div 
-          variants={itemVariants}
-          className="group relative bg-gradient-to-br from-purple-600/80 to-pink-600/80 backdrop-blur-sm border border-white/10 rounded-[20px] w-full flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto text-white overflow-hidden hover:border-white/20 transition-all duration-300"
-        >
-          {/* Card glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 via-pink-500/20 to-purple-600/20 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
-          
-          {/* Background pattern overlay */}
-          <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] bg-cover bg-center opacity-30 rounded-[20px]" />
-          
-          <div className="relative z-10 text-content flex md:items-start flex-col gap-[20px]">
-            <motion.h3 
-              variants={itemVariants}
-              className='text-2xl md:text-4xl font-bold'
-            >
-              Airpods <br /> Experience
-            </motion.h3>
-            <motion.p 
-              variants={itemVariants}
-              className='hidden md:block'
-            >
-              Get a new one today!
-            </motion.p>
-            <Link href='/shop'>
-              <motion.button 
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(168, 85, 247, 0.4)" }}
-                whileTap={{ scale: 0.95 }}
-                className='bg-white/90 backdrop-blur-sm text-purple-600 rounded-full py-[8px] px-[25px] cursor-pointer font-medium hover:bg-white transition-all duration-300 shadow-lg'
-              >
-                Shop Now
-              </motion.button>
-            </Link>
-          </div>
-
-          <motion.div 
-            variants={itemVariants}
-            whileHover={{ scale: 1.1, rotate: 5, y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            className="relative z-10 image-container"
-          >
-            <Image 
-              src="https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-img-1_t09pru.png"
-              alt="Airpods"
-              width={170}
-              height={170}
-              className='w-[100px] md:w-[170px] cursor-pointer drop-shadow-2xl'
-            />
-          </motion.div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div variants={itemVariants} className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            Hurry Up <span className="text-emerald-400">Deals</span>
+          </h2>
+          <p className="text-zinc-400">
+            Limited time offers you don't want to miss
+          </p>
         </motion.div>
 
-        <motion.div 
-          variants={itemVariants}
-          className="group relative bg-white/5 backdrop-blur-sm border border-white/10 w-full flex justify-between p-[25px] md:py-[50px] md:px-[35px] mx-auto items-center rounded-[20px] hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-        >
-          {/* Card glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-purple-500/10 to-pink-500/10 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
-          
-          <div className="relative z-10 text-content md:w-[50%] flex flex-col md:items-start gap-[20px]">
-            <motion.h3 
-              variants={itemVariants}
-              className='text-2xl md:text-4xl font-bold text-white'
-            >
-              New 3 in 1 <br/> wireless charger
-            </motion.h3>
-            <motion.p 
-              variants={itemVariants}
-              className='text-white/70 hidden md:block'
-            >
-              Save up to 50% off on new arrivals
-            </motion.p>
-            <Link href='/shop'>
-              <motion.button 
-                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)" }}
-                whileTap={{ scale: 0.95 }}
-                className='bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full py-[8px] w-fit px-[25px] cursor-pointer font-medium hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg'
-              >
-                Shop Now
-              </motion.button>
-            </Link>
-          </div>
-
-          <motion.div 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <motion.div
             variants={itemVariants}
-            whileHover={{ scale: 1.1, rotate: -5, y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            className="relative z-10 image-container"
+            className="group relative bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl overflow-hidden"
           >
-            <Image 
-              src="https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-img-2_z6asph.png"
-              alt="Wireless Charger"
-              width={240}
-              height={240}
-              className='w-[150px] md:w-[240px] cursor-pointer drop-shadow-2xl'
-            />
+            <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] bg-cover bg-center opacity-20" />
+
+            <div className="relative flex justify-between items-center p-8 md:p-10">
+              <div className="flex flex-col gap-6 z-10">
+                <div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                    Airpods <br /> Experience
+                  </h3>
+                  <p className="text-white/90 text-sm md:text-base">
+                    Get a new one today!
+                  </p>
+                </div>
+
+                <Link href="/shop">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-white text-purple-600 rounded-lg py-3 px-6 text-sm cursor-pointer hover:bg-white/90 transition-all inline-block"
+                  >
+                    Shop Now
+                  </motion.button>
+                </Link>
+              </div>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="relative"
+              >
+                <Image
+                  src="https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-img-1_t09pru.png"
+                  alt="Airpods"
+                  width={170}
+                  height={170}
+                  className="w-[120px] md:w-[170px] drop-shadow-2xl"
+                />
+              </motion.div>
+            </div>
           </motion.div>
-        </motion.div>
+
+          {/* Wireless Charger Deal Card */}
+          <motion.div
+            variants={itemVariants}
+            className="group relative bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300"
+          >
+            <div className="relative flex justify-between items-center p-8 md:p-10">
+              <div className="flex flex-col gap-6 z-10 flex-1">
+                <div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                    New 3 in 1 <br /> Wireless Charger
+                  </h3>
+                  <p className="text-zinc-400 text-sm md:text-base">
+                    Save up to 50% off on new arrivals
+                  </p>
+                </div>
+
+                <Link href="/shop">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg py-3 px-6 text-sm cursor-pointer transition-all inline-block"
+                  >
+                    Shop Now
+                  </motion.button>
+                </Link>
+              </div>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="relative"
+              >
+                <Image
+                  src="https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-img-2_z6asph.png"
+                  alt="Wireless Charger"
+                  width={240}
+                  height={240}
+                  className="w-[150px] md:w-[240px] drop-shadow-2xl"
+                />
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
-
-      <style jsx>{`
-        .bg-grid-white\\/\\[0\\.02\\] {
-          background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-        }
-      `}</style>
     </motion.section>
-  )
-}
+  );
+};
 
-export default HurryUpDeals
+export default HurryUpDeals;

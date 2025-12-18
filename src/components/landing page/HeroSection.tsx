@@ -1,148 +1,110 @@
-'use client'
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight, Play } from 'lucide-react'
-import Link from 'next/link'
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Zap, Shield, Globe } from "lucide-react";
 
 const HeroSection = () => {
-  const [isHovered, setIsHovered] = useState(false)
-
-  const stats = [
-  { number: "50K+", label: "Happy Customers" },
-  { number: "99%", label: "Satisfaction Rate" },
-  { number: "24/7", label: "Customer Support" },
-  { number: "10+", label: "Years of Experience" }
-];
-
+  const features = [
+    { text: "Lightning Fast", icon: Zap },
+    { text: "Secure by Default", icon: Shield },
+    { text: "Global Scale", icon: Globe },
+  ];
 
   return (
-    <section className="relative min-h-screen bg-black overflow-hidden">
-      {/* Simplified gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-pink-500/20" />
-      
-      {/* Subtle grid overlay */}
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
+    <section className="relative min-h-screen py-10 md:py-15 bg-zinc-950 overflow-hidden">
+      {/* Minimal accent gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-transparent to-amber-950/20" />
 
-      {/* Pulsating background orbs (subtle, behind content) */}
-      <div className="absolute top-10 left-8 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse opacity-60 pointer-events-none" />
-      <div className="absolute bottom-12 right-8 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse opacity-60 pointer-events-none" />
-
-      {/* Main content */}
-      <div className="relative z-10 container mx-auto px-6 py-10 md:py-20 min-h-screen flex items-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
-          {/* Left content */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+      {/* Main Content */}
+      <div className="relative z-10 container mx-auto px-6 min-h-screen flex items-center justify-center">
+        <div className="max-w-4xl space-y-8 text-center">
+          {/* Minimal Badge */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex justify-center"
           >
-            {/* Badge */}
-            <div className="inline-flex items-center">
-              <div className="px-6 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full" />
-                <span className="text-white/90 text-sm font-medium">Live Now</span>
-              </div>
-            </div>
-
-            {/* Main heading */}
-            <div>
-              <h1 className="text-5xl md:text-6xl font-black leading-none">
-                <span className="block text-white mb-4">NEXT-GEN</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
-                  TECH
-                </span>
-                <span className="block text-white/60 text-xl md:text-2xl font-light mt-4">
-                  Revolution Starts Here
-                </span>
-              </h1>
-            </div>
-
-            {/* Description */}
-            <p className="text-base text-white/70 max-w-lg leading-relaxed">
-              Experience the future with our cutting-edge collection of revolutionary gadgets and smart devices that redefine possibility.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href={'/shop'}>
-                <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onHoverStart={() => setIsHovered(true)}
-                onHoverEnd={() => setIsHovered(false)}
-                className="group px-8 w-full cursor-pointer py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl text-white font-semibold text-sm"
-              >
-                <div className="flex items-center justify-center gap-2">
-                  <span>Explore Collection</span>
-                  <motion.div
-                    animate={{ x: isHovered ? 5 : 0 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.div>
-                </div>
-              </motion.button>
-              </Link>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white/5 cursor-pointer backdrop-blur-sm border border-white/20 rounded-2xl text-white font-semibold text-sm hover:bg-white/10 transition-all duration-300"
-              >
-                <div className="flex items-center justify-center gap-2">
-                  <Play className="w-5 h-5" />
-                  <span>Watch Demo</span>
-                </div>
-              </motion.button>
-            </div>
-
-            {/* Stats section */}
-            <div className="grid grid-cols-2 gap-4 sm:gap-8 pt-8 max-w-md">
-              {stats.map((stat, i) => (
-                <div key={i} className="text-center px-2">
-                  <div className="text-lg sm:text-2xl font-bold text-white">
-                    {stat.number}
-                  </div>
-                  <div className="text-xs sm:text-sm text-white/60 whitespace-nowrap">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <span className="inline-block px-4 py-1.5 border border-emerald-500/30 rounded-full text-emerald-400 text-xs font-medium tracking-wide">
+              NOW AVAILABLE
+            </span>
           </motion.div>
 
-          {/* Right side - Product showcase */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+          {/* Hero Headline - Clean & Bold */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            {/* Subtle glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 via-purple-500/30 to-pink-500/30 rounded-3xl blur-3xl" />
-            
-            {/* Product container */}
-            <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-              <div className="relative aspect-square">
-                <img
-                  src="https://res.cloudinary.com/dgc8cd67w/image/upload/v1730981601/slide_s36khb.png"
-                  alt="Next-gen tech device"
-                  className="w-full h-full object-contain filter drop-shadow-2xl"
-                />
-              </div>
-            </div>
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-white leading-none">
+              Build the
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-400">
+                impossible
+              </span>
+            </h1>
+          </motion.div>
+
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed"
+          >
+            The platform that scales with your ambition. Transform ideas into
+            reality with tools built for creators.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col md:flex-row gap-4 justify-center"
+          >
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="group px-8 py-4 bg-emerald-500 hover:bg-emerald-400 rounded-lg text-black cursor-pointer transition-colors flex justify-center items-center gap-2"
+            >
+              <span>Get Started</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-8 py-4 border border-zinc-700 hover:border-zinc-600 rounded-lg cursor-pointer text-white font-medium transition-colors"
+            >
+              View Demo
+            </motion.button>
+          </motion.div>
+
+          {/* Feature Pills */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap gap-3 pt-4 justify-center"
+          >
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 px-4 py-2 bg-zinc-900/50 border border-zinc-800 rounded-full"
+                >
+                  <Icon className="w-4 h-4 text-emerald-400" />
+                  <span className="text-sm text-zinc-300">{feature.text}</span>
+                </div>
+              );
+            })}
           </motion.div>
         </div>
       </div>
-
-      <style jsx>{`
-        .bg-grid-white\\/\\[0\\.02\\] {
-          background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-        }
-      `}</style>
     </section>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;

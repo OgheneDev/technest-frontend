@@ -1,6 +1,5 @@
-import { Card, CardContent } from '../ui/card'
-import { Skeleton } from '../ui/skeleton'
-import { motion } from 'framer-motion'
+import { Card, CardContent } from "../ui/card";
+import { motion } from "framer-motion";
 
 const FeaturedProductCardSkeleton = () => {
   return (
@@ -9,31 +8,27 @@ const FeaturedProductCardSkeleton = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="group relative overflow-hidden md:w-[270px] bg-white/10 backdrop-blur-sm border border-white/10">
-        <div className="relative aspect-square overflow-hidden rounded-lg">
-          <Skeleton className="absolute inset-0 bg-white/20/animate-pulse" />
-          {/* Badge skeleton */}
-          <div className="absolute right-2 top-2">
-            <Skeleton className="h-6 w-12 rounded-full bg-white/20" />
-          </div>
+      <Card className="group relative overflow-hidden bg-zinc-900 border border-zinc-800">
+        <div className="relative aspect-square overflow-hidden">
+          <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
         </div>
 
-        <CardContent className="mt-4 bg-transparent">
-          <div className="space-y-3">
+        <CardContent className="p-4 bg-transparent">
+          <div className="space-y-3 mt-4">
             {/* Title skeleton */}
-            <Skeleton className="h-4 w-3/4 bg-white/20 rounded" />
+            <div className="h-5 bg-zinc-800 rounded animate-pulse w-3/4" />
 
             <div className="flex items-center justify-between">
               {/* Price skeleton */}
-              <Skeleton className="h-6 w-20 bg-white/20 rounded" />
+              <div className="h-6 bg-zinc-800 rounded animate-pulse w-24" />
               {/* Button skeleton */}
-              <Skeleton className="h-8 w-8 rounded-full bg-white/20" />
+              <div className="h-9 bg-zinc-800 rounded animate-pulse w-20" />
             </div>
           </div>
         </CardContent>
       </Card>
     </motion.div>
-  )
-}
+  );
+};
 
-export default FeaturedProductCardSkeleton
+export default FeaturedProductCardSkeleton;

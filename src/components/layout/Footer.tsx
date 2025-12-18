@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { useState, FormEvent } from 'react'
-import Swal from 'sweetalert2'
-import { Facebook, Twitter, Instagram, Send } from 'lucide-react'
+import Image from "next/image";
+import Link from "next/link";
+import { useState, FormEvent } from "react";
+import Swal from "sweetalert2";
+import { Facebook, Twitter, Instagram, Send } from "lucide-react";
 
 // Add logo import
-import logo from '@/assets/images/logo.png'; // Adjust path as needed
+import logo from "@/assets/images/logo.png"; // Adjust path as needed
 
 interface NavLink {
   text: string;
@@ -15,7 +15,7 @@ interface NavLink {
 }
 
 const Footer = () => {
-  const [subscribeEmail, setSubscribeEmail] = useState<string>('');
+  const [subscribeEmail, setSubscribeEmail] = useState<string>("");
 
   const handleSubscribe = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,43 +23,56 @@ const Footer = () => {
     Swal.fire({
       title: "Success!",
       text: `Subscribed with email: ${subscribeEmail}`,
-      icon: "success"
+      icon: "success",
     });
-    setSubscribeEmail('');
+    setSubscribeEmail("");
   };
 
   return (
-    <footer className='bg-gradient-to-r from-gray-900 to-gray-800'>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+    <footer className="bg-zinc-950 border-t border-zinc-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Company Info */}
           <div className="space-y-6">
-            <Image src={logo} alt="Logo" width={180} height={60} className="brightness-200 contrast-200" />
-            <div className="space-y-4 text-gray-300">
-              <p className="text-sm">Address: 1234 Street, Suite 500, New York, NY</p>
+            <Image src={logo} alt="Logo" width={140} height={48} />
+            <div className="space-y-4 text-zinc-400 text-sm">
+              <p>
+                1234 Street, Suite 500
+                <br />
+                New York, NY
+              </p>
               <div className="space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-gray-400">Email:</span>
-                  <a href="mailto:info@technest.com" className="hover:text-white transition-colors">
-                    info@technest.com
-                  </a>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-gray-400">Phone:</span>
-                  <a href="tel:0907158312" className="hover:text-white transition-colors">
-                    090 715 831 27
-                  </a>
-                </p>
+                <a
+                  href="mailto:info@technest.com"
+                  className="block hover:text-emerald-400 transition-colors"
+                >
+                  info@technest.com
+                </a>
+                <a
+                  href="tel:0907158312"
+                  className="block hover:text-emerald-400 transition-colors"
+                >
+                  090 715 831 27
+                </a>
               </div>
-              <div className="flex gap-4 pt-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Facebook size={20} />
+              <div className="flex gap-3 pt-2">
+                <a
+                  href="#"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-emerald-400 transition-all"
+                >
+                  <Facebook size={18} />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Twitter size={20} />
+                <a
+                  href="#"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-emerald-400 transition-all"
+                >
+                  <Twitter size={18} />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  <Instagram size={20} />
+                <a
+                  href="#"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-emerald-400 transition-all"
+                >
+                  <Instagram size={18} />
                 </a>
               </div>
             </div>
@@ -67,13 +80,15 @@ const Footer = () => {
 
           {/* Company Links */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Company</h3>
-            <ul className="space-y-3 text-gray-300">
-              {['About Us', 'Shop', 'Contact Us', 'Blog'].map((item) => (
+            <h3 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">
+              Company
+            </h3>
+            <ul className="space-y-3">
+              {["About Us", "Shop", "Contact Us", "Blog"].map((item) => (
                 <li key={item}>
-                  <Link 
-                    href={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="hover:text-white transition-colors"
+                  <Link
+                    href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-zinc-400 hover:text-emerald-400 transition-colors text-sm"
                   >
                     {item}
                   </Link>
@@ -84,17 +99,19 @@ const Footer = () => {
 
           {/* Support Links */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Support</h3>
-            <ul className="space-y-3 text-gray-300">
+            <h3 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">
+              Support
+            </h3>
+            <ul className="space-y-3">
               {[
-                { text: 'Help & FAQs', path: '/contact-us' },
-                { text: 'Login / Register', path: '/account' },
-                { text: 'Track your Order', path: '/order-tracking' }
+                { text: "Help & FAQs", path: "/contact-us" },
+                { text: "Login / Register", path: "/account" },
+                { text: "Track your Order", path: "/order-tracking" },
               ].map((item: NavLink) => (
                 <li key={item.text}>
-                  <Link 
+                  <Link
                     href={item.path}
-                    className="hover:text-white transition-colors"
+                    className="text-zinc-400 hover:text-emerald-400 transition-colors text-sm"
                   >
                     {item.text}
                   </Link>
@@ -105,36 +122,75 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Subscribe to Our Newsletter</h3>
+            <h3 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">
+              Newsletter
+            </h3>
             <form onSubmit={handleSubscribe} className="space-y-4">
               <div className="relative">
-                <input 
+                <input
                   type="email"
-                  placeholder="Email Address.."
+                  placeholder="Enter your email"
                   value={subscribeEmail}
                   onChange={(e) => setSubscribeEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-gray-700/50 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
                 />
-                <button 
-                  type="submit" 
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 p-2 rounded-full hover:bg-blue-700 transition-colors"
+                <button
+                  type="submit"
+                  className="absolute cursor-pointer right-2 top-1/2 -translate-y-1/2 bg-emerald-500 hover:bg-emerald-400 p-2 rounded-md transition-colors"
                 >
-                  <Send size={16} className="text-white" />
+                  <Send size={14} className="text-black" />
                 </button>
               </div>
-              <p className="text-sm text-gray-400">
-                By subscribing to our newsletter you agree to our{' '}
-                <Link href="" className="text-blue-400 hover:text-blue-300">Terms of Policy</Link>
-                {' '}and{' '}
-                <Link href="" className="text-blue-400 hover:text-blue-300">Privacy Policy</Link>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                By subscribing you agree to our{" "}
+                <Link
+                  href="/terms"
+                  className="text-emerald-400 hover:text-emerald-300 transition-colors"
+                >
+                  Terms
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="text-emerald-400 hover:text-emerald-300 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
               </p>
             </form>
           </div>
         </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-zinc-800">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-500">
+            <p>© 2024 TechNest. All rights reserved.</p>
+            <div className="flex gap-6">
+              <Link
+                href="/terms"
+                className="hover:text-zinc-300 transition-colors"
+              >
+                Terms
+              </Link>
+              <Link
+                href="/privacy"
+                className="hover:text-zinc-300 transition-colors"
+              >
+                Privacy
+              </Link>
+              <Link
+                href="/cookies"
+                className="hover:text-zinc-300 transition-colors"
+              >
+                Cookies
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

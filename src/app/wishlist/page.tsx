@@ -1,207 +1,246 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Heart, Loader2, ShoppingCart, ArrowLeft } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { getWishlist, removeFromWishlist } from "@/api/wishlist/requests"
-import { addToCart } from "@/api/cart/requests"
-import { formatPrice } from "@/utils/formatPrice"
-import { Button } from "@/components/ui/button"
-import { useCart } from "@/context/CartContext"
-import { showToast } from '@/store/toastStore'
-import { WishlistSkeleton } from "@/components/wishlist/WishlistSkeleton"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Heart,
+  Loader2,
+  ShoppingCart,
+  ArrowLeft,
+  Trash2,
+  Plus,
+  Eye,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { getWishlist, removeFromWishlist } from "@/api/wishlist/requests";
+import { addToCart } from "@/api/cart/requests";
+import { formatPrice } from "@/utils/formatPrice";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import { showToast } from "@/store/toastStore";
+import { WishlistSkeleton } from "@/components/wishlist/WishlistSkeleton";
 
 interface WishlistProduct {
-  _id: string
-  name: string
-  price: number
-  images: string[]
-  stock: number
+  _id: string;
+  name: string;
+  price: number;
+  images: string[];
+  stock: number;
+  category?: string;
 }
 
 interface WishlistItem {
-  product: WishlistProduct
+  product: WishlistProduct;
 }
 
 interface WishlistData {
-  products: WishlistItem[]
+  products: WishlistItem[];
 }
 
 export default function WishlistPage() {
-  const [wishlistData, setWishlistData] = useState<WishlistData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [addingToCart, setAddingToCart] = useState<string | null>(null)
-  const [removingId, setRemovingId] = useState<string | null>(null)
-  const sectionRef = useRef(null)
-  const { updateCartCount } = useCart()
-  const [inView, setInView] = useState(false)
+  const [wishlistData, setWishlistData] = useState<WishlistData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
+  const [removingId, setRemovingId] = useState<string | null>(null);
+  const { updateCartCount } = useCart();
 
-  useEffect(() => {
-    document.body.style.overflowX = "hidden"
-
-    return () => {
-      document.body.style.overflowX = "auto"
-    }
-  }, [])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
-    }
-  }, [])
-
-  // Reusable fetch function (moved out so other handlers can call it)
   const fetchWishlistData = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const data = await getWishlist()
+      const data = await getWishlist();
       if (data && data.products) {
-        // Ensure we're getting populated product data
-        const validProducts = data.products.filter((item: WishlistItem) => item.product)
-        setWishlistData({ products: validProducts })
+        const validProducts = data.products.filter(
+          (item: WishlistItem) => item.product
+        );
+        setWishlistData({ products: validProducts });
       } else {
-        setWishlistData({ products: [] })
+        setWishlistData({ products: [] });
       }
     } catch (error) {
-      console.error("Error fetching wishlist:", error)
-      setWishlistData({ products: [] })
+      console.error("Error fetching wishlist:", error);
+      setWishlistData({ products: [] });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    // Initial fetch
-    fetchWishlistData()
-  }, [])
+    fetchWishlistData();
+  }, []);
 
   const handleAddToCart = async (product: WishlistProduct) => {
-    if (addingToCart) return
-    setAddingToCart(product._id)
+    if (addingToCart) return;
+    setAddingToCart(product._id);
 
     try {
-      await addToCart({ productId: product._id, quantity: 1 })
-      await updateCartCount()
-      showToast('Item added to cart', 'success', 2500)
+      await addToCart({ productId: product._id, quantity: 1 });
+      await updateCartCount();
+      showToast("Item added to cart", "success", 2500);
     } catch (error) {
-      showToast(error instanceof Error ? error.message : 'Failed to add to cart', 'error', 3500)
+      showToast(
+        error instanceof Error ? error.message : "Failed to add to cart",
+        "error",
+        3500
+      );
     } finally {
-      setAddingToCart(null)
+      setAddingToCart(null);
     }
-  }
+  };
 
   const handleRemoveFromWishlist = async (productId: string) => {
-    if (removingId) return
-    setRemovingId(productId)
+    if (removingId) return;
+    setRemovingId(productId);
     try {
-      await removeFromWishlist(productId)
-      // Re-fetch the wishlist to ensure authoritative state
-      await fetchWishlistData()
-      showToast('Removed from wishlist', 'success', 2200)
+      await removeFromWishlist(productId);
+      await fetchWishlistData();
+      showToast("Removed from wishlist", "success", 2200);
     } catch (error) {
-      showToast(error instanceof Error ? error.message : 'Failed to remove item', 'error', 3500)
+      showToast(
+        error instanceof Error ? error.message : "Failed to remove item",
+        "error",
+        3500
+      );
     } finally {
-      setRemovingId(null)
+      setRemovingId(null);
     }
-  }
+  };
+
+  const handleClearAll = async () => {
+    if (!wishlistData?.products.length || removingId) return;
+
+    const confirm = window.confirm(
+      "Are you sure you want to clear your entire wishlist?"
+    );
+    if (!confirm) return;
+
+    try {
+      for (const item of wishlistData.products) {
+        await removeFromWishlist(item.product._id);
+      }
+      await fetchWishlistData();
+      showToast("Wishlist cleared", "success", 2200);
+    } catch (error) {
+      showToast("Failed to clear wishlist", "error", 3500);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.07,
+        delayChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  }
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
 
   if (isLoading) {
-    return <WishlistSkeleton />
+    return <WishlistSkeleton />;
   }
 
+  const itemCount = wishlistData?.products.length || 0;
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black overflow-hidden" ref={sectionRef}>
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5" />
+    <div className="min-h-screen bg-zinc-950">
+      {/* Background gradient - Fixed position */}
+      <div className="fixed inset-0 bg-gradient-to-b from-emerald-950/20 via-transparent to-amber-950/20 pointer-events-none" />
 
-      {/* Floating orbs */}
-      <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse" />
-
-      {/* Navigation Bar */}
-      <div className="z-20 bg-white/5 backdrop-blur-sm border-b border-white/10 sticky top-0">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center h-16">
+      {/* Navigation */}
+      <div className=" bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-800">
+        <div className="container mx-auto px-4 sm:px-6 py-3">
+          <div className="flex items-center justify-between">
             <Link
               href="/shop"
-              className="inline-flex items-center text-sm text-cyan-300 font-medium hover:text-cyan-200 transition-colors"
+              className="inline-flex items-center text-sm text-emerald-300 hover:text-emerald-200 transition-colors group"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Shop
+              <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+              Continue Shopping
             </Link>
+
+            {itemCount > 0 && (
+              <Button
+                onClick={handleClearAll}
+                variant="ghost"
+                size="sm"
+                className="text-zinc-400 hover:text-red-400 hover:bg-red-400/10"
+                disabled={removingId !== null}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Header */}
+      {/* Main Content */}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 py-8">
+        {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8 text-center"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mb-8"
         >
-          <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-cyan-300 text-[12px] uppercase font-medium mb-4">
-            <div className="w-2 h-2 bg-cyan-400 rounded-full mr-2 animate-pulse" />
-            My Wishlist ({wishlistData?.products.length || 0}{" "}
-            {wishlistData?.products.length === 1 ? "item" : "items"})
+          <div className="inline-flex items-center px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-400 text-sm font-medium tracking-wide mb-4">
+            <Heart className="h-3 w-3 mr-2 fill-emerald-400/20" />
+            MY WISHLIST
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Saved Items
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
+            Your Saved <span className="text-emerald-400">Favorites</span>
           </h1>
+
+          <p className="text-zinc-400">
+            {itemCount > 0
+              ? `${itemCount} ${itemCount === 1 ? "item" : "items"} saved`
+              : "Start saving items you love"}
+          </p>
         </motion.div>
 
-        {/* Wishlist Grid */}
-        {!wishlistData?.products.length ? (
+        {/* Wishlist Content */}
+        {!itemCount ? (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-center py-12 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 max-w-md mx-auto"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="max-w-md mx-auto text-center py-16"
           >
-            <Heart className="mx-auto h-12 w-12 text-pink-400/70 mb-4" />
-            <h3 className="text-lg font-medium text-white mb-2">Your wishlist is empty</h3>
-            <p className="text-white/70 mb-6">Start adding items you love!</p>
+            <div className="relative inline-block mb-6">
+              <Heart className="h-20 w-20 text-emerald-400/20" />
+            </div>
+
+            <h3 className="text-xl font-semibold text-white mb-3">
+              Your wishlist is empty
+            </h3>
+            <p className="text-zinc-400 mb-8">
+              Save products by clicking the heart icon
+            </p>
+
             <Button
               asChild
-              className="bg-gradient-to-r text-sm from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-none"
+              className="bg-emerald-500 hover:bg-emerald-400 text-black font-medium"
+              size="lg"
             >
-              <Link href="/shop">Explore Products</Link>
+              <Link href="/shop">
+                Explore Products
+                <Plus className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
           </motion.div>
         ) : (
@@ -209,76 +248,192 @@ export default function WishlistPage() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            className="space-y-6"
           >
-            <AnimatePresence>
-              {wishlistData.products.map(({ product }) => (
-                <motion.div
-                  key={product._id}
-                  variants={itemVariants}
-                  layout
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10 hover:border-cyan-500/30 transition-all hover:shadow-lg hover:shadow-cyan-500/10"
-                >
-                  <Link href={`/products/${product._id}`}>
-                    <div className="relative aspect-square">
-                     <Image
-                       src={product.images[0] || "/placeholder.svg"}
-                       alt={product.name}
-                       fill
-                       className="object-cover"
-                      />
-                    </div>
-                  </Link>
-                  <div className="p-4">
-                    <h3 className="font-medium text-white mb-2 line-clamp-2">{product.name}</h3>
-                    <div className="flex items-center justify-between">
-                      <span className="text-md font-bold text-cyan-300">₦{formatPrice(product.price)}</span>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleAddToCart(product)}
-                          disabled={addingToCart === product._id}
-                          className="bg-white/20 text-sm hover:bg-white/30 text-white border-none"
-                        >
-                          {addingToCart === product._id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <ShoppingCart className="h-4 w-4" />
-                          )}
-                          <span className="ml-2">Add</span>
-                        </Button>
+            {/* Stats Summary */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap items-center justify-between p-4 bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-lg"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex items-center">
+                  <Heart className="h-4 w-4 text-emerald-400 mr-2" />
+                  <span className="text-white font-medium">
+                    {itemCount} {itemCount === 1 ? "item" : "items"}
+                  </span>
+                </div>
+                <div className="hidden sm:block text-sm text-zinc-400">
+                  Total Value: ₦
+                  {formatPrice(
+                    wishlistData!.products.reduce(
+                      (sum, item) => sum + item.product.price,
+                      0
+                    )
+                  )}
+                </div>
+              </div>
+            </motion.div>
 
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleRemoveFromWishlist(product._id)}
-                          disabled={removingId === product._id}
-                          className="text-white bg-white/5 text-sm border-white/10 cursor-pointer hover:bg-white/10"
-                        >
-                          {removingId === product._id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <span className="text-sm">Remove</span>
+            {/* Products Grid */}
+            <motion.div
+              variants={containerVariants}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+            >
+              <AnimatePresence mode="popLayout">
+                {wishlistData!.products.map(({ product }) => (
+                  <motion.div
+                    key={product._id}
+                    layout
+                    variants={itemVariants}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.9,
+                      transition: { duration: 0.2 },
+                    }}
+                    whileHover={{
+                      y: -4,
+                      transition: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25,
+                      },
+                    }}
+                    className="group bg-zinc-900/60 backdrop-blur-sm rounded-lg overflow-hidden border border-zinc-800 hover:border-emerald-500/30 transition-all duration-300"
+                  >
+                    {/* Product Image */}
+                    <Link
+                      href={`/products/${product._id}`}
+                      className="block relative"
+                    >
+                      <div className="relative aspect-square overflow-hidden">
+                        <Image
+                          src={product.images[0] || "/placeholder.svg"}
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                        {/* Quick View Button */}
+                        <div className="absolute top-2 right-2">
+                          <Button
+                            asChild
+                            size="icon"
+                            className="h-8 w-8 rounded-full bg-zinc-900/90 backdrop-blur-sm border border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                          >
+                            <Link href={`/products/${product._id}`}>
+                              <Eye className="h-4 w-4 text-emerald-400" />
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
+                    </Link>
+
+                    {/* Product Info */}
+                    <div className="p-4">
+                      {product.category && (
+                        <div className="text-xs text-emerald-400 font-medium mb-1">
+                          {product.category}
+                        </div>
+                      )}
+
+                      <Link href={`/products/${product._id}`}>
+                        <h3 className="font-semibold text-white text-sm mb-2 line-clamp-2 hover:text-emerald-300 transition-colors">
+                          {product.name}
+                        </h3>
+                      </Link>
+
+                      <div className="flex items-center justify-between mt-3">
+                        <div>
+                          <span className="text-lg font-bold text-emerald-400">
+                            ₦{formatPrice(product.price)}
+                          </span>
+                          {product.stock < 10 && product.stock > 0 && (
+                            <div className="text-xs text-amber-400 mt-1">
+                              Only {product.stock} left
+                            </div>
                           )}
-                        </Button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleAddToCart(product)}
+                            disabled={
+                              addingToCart === product._id ||
+                              product.stock === 0
+                            }
+                            className="bg-emerald-500 hover:bg-emerald-400 text-black font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {addingToCart === product._id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <>
+                                <ShoppingCart className="h-4 w-4 mr-1" />
+                                {product.stock === 0 ? "Out" : "Add"}
+                              </>
+                            )}
+                          </Button>
+
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() =>
+                              handleRemoveFromWishlist(product._id)
+                            }
+                            disabled={removingId === product._id}
+                            className="h-8 w-8 text-zinc-400 hover:text-red-400 cursor-pointer hover:bg-red-400/10"
+                            title="Remove from wishlist"
+                          >
+                            {removingId === product._id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Bottom CTA */}
+            {itemCount > 0 && (
+              <motion.div
+                variants={itemVariants}
+                className="text-center pt-8 border-t border-zinc-800"
+              >
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button
+                    asChild
+                    className="bg-emerald-500 hover:bg-emerald-400 text-black"
+                    size="sm"
+                  >
+                    <Link href="/cart">
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      View Cart
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-zinc-700 text-white hover:bg-zinc-800"
+                    size="sm"
+                  >
+                    <Link href="/shop">
+                      Continue Shopping
+                      <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
+                    </Link>
+                  </Button>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
         )}
       </div>
-
-      {/* global showToast used for notifications */}
-
-      <style jsx>{`
-        .bg-grid-white\\/\\[0\\.02\\] {
-          background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-        }
-      `}</style>
     </div>
-  )
+  );
 }

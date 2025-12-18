@@ -1,11 +1,11 @@
-import { Card, CardContent } from '../ui/card'
+import { Card, CardContent } from "../ui/card";
 
 interface ProductSkeletonProps {
-  layout: 'grid' | 'list'
+  layout: "grid" | "list";
 }
 
 export const ProductSkeleton = ({ layout }: ProductSkeletonProps) => {
-  if (layout === 'grid') {
+  if (layout === "grid") {
     return (
       <Card className="animate-pulse bg-white/10">
         <div className="aspect-square bg-white/20" />
@@ -20,7 +20,7 @@ export const ProductSkeleton = ({ layout }: ProductSkeletonProps) => {
           </div>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
@@ -37,5 +37,5 @@ export const ProductSkeleton = ({ layout }: ProductSkeletonProps) => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
