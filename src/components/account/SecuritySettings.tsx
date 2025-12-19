@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { updatePassword } from "@/api/auth/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2, Lock, Eye, EyeOff } from "lucide-react";
@@ -13,6 +13,7 @@ export default function SecuritySettings() {
     newPassword: "",
     confirmPassword: "",
   });
+  const { updatePassword } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState({
     current: false,

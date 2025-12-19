@@ -190,7 +190,7 @@ const Navbar: React.FC = () => {
                 ) : (
                   <Link
                     href="/login"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition-all"
+                    className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-all"
                   >
                     <LogIn size={18} />
                     <span>Login</span>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { updateDetails } from "@/api/auth/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Loader2, User, Phone, Mail, Camera } from "lucide-react";
@@ -19,13 +19,10 @@ interface UserData {
 
 interface AccountDetailsProps {
   userData: UserData;
-  setUserData: (data: UserData) => void;
 }
 
-export default function AccountDetails({
-  userData,
-  setUserData,
-}: AccountDetailsProps) {
+export default function AccountDetails({ userData }: AccountDetailsProps) {
+  const { updateDetails } = useAuthStore();
   const [formData, setFormData] = useState({
     firstName: userData?.firstName || "",
     lastName: userData?.lastName || "",
@@ -58,12 +55,26 @@ export default function AccountDetails({
     if (file) {
       // Validate file type and size
       if (!file.type.startsWith("image/")) {
-        Swal.fire("Error", "Please upload an image file", "error");
+        Swal.fire({
+          title: "Error",
+          text: "Please upload an image file",
+          icon: "error",
+          confirmButtonColor: "#10b981",
+          background: "#0a0a0a",
+          color: "#fff",
+        });
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
         // 5MB limit
-        Swal.fire("Error", "Image size should be less than 5MB", "error");
+        Swal.fire({
+          title: "Error",
+          text: "Image size should be less than 5MB",
+          icon: "error",
+          confirmButtonColor: "#10b981",
+          background: "#0a0a0a",
+          color: "#fff",
+        });
         return;
       }
 
@@ -106,23 +117,31 @@ export default function AccountDetails({
       }
 
       if (!hasChanges) {
-        Swal.fire("Info", "No changes to update", "info");
+        Swal.fire({
+          title: "Info",
+          text: "No changes to update",
+          icon: "info",
+          confirmButtonColor: "#10b981",
+          background: "#0a0a0a",
+          color: "#fff",
+        });
         setIsLoading(false);
         return;
       }
 
-      const updatedUser = await updateDetails(formDataToSend);
-      if (updatedUser) {
-        setUserData(updatedUser);
-        Swal.fire({
-          title: "Success!",
-          text: "Profile updated successfully",
-          icon: "success",
-          confirmButtonColor: "#10b981",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-      }
+      // Update details using the store
+      await updateDetails(formDataToSend);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Profile updated successfully",
+        icon: "success",
+        confirmButtonColor: "#10b981",
+        background: "#0a0a0a",
+        color: "#fff",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     } catch (error) {
       Swal.fire({
         title: "Error",
@@ -130,6 +149,8 @@ export default function AccountDetails({
           error instanceof Error ? error.message : "Failed to update profile",
         icon: "error",
         confirmButtonColor: "#10b981",
+        background: "#0a0a0a",
+        color: "#fff",
       });
     } finally {
       setIsLoading(false);
@@ -191,7 +212,8 @@ export default function AccountDetails({
                 setFormData((prev) => ({ ...prev, firstName: e.target.value }))
               }
               placeholder="First Name"
-              className="bg-zinc-900/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-emerald-500"
+              disabled={isLoading}
+              className="bg-zinc-900/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-emerald-500 disabled:opacity-50"
             />
           </div>
 
@@ -206,7 +228,8 @@ export default function AccountDetails({
                 setFormData((prev) => ({ ...prev, lastName: e.target.value }))
               }
               placeholder="Last Name"
-              className="bg-zinc-900/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-emerald-500"
+              disabled={isLoading}
+              className="bg-zinc-900/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-emerald-500 disabled:opacity-50"
             />
           </div>
 
@@ -236,7 +259,8 @@ export default function AccountDetails({
                 }))
               }
               placeholder="Phone Number"
-              className="bg-zinc-900/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-emerald-500"
+              disabled={isLoading}
+              className="bg-zinc-900/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:border-emerald-500 disabled:opacity-50"
             />
           </div>
         </div>

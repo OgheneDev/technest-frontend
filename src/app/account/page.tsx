@@ -6,50 +6,24 @@ import AccountNav from "@/components/account/AccountNav";
 import AccountDetails from "@/components/account/AccountDetails";
 import SecuritySettings from "@/components/account/SecuritySettings";
 import DeleteAccount from "@/components/account/DeleteAccount";
-import { getMe } from "@/api/auth/requests";
-import { Loader2, ArrowLeft, Settings, User } from "lucide-react";
-import Link from "next/link";
-
-// Define UserData type or import it if it exists elsewhere
-type UserData = {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
-  avatar?: string;
-};
+import { useAuthStore } from "@/store/useAuthStore";
+import { User } from "lucide-react";
+import Loader from "@/components/ui/Loader";
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState("details");
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const data = await getMe();
-        setUserData(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+    // Refresh user data when component mounts
+    if (!authUser) {
+      checkAuth();
+    }
+  }, [authUser, checkAuth]);
 
   // Show loading state until we have user data
-  if (isLoading || !userData) {
-    return (
-      <div className="min-h-screen bg-zinc-950 overflow-hidden relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-transparent to-amber-950/20" />
-        <div className="relative z-10 min-h-screen flex items-center justify-center">
-          <Loader2 className="h-10 w-10 animate-spin text-emerald-400" />
-        </div>
-      </div>
-    );
+  if (isCheckingAuth || !authUser) {
+    return <Loader />;
   }
 
   return (
@@ -114,10 +88,7 @@ export default function AccountPage() {
               >
                 <AnimatePresence mode="wait">
                   {activeTab === "details" && (
-                    <AccountDetails
-                      userData={userData}
-                      setUserData={setUserData}
-                    />
+                    <AccountDetails userData={authUser} />
                   )}
                   {activeTab === "security" && <SecuritySettings />}
                   {activeTab === "delete" && <DeleteAccount />}

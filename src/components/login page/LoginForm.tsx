@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
@@ -15,7 +15,7 @@ import {
   EyeOff,
   ArrowRight,
 } from "lucide-react";
-import { login } from "../../api/auth/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface FormData {
   email: string;
@@ -24,13 +24,18 @@ interface FormData {
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login, isLoggingIn } = useAuthStore();
+
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // Get the redirect URL from query params, default to /shop
+  const from = searchParams.get("from") || "/";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -41,7 +46,6 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
 
     try {
@@ -49,6 +53,7 @@ const LoginForm = () => {
         email: formData.email,
         password: formData.password,
       });
+
       await Swal.fire({
         title: "Success!",
         text: "Logged in successfully",
@@ -56,13 +61,14 @@ const LoginForm = () => {
         confirmButtonColor: "#10b981",
         background: "#0a0a0a",
         color: "#fff",
+        timer: 1500,
+        showConfirmButton: false,
       });
-      window.location.href = "/";
+
+      router.push(from);
     } catch (err) {
       const error = err as Error;
       setError(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -108,10 +114,11 @@ const LoginForm = () => {
             required
             value={formData.email}
             onChange={handleChange}
+            disabled={isLoggingIn}
             className="w-full px-3 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg 
                      text-white placeholder:text-zinc-500 
                      focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30
-                     transition-all duration-200"
+                     transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="you@example.com"
           />
         </div>
@@ -132,16 +139,18 @@ const LoginForm = () => {
               required
               value={formData.password}
               onChange={handleChange}
+              disabled={isLoggingIn}
               className="w-full px-3 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg 
                        text-white placeholder:text-zinc-500 
                        focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30
-                       transition-all duration-200 pr-10"
+                       transition-all duration-200 pr-10 disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 cursor-pointer"
+              disabled={isLoggingIn}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             >
               {showPassword ? (
                 <EyeOff className="h-5 w-5" />
@@ -163,19 +172,19 @@ const LoginForm = () => {
       </div>
 
       <motion.div
-        whileHover={{ scale: isLoading ? 1 : 1.02 }}
-        whileTap={{ scale: isLoading ? 1 : 0.98 }}
+        whileHover={{ scale: isLoggingIn ? 1 : 1.02 }}
+        whileTap={{ scale: isLoggingIn ? 1 : 0.98 }}
       >
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoggingIn}
           className="group relative w-full flex justify-center items-center gap-2 py-3 px-4 
                    rounded-lg text-sm font-medium 
                    bg-emerald-500 hover:bg-emerald-400 text-black
                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500/50
                    transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? (
+          {isLoggingIn ? (
             <Loader2 className="animate-spin h-5 w-5" />
           ) : (
             <>

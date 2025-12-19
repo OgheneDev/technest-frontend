@@ -3,7 +3,7 @@
 import { User, Shield, Trash2, LogOut, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import { logout } from "@/api/auth/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface AccountNavProps {
   activeTab: string;
@@ -15,6 +15,7 @@ export default function AccountNav({
   onTabChange,
 }: AccountNavProps) {
   const router = useRouter();
+  const { logout } = useAuthStore();
 
   const tabs = [
     { id: "details", label: "Account Details", icon: User, color: "emerald" },

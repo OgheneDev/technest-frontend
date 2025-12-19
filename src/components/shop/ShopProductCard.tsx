@@ -287,7 +287,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
             <div className="flex-1 min-w-0 flex flex-col">
               <div className="flex justify-between items-start gap-3 mb-3">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">
                     {product.name}
                   </h3>
                   <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-3 mb-3">
@@ -322,7 +322,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
               <div className="mt-auto">
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
                   <div className="space-y-1">
-                    <p className="text-xl sm:text-2xl font-bold text-indigo-600">
+                    <p className="text-xl sm:text-2xl font-bold text-emerald-600">
                       ₦{formatPrice(product.price)}
                     </p>
                     <p className="text-sm text-gray-500">
@@ -368,7 +368,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
                       className={`flex-1 sm:flex-initial text-sm cursor-pointer transition-all duration-300 ${
                         isOutOfStock
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 hover:shadow-lg transform hover:-translate-y-0.5"
+                          : "bg-gradient-to-r from-emerald-600 to-amber-950/20 hover:from-emerald-700 hover:to-amber-950/30 hover:shadow-lg transform hover:-translate-y-0.5"
                       }`}
                     >
                       {isAddingToCart ? (
@@ -388,8 +388,6 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
           </div>
         </motion.div>
       )}
-
-      {/* ...global toast used via showToast() — no local Toast render required */}
     </>
   );
 };

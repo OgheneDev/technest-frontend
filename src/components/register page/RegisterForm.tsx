@@ -17,7 +17,7 @@ import {
   Phone,
   ArrowRight,
 } from "lucide-react";
-import { register } from "@/api/auth/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 import PasswordStrength from "../password/PasswordStrength";
 import PasswordChecklist from "../password/PasswordChecklist";
 
@@ -40,6 +40,7 @@ interface FormData {
 
 const RegisterForm = () => {
   const router = useRouter();
+  const { signup, isSigningUp } = useAuthStore();
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -48,7 +49,6 @@ const RegisterForm = () => {
     password: "",
     confirmPassword: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -83,23 +83,20 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
 
     if (!isPasswordValid()) {
       setError("Please create a stronger password");
-      setIsLoading(false);
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
-      setIsLoading(false);
       return;
     }
 
     try {
-      await register({
+      await signup({
         email: formData.email,
         password: formData.password,
         firstName: formData.firstName,
@@ -120,7 +117,6 @@ const RegisterForm = () => {
       const error = err as Error;
       setError(error.message);
     } finally {
-      setIsLoading(false);
     }
   };
 
@@ -333,13 +329,13 @@ const RegisterForm = () => {
       </div>
 
       <motion.div
-        whileHover={{ scale: isLoading ? 1 : 1.02 }}
-        whileTap={{ scale: isLoading ? 1 : 0.98 }}
+        whileHover={{ scale: isSigningUp ? 1 : 1.02 }}
+        whileTap={{ scale: isSigningUp ? 1 : 0.98 }}
       >
         <button
           type="submit"
           disabled={
-            isLoading ||
+            isSigningUp ||
             !isPasswordValid() ||
             formData.password !== formData.confirmPassword
           }
@@ -349,7 +345,7 @@ const RegisterForm = () => {
                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500/50
                    transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? (
+          {isSigningUp ? (
             <Loader2 className="animate-spin h-5 w-5" />
           ) : (
             <>

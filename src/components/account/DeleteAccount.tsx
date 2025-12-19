@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { deleteAccount } from "@/api/auth/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2, Trash2 } from "lucide-react";
@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 export default function DeleteAccount() {
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { deleteAccount, isDeleting } = useAuthStore();
 
   const handleDelete = async () => {
     try {
@@ -26,7 +26,6 @@ export default function DeleteAccount() {
       });
 
       if (result.isConfirmed) {
-        setIsLoading(true);
         await deleteAccount({ password });
       }
     } catch (error) {
@@ -39,7 +38,6 @@ export default function DeleteAccount() {
         background: "#0a0a0a",
         color: "#fff",
       });
-      setIsLoading(false);
     }
   };
 
@@ -73,10 +71,10 @@ export default function DeleteAccount() {
         <div className="pt-2">
           <Button
             onClick={handleDelete}
-            disabled={!password || isLoading}
+            disabled={!password || isDeleting}
             className="w-full bg-red-600 text-sm hover:bg-red-700 cursor-pointer text-white transition-colors"
           >
-            {isLoading ? (
+            {isDeleting ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 Deleting Account...
