@@ -66,7 +66,7 @@ const HeroSection = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group px-8 py-4 bg-emerald-500 hover:bg-emerald-400 rounded-lg text-black cursor-pointer transition-colors flex justify-center items-center gap-2"
+              className="group px-8 py-4 bg-emerald-500 font-semibold hover:bg-emerald-400 rounded-lg text-black cursor-pointer transition-colors flex justify-center items-center gap-2"
             >
               <span>Get Started</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -75,7 +75,7 @@ const HeroSection = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 border border-zinc-700 hover:border-zinc-600 rounded-lg cursor-pointer text-white font-medium transition-colors"
+              className="px-8 py-4 border border-zinc-700 font-semibold hover:border-zinc-600 rounded-lg cursor-pointer text-white transition-colors"
             >
               View Demo
             </motion.button>

@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Navbar from "./layout/Navbar";
-import Footer from "./layout/Footer";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 import React from "react";
 
 const noLayoutRoutes = ["/login", "/register"];

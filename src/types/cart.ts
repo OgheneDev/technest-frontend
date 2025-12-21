@@ -4,7 +4,7 @@ export interface AddToCartParams {
 }
 
 export interface CartItem {
-  product: string;
+  product: CartProduct;
   quantity: number;
 }
 
@@ -13,3 +13,17 @@ export interface Cart {
   products: CartItem[];
   totalPrice: number;
 }
+
+export interface CartData {
+  products: CartItem[];
+  totalPrice: number;
+}
+
+export interface CartProduct {
+  _id: string;
+  name: string;
+  price: number;
+  images: string[];
+}
+
+export const FALLBACK_IMAGE = "/placeholder.svg";

@@ -222,7 +222,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <>
-                      <ShoppingCart className="h-4 w-4" />
+                      <ShoppingCart className="h-4 w-4 text-zinc-400" />
                     </>
                   )}
                 </Button>

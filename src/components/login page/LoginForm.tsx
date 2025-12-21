@@ -179,7 +179,7 @@ const LoginForm = () => {
           type="submit"
           disabled={isLoggingIn}
           className="group relative w-full flex justify-center items-center gap-2 py-3 px-4 
-                   rounded-lg text-sm font-medium 
+                   rounded-lg text-sm font-semibold
                    bg-emerald-500 hover:bg-emerald-400 text-black
                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500/50
                    transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"

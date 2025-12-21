@@ -53,7 +53,7 @@ const HurryUpDeals = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <motion.div
             variants={itemVariants}
-            className="group relative bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl overflow-hidden"
+            className="group relative bg-gradient-to-br from-emerald-600 to-amber-600 rounded-2xl overflow-hidden"
           >
             <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dgc8cd67w/image/upload/v1731011856/shop50-banner-bg-1_xelc76.jpg')] bg-cover bg-center opacity-20" />
 
@@ -72,7 +72,7 @@ const HurryUpDeals = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-white text-purple-600 rounded-lg py-3 px-6 text-sm cursor-pointer hover:bg-white/90 transition-all inline-block"
+                    className="bg-white text-emerald-600 font-semibold rounded-lg py-3 px-6 text-sm cursor-pointer hover:bg-white/90 transition-all inline-block"
                   >
                     Shop Now
                   </motion.button>
@@ -115,7 +115,7 @@ const HurryUpDeals = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg py-3 px-6 text-sm cursor-pointer transition-all inline-block"
+                    className="bg-emerald-500 hover:bg-emerald-400 font-semibold text-black rounded-lg py-3 px-6 text-sm cursor-pointer transition-all inline-block"
                   >
                     Shop Now
                   </motion.button>

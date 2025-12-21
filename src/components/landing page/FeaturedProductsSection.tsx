@@ -90,7 +90,7 @@ const FeaturedProductsSection = () => {
 
             <motion.div variants={itemVariants} className="hidden md:block">
               <Link href="/shop">
-                <button className="bg-emerald-500 hover:bg-emerald-400 px-5 py-2 flex gap-2 items-center text-sm cursor-pointer rounded-md text-black transition-all group">
+                <button className="bg-emerald-500 font-semibold hover:bg-emerald-400 px-5 py-2 flex gap-2 items-center text-sm cursor-pointer rounded-md text-black transition-all group">
                   View All
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>

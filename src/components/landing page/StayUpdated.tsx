@@ -108,7 +108,7 @@ const StayUpdated = () => {
             />
             <Button
               disabled={isLoading}
-              className="w-full sm:w-auto cursor-pointer px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg transition-all"
+              className="w-full sm:w-auto cursor-pointer font-semibold px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg transition-all"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

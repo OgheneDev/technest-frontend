@@ -17,8 +17,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useAuthStore } from "@/store/useAuthStore";
 
-import logo from "@/assets/images/logo.png";
-
 interface Category {
   id: number;
   name: string;
@@ -126,13 +124,9 @@ const Navbar: React.FC = () => {
                 <Menu size={24} className="text-white" />
               </button>
               <Link href="/" className="flex-shrink-0">
-                <Image
-                  src={logo}
-                  alt="Logo"
-                  width={120}
-                  height={32}
-                  className="hover:opacity-80 transition-opacity"
-                />
+                <h4 className="text-white text-xl font-semibold">
+                  Tech<span className="text-emerald-500">N</span>est
+                </h4>
               </Link>
             </div>
 
@@ -190,7 +184,7 @@ const Navbar: React.FC = () => {
                 ) : (
                   <Link
                     href="/login"
-                    className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-all"
+                    className="flex items-center gap-2 font-semibold px-4 py-2 text-sm rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black transition-all"
                   >
                     <LogIn size={18} />
                     <span>Login</span>
@@ -206,7 +200,7 @@ const Navbar: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => handleCategoryClick(item.value || item.name)}
-                  className="text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-all text-sm font-medium whitespace-nowrap"
+                  className="text-zinc-400 cursor-pointer hover:text-white px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-all text-sm font-medium whitespace-nowrap"
                 >
                   {item.name}
                 </button>
@@ -232,7 +226,9 @@ const Navbar: React.FC = () => {
               <div className="bg-zinc-900 border-b border-zinc-800 p-6">
                 <div className="flex justify-between items-center mb-6">
                   <Link href="/" onClick={() => setIsMenuOpen(false)}>
-                    <Image src={logo} alt="Logo" width={120} height={32} />
+                    <h4 className="text-white text-xl font-semibold">
+                      Tech<span className="text-emerald-500">N</span>est
+                    </h4>
                   </Link>
                   <button
                     onClick={() => setIsMenuOpen(false)}
