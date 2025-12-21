@@ -46,7 +46,7 @@ export function OrderSummary({
 
         <div className="space-y-3">
           <Button
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black"
+            className="w-full bg-emerald-500 font-semibold hover:bg-emerald-400 text-black"
             asChild
             size="sm"
           >
@@ -58,7 +58,7 @@ export function OrderSummary({
 
           <Button
             variant="outline"
-            className="w-full border-zinc-700 text-sm hover:bg-zinc-800"
+            className="w-full border-zinc-700 text-sm font-semibold hover:bg-zinc-800"
             asChild
           >
             <Link href="/shop">Continue Shopping</Link>

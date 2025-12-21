@@ -268,7 +268,7 @@ export default function AccountDetails({ userData }: AccountDetailsProps) {
         <Button
           type="submit"
           disabled={isLoading}
-          className="bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-medium cursor-pointer"
+          className="bg-emerald-500 hover:bg-emerald-400 font-semibold text-black text-sm cursor-pointer"
         >
           {isLoading ? (
             <>

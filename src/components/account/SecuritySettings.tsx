@@ -190,7 +190,7 @@ export default function SecuritySettings() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="bg-emerald-500 hover:bg-emerald-400 text-sm text-black font-medium cursor-pointer"
+          className="bg-emerald-500 hover:bg-emerald-400 text-sm text-black font-semibold cursor-pointer"
         >
           {isLoading ? (
             <>

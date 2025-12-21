@@ -72,7 +72,7 @@ export default function DeleteAccount() {
           <Button
             onClick={handleDelete}
             disabled={!password || isDeleting}
-            className="w-full bg-red-600 text-sm hover:bg-red-700 cursor-pointer text-white transition-colors"
+            className="w-full bg-red-600 text-sm hover:bg-red-700 cursor-pointer font-semibold text-white transition-colors"
           >
             {isDeleting ? (
               <>
