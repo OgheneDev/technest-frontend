@@ -29,6 +29,9 @@ export const initializeCheckout = async (
 
 export const verifyPayment = async (reference: string) => {
   try {
+    console.log("🔍 verifyPayment called with reference:", reference);
+    console.log("🔍 Making request to:", `/api/checkout/verify/${reference}`);
+
     const response = await axiosInstance.get(
       `/api/checkout/verify/${reference}`
     );
