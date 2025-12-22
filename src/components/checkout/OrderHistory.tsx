@@ -8,15 +8,21 @@ import { CheckoutHistory, getStatusColor } from "@/types/checkout";
 interface OrderHistoryProps {
   checkoutHistory: CheckoutHistory[];
   activeStep: number;
-  setActiveStep: (step: number) => void;
+  showAllOrders: boolean;
+  setShowAllOrders: (show: boolean) => void;
 }
 
 export function OrderHistory({
   checkoutHistory,
   activeStep,
-  setActiveStep,
+  showAllOrders,
+  setShowAllOrders,
 }: OrderHistoryProps) {
   if (activeStep !== 1 || checkoutHistory.length === 0) return null;
+
+  const ordersToShow = showAllOrders
+    ? checkoutHistory
+    : checkoutHistory.slice(0, 3);
 
   return (
     <div className="bg-zinc-900/60 backdrop-blur-sm rounded-xl border border-zinc-800 p-6">
@@ -28,7 +34,7 @@ export function OrderHistory({
       </div>
 
       <div className="space-y-4">
-        {checkoutHistory.slice(0, 3).map((order) => (
+        {ordersToShow.map((order) => (
           <div
             key={order._id}
             className="p-4 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors border border-zinc-700"
@@ -75,9 +81,11 @@ export function OrderHistory({
         <Button
           variant="outline"
           className="w-full mt-4 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
-          onClick={() => setActiveStep(1)}
+          onClick={() => setShowAllOrders(!showAllOrders)}
         >
-          View All Orders ({checkoutHistory.length})
+          {showAllOrders
+            ? "Show Less"
+            : `View All Orders (${checkoutHistory.length})`}
         </Button>
       )}
     </div>

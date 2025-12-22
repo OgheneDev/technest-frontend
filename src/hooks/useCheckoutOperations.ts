@@ -21,6 +21,7 @@ export const useCheckoutOperations = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showAllOrders, setShowAllOrders] = useState(false);
   const router = useRouter();
   const { cart, updateCartCount } = useCart();
 
@@ -212,5 +213,7 @@ export const useCheckoutOperations = () => {
     handleCheckout,
     handleVerifyPayment,
     copyToClipboard,
+    showAllOrders,
+    setShowAllOrders,
   };
 };

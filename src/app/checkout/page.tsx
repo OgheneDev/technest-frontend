@@ -29,6 +29,8 @@ export default function CheckoutPage() {
     handleCheckout,
     handleVerifyPayment,
     copyToClipboard,
+    showAllOrders,
+    setShowAllOrders,
   } = useCheckoutOperations();
 
   return (
@@ -81,7 +83,8 @@ export default function CheckoutPage() {
             <OrderHistory
               checkoutHistory={checkoutHistory}
               activeStep={activeStep}
-              setActiveStep={setActiveStep}
+              showAllOrders={showAllOrders}
+              setShowAllOrders={setShowAllOrders}
             />
           </div>
 
