@@ -10,11 +10,11 @@ export const initializeCheckout = async (
       paymentMethod,
     });
 
-    if (response.status !== 200 && response.status !== 201) {
+    if (response.status !== 201) {
       throw new Error(`Unexpected status code: ${response.status}`);
     }
 
-    return response.data.data || response.data; // Adjust based on actual response structure
+    return response.data.data; // Returns { checkout, authorizationUrl, reference, accessCode }
   } catch (error: any) {
     console.error("Initialize checkout error:", {
       message: error.message,
@@ -33,11 +33,11 @@ export const verifyPayment = async (reference: string) => {
       `/api/checkout/verify/${reference}`
     );
 
-    if (response.status !== 200 && response.status !== 201) {
+    if (response.status !== 200) {
       throw new Error(`Unexpected status code: ${response.status}`);
     }
 
-    return response.data.data || response.data;
+    return response.data.data;
   } catch (error: any) {
     console.error("Verify payment error:", {
       message: error.message,
@@ -53,13 +53,14 @@ export const verifyPayment = async (reference: string) => {
 export const getCheckoutHistory = async () => {
   try {
     const response = await axiosInstance.get("/api/checkout/history");
-    console.log("Checkout history: ", response);
+    console.log("Response status:", response.status);
+    console.log("Response data:", response.data);
 
-    if (response.status !== 200 && response.status !== 201) {
+    if (response.status !== 200) {
       throw new Error(`Unexpected status code: ${response.status}`);
     }
 
-    return response.data.data || response.data;
+    return response.data; // Returns the full response object
   } catch (error: any) {
     console.error("Get checkout history error:", {
       message: error.message,
@@ -68,6 +69,48 @@ export const getCheckoutHistory = async () => {
     });
     const errorMessage =
       error.response?.data?.error || "Failed to get checkout history";
+    throw new Error(errorMessage);
+  }
+};
+
+export const getCheckoutById = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`/api/checkout/${id}`);
+
+    if (response.status !== 200) {
+      throw new Error(`Unexpected status code: ${response.status}`);
+    }
+
+    return response.data.data;
+  } catch (error: any) {
+    console.error("Get checkout by ID error:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
+    const errorMessage =
+      error.response?.data?.error || "Failed to get checkout details";
+    throw new Error(errorMessage);
+  }
+};
+
+export const cancelCheckout = async (id: string) => {
+  try {
+    const response = await axiosInstance.put(`/api/checkout/${id}/cancel`);
+
+    if (response.status !== 200) {
+      throw new Error(`Unexpected status code: ${response.status}`);
+    }
+
+    return response.data.data;
+  } catch (error: any) {
+    console.error("Cancel checkout error:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
+    const errorMessage =
+      error.response?.data?.error || "Failed to cancel checkout";
     throw new Error(errorMessage);
   }
 };

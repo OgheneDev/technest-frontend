@@ -7,18 +7,29 @@ import {
   initializeCheckout,
   verifyPayment,
   getCheckoutHistory,
+  cancelCheckout,
 } from "@/api/checkout/requests";
 import { useCart } from "@/context/CartContext";
 import { CheckoutHistory, CartData } from "@/types/checkout";
+import { useCheckoutStore } from "@/store/checkoutStore";
 
 export const useCheckoutOperations = () => {
-  const [shippingAddress, setShippingAddress] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const [paymentReference, setPaymentReference] = useState("");
+  const {
+    activeStep,
+    shippingAddress,
+    selectedPaymentMethod,
+    paymentReference,
+    authorizationUrl,
+    setActiveStep,
+    setShippingAddress,
+    setSelectedPaymentMethod,
+    setPaymentReference,
+    setAuthorizationUrl,
+    resetCheckout,
+  } = useCheckoutStore();
   const [checkoutHistory, setCheckoutHistory] = useState<CheckoutHistory[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [activeStep, setActiveStep] = useState(1);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showAllOrders, setShowAllOrders] = useState(false);
@@ -30,8 +41,10 @@ export const useCheckoutOperations = () => {
   useEffect(() => {
     const fetchCheckoutHistory = async () => {
       try {
-        const history = await getCheckoutHistory();
-        setCheckoutHistory(history);
+        const response = await getCheckoutHistory();
+        // The backend returns { success: true, data: [...], count, total, etc. }
+        // So we need to access response.data (the data field in the response)
+        setCheckoutHistory(response.data || []); // FIX: Use response.data.data or response.data
       } catch (err: any) {
         console.error("Error fetching checkout history:", err);
         setError("Unable to load checkout history");
@@ -39,7 +52,7 @@ export const useCheckoutOperations = () => {
     };
 
     fetchCheckoutHistory();
-  }, []);
+  }, []); // REMOVE currentPage dependency
 
   const copyToClipboard = useCallback((text: string) => {
     navigator.clipboard.writeText(text);
@@ -56,87 +69,7 @@ export const useCheckoutOperations = () => {
     setTimeout(() => setCopied(false), 2000);
   }, []);
 
-  const handleCheckout = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!shippingAddress.trim()) {
-      setError("Please provide shipping address");
-      Swal.fire({
-        title: "Error",
-        text: "Please provide shipping address",
-        icon: "error",
-        background: "#0a0a0a",
-        color: "#fff",
-      });
-      return;
-    }
-
-    if (!selectedPaymentMethod) {
-      setError("Please select a payment method");
-      Swal.fire({
-        title: "Error",
-        text: "Please select a payment method",
-        icon: "error",
-        background: "#0a0a0a",
-        color: "#fff",
-      });
-      return;
-    }
-
-    // FIX: Changed from cartData?.items to cartData?.products
-    if (!cartData?.products || cartData.products.length === 0) {
-      setError("Your cart is empty");
-      Swal.fire({
-        title: "Empty Cart",
-        text: "Your cart is empty",
-        icon: "warning",
-        background: "#0a0a0a",
-        color: "#fff",
-      });
-      router.push("/shop");
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const checkoutData = await initializeCheckout(
-        shippingAddress.trim(),
-        selectedPaymentMethod
-      );
-
-      setPaymentReference(checkoutData.reference || "");
-
-      Swal.fire({
-        title: "Success!",
-        text: `Checkout initialized. Reference: ${checkoutData.reference}`,
-        icon: "success",
-        showCancelButton: true,
-        confirmButtonText: "Copy Reference",
-        cancelButtonText: "Continue",
-        background: "#0a0a0a",
-        color: "#fff",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          copyToClipboard(checkoutData.reference || "");
-        }
-      });
-
-      setActiveStep(2);
-    } catch (error: any) {
-      console.error("Error initializing checkout:", error);
-      Swal.fire({
-        title: "Error",
-        text: error.response?.data?.error || "Failed to initialize checkout",
-        icon: "error",
-        background: "#0a0a0a",
-        color: "#fff",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // ... rest of the hook remains the same until handleVerifyPayment
 
   const handleVerifyPayment = async () => {
     if (!paymentReference) {
@@ -157,7 +90,7 @@ export const useCheckoutOperations = () => {
     try {
       const verificationData = await verifyPayment(paymentReference);
 
-      if (verificationData.status === "success") {
+      if (verificationData) {
         Swal.fire({
           title: "Payment Verified!",
           text: "Your payment was successful!",
@@ -166,10 +99,22 @@ export const useCheckoutOperations = () => {
           color: "#fff",
         });
 
-        setCheckoutHistory([verificationData, ...checkoutHistory]);
+        // Refresh checkout history - FIX this part
+        try {
+          const historyResponse = await getCheckoutHistory();
+          // Prepend the new checkout to existing history
+          setCheckoutHistory((prev) => [verificationData, ...prev]);
+        } catch (historyError) {
+          console.error("Error refreshing history:", historyError);
+          // Just add the new checkout locally
+          setCheckoutHistory((prev) => [verificationData, ...prev]);
+        }
+
+        // Reset form
         setShippingAddress("");
-        setSelectedPaymentMethod("");
+        setSelectedPaymentMethod("paystack");
         setPaymentReference("");
+        setAuthorizationUrl("");
 
         if (updateCartCount) {
           await updateCartCount();
@@ -178,16 +123,14 @@ export const useCheckoutOperations = () => {
         setActiveStep(3);
 
         setTimeout(() => {
-          router.push("/orders?success=true");
-        }, 3000);
-      } else {
-        throw new Error("Payment verification failed");
+          router.push(`/checkout/${verificationData._id}?success=true`);
+        }, 2000);
       }
     } catch (error: any) {
       console.error("Error verifying payment:", error);
       Swal.fire({
         title: "Error",
-        text: error.response?.data?.error || "Failed to verify payment",
+        text: error.message || "Failed to verify payment",
         icon: "error",
         background: "#0a0a0a",
         color: "#fff",
@@ -197,12 +140,121 @@ export const useCheckoutOperations = () => {
     }
   };
 
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!shippingAddress.trim() || !selectedPaymentMethod) {
+      setError("Please fill all required fields");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const checkoutData = await initializeCheckout(
+        shippingAddress.trim(),
+        selectedPaymentMethod
+      );
+
+      // Update store
+      setPaymentReference(checkoutData.reference || "");
+      setAuthorizationUrl(checkoutData.authorizationUrl || "");
+      setActiveStep(2);
+
+      if (
+        selectedPaymentMethod === "paystack" &&
+        checkoutData.authorizationUrl
+      ) {
+        Swal.fire({
+          title: "Redirecting to Paystack",
+          html: `
+          <div class="text-center">
+            <p class="mb-4">You will be redirected to Paystack to complete your payment.</p>
+            <p class="text-sm text-zinc-400">
+              After payment, you'll be redirected back to this page automatically.
+            </p>
+          </div>
+        `,
+          icon: "info",
+          showConfirmButton: true,
+          confirmButtonText: "Continue to Paystack",
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          background: "#0a0a0a",
+          color: "#fff",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirect in the SAME tab
+            window.location.href = checkoutData.authorizationUrl;
+          }
+        });
+      }
+    } catch (error: any) {
+      console.error("Error initializing checkout:", error);
+      Swal.fire({
+        title: "Error",
+        text: error.message || "Failed to initialize checkout",
+        icon: "error",
+        background: "#0a0a0a",
+        color: "#fff",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelCheckout = async (checkoutId: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This will cancel your checkout and you'll need to start over",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, cancel it",
+      cancelButtonText: "No, keep it",
+      background: "#0a0a0a",
+      color: "#fff",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await cancelCheckout(checkoutId);
+
+        // Update local state - mark as cancelled
+        setCheckoutHistory((prev) =>
+          prev.map((item) =>
+            item._id === checkoutId ? { ...item, status: "cancelled" } : item
+          )
+        );
+
+        Swal.fire({
+          title: "Cancelled!",
+          text: "Your checkout has been cancelled.",
+          icon: "success",
+          background: "#0a0a0a",
+          color: "#fff",
+        });
+      } catch (error: any) {
+        Swal.fire({
+          title: "Error",
+          text: error.message || "Failed to cancel checkout",
+          icon: "error",
+          background: "#0a0a0a",
+          color: "#fff",
+        });
+      }
+    }
+  };
+
+  // REMOVE handleLoadMore function since we're not using pagination
+
   return {
     shippingAddress,
     setShippingAddress,
     selectedPaymentMethod,
     setSelectedPaymentMethod,
     paymentReference,
+    authorizationUrl,
     checkoutHistory,
     isLoading,
     isVerifying,
@@ -211,8 +263,9 @@ export const useCheckoutOperations = () => {
     copied,
     error,
     cartData,
-    handleCheckout,
     handleVerifyPayment,
+    handleCheckout,
+    handleCancelCheckout,
     copyToClipboard,
     showAllOrders,
     setShowAllOrders,
