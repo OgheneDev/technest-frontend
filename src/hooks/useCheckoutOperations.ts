@@ -25,7 +25,7 @@ export const useCheckoutOperations = () => {
   const router = useRouter();
   const { cart, updateCartCount } = useCart();
 
-  const cartData = cart as CartData | undefined;
+  const cartData = cart as unknown as CartData | undefined;
 
   useEffect(() => {
     const fetchCheckoutHistory = async () => {
@@ -83,7 +83,8 @@ export const useCheckoutOperations = () => {
       return;
     }
 
-    if (!cartData?.items || cartData.items.length === 0) {
+    // FIX: Changed from cartData?.items to cartData?.products
+    if (!cartData?.products || cartData.products.length === 0) {
       setError("Your cart is empty");
       Swal.fire({
         title: "Empty Cart",

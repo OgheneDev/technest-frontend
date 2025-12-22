@@ -1,24 +1,22 @@
-import {
-  CreditCard,
-  Wallet,
-  Package,
-  FileText,
-  CheckCircle,
-} from "lucide-react";
+import { CreditCard, Wallet, FileText, CheckCircle } from "lucide-react";
 
 export interface CheckoutHistory {
   _id: string;
+  user: string;
+  cart: {
+    _id: string;
+    user: string;
+    products: Array<any>; // You can define a more specific type for products
+    totalPrice: number;
+    createdAt: string;
+  };
   shippingAddress: string;
   paymentMethod: string;
-  total: number | null;
-  status: string;
+  totalPrice: number;
+  status?: string;
   createdAt: string;
-  reference?: string;
-  items?: Array<{
-    name: string;
-    quantity: number;
-    price: number;
-  }>;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface CartItem {
@@ -32,6 +30,7 @@ export interface CartItem {
 export interface CartData {
   items?: CartItem[];
   totalPrice?: number;
+  products: CartItem[];
 }
 
 export interface PaymentMethod {
@@ -47,10 +46,8 @@ export interface Step {
 }
 
 export const paymentMethods: PaymentMethod[] = [
-  { id: "card", name: "Credit/Debit Card", icon: CreditCard },
-  { id: "transfer", name: "Bank Transfer", icon: Wallet },
-  { id: "wallet", name: "Digital Wallet", icon: CreditCard },
-  { id: "cash", name: "Cash on Delivery", icon: Package },
+  { id: "debit-card", name: "Credit/Debit Card", icon: CreditCard },
+  { id: "bank-transfer", name: "Bank Transfer", icon: Wallet },
 ];
 
 export const steps: Step[] = [

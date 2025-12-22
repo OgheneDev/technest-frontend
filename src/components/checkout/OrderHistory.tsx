@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Truck } from "lucide-react";
+import { Calendar, Truck, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/utils/formatPrice";
 import { CheckoutHistory, getStatusColor } from "@/types/checkout";
@@ -53,22 +53,43 @@ export function OrderHistory({
                     #{order._id.slice(-8)}
                   </span>
                 </div>
+
                 <div className="text-sm text-zinc-400">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-1">
                     <Truck className="h-4 w-4" />
-                    {order.shippingAddress}
+                    {order.shippingAddress || "No shipping address provided"}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-zinc-500">
+                    <Package className="h-4 w-4" />
+                    <span>
+                      {order.cart?.products?.length || 0} item
+                      {(order.cart?.products?.length || 0) !== 1 ? "s" : ""}
+                    </span>
+                    <span className="mx-1">•</span>
+                    <span className="capitalize">
+                      {order.paymentMethod?.replace("-", " ") ||
+                        "Unknown payment"}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="text-right space-y-1">
                 <div className="text-lg font-bold text-emerald-400">
-                  ₦{formatPrice(order.total ?? 0)}
+                  ₦{formatPrice(order.totalPrice || 0)}
                 </div>
                 <div className="text-sm text-zinc-500">
                   {new Date(order.createdAt).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
+                    year: "numeric",
+                  })}
+                </div>
+                <div className="text-xs text-zinc-600">
+                  {new Date(order.createdAt).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
                 </div>
               </div>
