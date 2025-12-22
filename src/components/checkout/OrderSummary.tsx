@@ -47,11 +47,11 @@ export function OrderSummary({ cartData, copyToClipboard }: OrderSummaryProps) {
             <div className="flex-1 min-w-0">
               <h4 className="font-medium text-white truncate">{item.name}</h4>
               <p className="text-sm text-zinc-400">
-                {item.quantity} × ₦{formatPrice(item.price)}
+                {item.quantity} × ₦{formatPrice(item.price ?? 0)}
               </p>
             </div>
             <div className="font-semibold text-emerald-400">
-              ₦{formatPrice(item.price * item.quantity)}
+              ₦{formatPrice((item.price ?? 0) * item.quantity)}
             </div>
           </div>
         ))}
