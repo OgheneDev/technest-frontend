@@ -121,3 +121,24 @@ export const getStatusText = (status?: string | null) => {
   if (!status) return "Unknown";
   return status.charAt(0).toUpperCase() + status.slice(1);
 };
+
+export interface CheckoutDetails extends CheckoutHistory {
+  cart: {
+    _id: string;
+    user: string;
+    products: Array<{
+      product: {
+        _id: string;
+        name: string;
+        price: number;
+        images?: string[];
+        description?: string;
+      };
+      quantity: number;
+      _id: string;
+    }>;
+    totalPrice: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
