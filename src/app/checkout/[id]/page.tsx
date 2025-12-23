@@ -284,11 +284,15 @@ export default function CheckoutDetailPage() {
                       {getStatusText(checkout.status)}
                     </span>
                   </div>
-                  {checkout.paymentDetails?.transactionId && (
+                  {checkout.paymentDetails?.transactionId != null && (
                     <div className="flex justify-between">
                       <span className="text-zinc-400">Transaction ID</span>
                       <span className="text-white font-mono text-xs">
-                        {checkout.paymentDetails.transactionId.slice(0, 12)}...
+                        {String(checkout.paymentDetails.transactionId).slice(
+                          0,
+                          12
+                        )}
+                        ...
                       </span>
                     </div>
                   )}
