@@ -74,6 +74,7 @@ export const getCheckoutHistory = async () => {
 export const getCheckoutById = async (id: string) => {
   try {
     const response = await axiosInstance.get(`/api/checkout/${id}`);
+    console.log("Order:", response);
 
     if (response.status !== 200) {
       throw new Error(`Unexpected status code: ${response.status}`);

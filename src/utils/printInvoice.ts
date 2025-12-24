@@ -10,6 +10,8 @@ export const handlePrintReceipt = (checkout: CheckoutHistory) => {
   const tax = subtotal * 0.075;
   const total = subtotal + tax;
 
+  const items = checkout.items || [];
+
   const receiptWindow = window.open("", "_blank");
   if (!receiptWindow) {
     alert("Please allow pop-ups to print receipt");
@@ -140,7 +142,7 @@ export const handlePrintReceipt = (checkout: CheckoutHistory) => {
       <body>
         <div class="receipt">
           <div class="header">
-            <div class="company-name">YOUR STORE NAME</div>
+            <div class="company-name">TechNest</div>
             <div>123 Store Street</div>
             <div>City, State 12345</div>
             <div>Tel: (123) 456-7890</div>
@@ -175,8 +177,8 @@ export const handlePrintReceipt = (checkout: CheckoutHistory) => {
           
           <div class="items-section">
             ${
-              checkout.cart?.products
-                ?.map(
+              items
+                .map(
                   (item) => `
               <div class="item">
                 <div class="item-name">${item.product?.name || "Product"}</div>
@@ -253,6 +255,8 @@ export const handleDownloadInvoice = (checkout: CheckoutHistory) => {
   const subtotal = checkout.totalPrice || 0;
   const tax = subtotal * 0.075;
   const total = subtotal + tax;
+
+  const items = checkout.items || [];
 
   const invoiceWindow = window.open("", "_blank");
   if (!invoiceWindow) {
@@ -487,12 +491,12 @@ export const handleDownloadInvoice = (checkout: CheckoutHistory) => {
         <div class="invoice">
           <div class="invoice-header">
             <div class="company-info">
-              <div class="company-name">YOUR STORE</div>
+              <div class="company-name">TechNest</div>
               <div class="company-details">
                 123 Store Street<br>
                 City, State 12345<br>
                 Phone: (123) 456-7890<br>
-                Email: sales@yourstore.com
+                Email: sales@technest.com
               </div>
             </div>
             <div class="invoice-title">
@@ -571,8 +575,8 @@ export const handleDownloadInvoice = (checkout: CheckoutHistory) => {
             </thead>
             <tbody>
               ${
-                checkout.cart?.products
-                  ?.map(
+                items
+                  .map(
                     (item) => `
                 <tr>
                   <td class="item-name">${item.product?.name || "Product"}</td>

@@ -1,11 +1,4 @@
-import {
-  CreditCard,
-  Wallet,
-  FileText,
-  CheckCircle,
-  Bitcoin,
-  Smartphone,
-} from "lucide-react";
+import { CreditCard, Wallet, FileText, CheckCircle } from "lucide-react";
 
 export interface CheckoutHistory {
   _id: string;

@@ -36,7 +36,18 @@ export const useCheckoutOperations = () => {
   const router = useRouter();
   const { cart, updateCartCount } = useCart();
 
-  const cartData = cart as unknown as CartData | undefined;
+  const cartData = cart
+    ? {
+        items: cart.products.map((item) => ({
+          _id: item.product?._id || "",
+          name: item.product?.name || "",
+          price: item.product?.price || 0,
+          image: item.product?.images?.[0] || "",
+          quantity: item.quantity,
+        })),
+        totalPrice: cart.totalPrice,
+      }
+    : undefined;
 
   useEffect(() => {
     const fetchCheckoutHistory = async () => {

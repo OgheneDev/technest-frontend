@@ -95,7 +95,7 @@ export default function CheckoutPage() {
           {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
             <OrderSummary
-              cartData={cartData}
+              cartData={cartData as any}
               copyToClipboard={copyToClipboard}
             />
           </div>

@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/utils/formatPrice";
 import { getStatusColor, getStatusText } from "@/types/checkout";
 import Link from "next/link";
+import Loader from "@/components/ui/Loader";
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -52,14 +53,7 @@ export default function OrdersPage() {
   });
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-zinc-400">Loading your orders...</p>
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
