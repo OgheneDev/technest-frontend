@@ -6,6 +6,16 @@ import { getStatusText } from "@/types/checkout";
  * Generate and print a formatted receipt
  */
 export const handlePrintReceipt = (checkout: CheckoutHistory) => {
+  const orderId = checkout._id.slice(0, 8).toUpperCase();
+  const date = new Date(checkout.createdAt)
+    .toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+    .replace(/\s/g, "-");
+  const filename = `Receipt-${orderId}-${date}`;
+
   const subtotal = checkout.totalPrice || 0;
   const tax = subtotal * 0.075;
   const total = subtotal + tax;
@@ -23,7 +33,7 @@ export const handlePrintReceipt = (checkout: CheckoutHistory) => {
     <html>
       <head>
         <meta charset="UTF-8">
-        <title>Receipt - Order #${checkout._id}</title>
+        <title>${filename}</title>
         <style>
           * {
             margin: 0;
@@ -252,6 +262,16 @@ export const handlePrintReceipt = (checkout: CheckoutHistory) => {
  * Generate and download a PDF invoice
  */
 export const handleDownloadInvoice = (checkout: CheckoutHistory) => {
+  const orderId = checkout._id.slice(0, 8).toUpperCase();
+  const date = new Date(checkout.createdAt)
+    .toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+    .replace(/\s/g, "-");
+  const filename = `Invoice-${orderId}-${date}`;
+
   const subtotal = checkout.totalPrice || 0;
   const tax = subtotal * 0.075;
   const total = subtotal + tax;
@@ -269,7 +289,7 @@ export const handleDownloadInvoice = (checkout: CheckoutHistory) => {
     <html>
       <head>
         <meta charset="UTF-8">
-        <title>Invoice - ${checkout._id}</title>
+        <title>${filename}</title>
         <style>
           * {
             margin: 0;

@@ -5,7 +5,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2, Lock, Eye, EyeOff } from "lucide-react";
-import Swal from "sweetalert2";
+import { useToastStore } from "@/store/useToastStore";
 
 export default function SecuritySettings() {
   const [formData, setFormData] = useState({
@@ -14,6 +14,7 @@ export default function SecuritySettings() {
     confirmPassword: "",
   });
   const { updatePassword } = useAuthStore();
+  const { showToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState({
     current: false,
@@ -26,12 +27,7 @@ export default function SecuritySettings() {
     setIsLoading(true);
 
     if (formData.newPassword !== formData.confirmPassword) {
-      Swal.fire({
-        title: "Error",
-        text: "New passwords do not match",
-        icon: "error",
-        confirmButtonColor: "#10b981",
-      });
+      showToast("New passwords do not match", "error");
       setIsLoading(false);
       return;
     }
@@ -48,22 +44,12 @@ export default function SecuritySettings() {
         confirmPassword: "",
       });
 
-      Swal.fire({
-        title: "Success!",
-        text: "Password updated successfully",
-        icon: "success",
-        confirmButtonColor: "#10b981",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      showToast("Password updated successfully", "success");
     } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text:
-          error instanceof Error ? error.message : "Failed to update password",
-        icon: "error",
-        confirmButtonColor: "#10b981",
-      });
+      showToast(
+        error instanceof Error ? error.message : "Failed to update password",
+        "error"
+      );
     } finally {
       setIsLoading(false);
     }

@@ -5,8 +5,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Loader2, User, Phone, Mail, Camera } from "lucide-react";
-import Swal from "sweetalert2";
 import Image from "next/image";
+import { useToastStore } from "@/store/useToastStore";
 
 interface UserData {
   _id: string;
@@ -33,6 +33,7 @@ export default function AccountDetails({ userData }: AccountDetailsProps) {
     userData?.avatar || null
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useToastStore();
 
   // Sync formData and avatarPreview with userData changes
   useEffect(() => {
@@ -55,26 +56,11 @@ export default function AccountDetails({ userData }: AccountDetailsProps) {
     if (file) {
       // Validate file type and size
       if (!file.type.startsWith("image/")) {
-        Swal.fire({
-          title: "Error",
-          text: "Please upload an image file",
-          icon: "error",
-          confirmButtonColor: "#10b981",
-          background: "#0a0a0a",
-          color: "#fff",
-        });
+        showToast("Please upload an image file", "error");
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        // 5MB limit
-        Swal.fire({
-          title: "Error",
-          text: "Image size should be less than 5MB",
-          icon: "error",
-          confirmButtonColor: "#10b981",
-          background: "#0a0a0a",
-          color: "#fff",
-        });
+        showToast("Image size should be less than 5MB", "error");
         return;
       }
 
@@ -117,14 +103,7 @@ export default function AccountDetails({ userData }: AccountDetailsProps) {
       }
 
       if (!hasChanges) {
-        Swal.fire({
-          title: "Info",
-          text: "No changes to update",
-          icon: "info",
-          confirmButtonColor: "#10b981",
-          background: "#0a0a0a",
-          color: "#fff",
-        });
+        showToast("No changes to update", "warning");
         setIsLoading(false);
         return;
       }
@@ -132,26 +111,12 @@ export default function AccountDetails({ userData }: AccountDetailsProps) {
       // Update details using the store
       await updateDetails(formDataToSend);
 
-      Swal.fire({
-        title: "Success!",
-        text: "Profile updated successfully",
-        icon: "success",
-        confirmButtonColor: "#10b981",
-        background: "#0a0a0a",
-        color: "#fff",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      showToast("Profile updated successfully", "success");
     } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text:
-          error instanceof Error ? error.message : "Failed to update profile",
-        icon: "error",
-        confirmButtonColor: "#10b981",
-        background: "#0a0a0a",
-        color: "#fff",
-      });
+      showToast(
+        error instanceof Error ? error.message : "Failed to update profile",
+        "error"
+      );
     } finally {
       setIsLoading(false);
     }

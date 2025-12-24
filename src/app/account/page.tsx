@@ -9,10 +9,24 @@ import DeleteAccount from "@/components/account/DeleteAccount";
 import { useAuthStore } from "@/store/useAuthStore";
 import { User } from "lucide-react";
 import Loader from "@/components/ui/Loader";
+import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState("details");
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+
+  const [confirmationModal, setConfirmationModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    variant?: "danger" | "warning" | "info";
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   useEffect(() => {
     // Refresh user data when component mounts
@@ -25,6 +39,10 @@ export default function AccountPage() {
   if (isCheckingAuth || !authUser) {
     return <Loader />;
   }
+
+  const closeModal = () => {
+    setConfirmationModal((prev) => ({ ...prev, isOpen: false }));
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950 overflow-hidden relative">
@@ -73,7 +91,11 @@ export default function AccountPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Sidebar Navigation */}
             <div className="lg:col-span-1">
-              <AccountNav activeTab={activeTab} onTabChange={setActiveTab} />
+              <AccountNav
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+                setConfirmationModal={setConfirmationModal}
+              />
             </div>
 
             {/* Main Content */}
@@ -91,13 +113,31 @@ export default function AccountPage() {
                     <AccountDetails userData={authUser} />
                   )}
                   {activeTab === "security" && <SecuritySettings />}
-                  {activeTab === "delete" && <DeleteAccount />}
+                  {activeTab === "delete" && (
+                    <DeleteAccount
+                      setConfirmationModal={setConfirmationModal}
+                    />
+                  )}
                 </AnimatePresence>
               </motion.div>
             </div>
           </div>
         </motion.div>
       </div>
+      <ConfirmationModal
+        isOpen={confirmationModal.isOpen}
+        onClose={closeModal}
+        onConfirm={confirmationModal.onConfirm}
+        title={confirmationModal.title}
+        message={confirmationModal.message}
+        confirmText={
+          confirmationModal.variant === "danger"
+            ? "Yes, delete account"
+            : "Yes, log out"
+        }
+        cancelText="Cancel"
+        variant={confirmationModal.variant}
+      />
     </div>
   );
 }

@@ -11,6 +11,7 @@ export interface CheckoutHistory {
     createdAt: string;
     updatedAt: string;
   };
+  items: CartItem[];
   shippingAddress: string;
   paymentMethod: string;
   totalPrice: number;

@@ -4,7 +4,7 @@ import { Product } from "@/types/products";
 import { Button } from "../ui/button";
 import { formatPrice } from "@/utils/formatPrice";
 import { useState, useEffect } from "react";
-import { showToast } from "@/store/toastStore";
+import { useToastStore } from "@/store/useToastStore";
 import { ShoppingCart, Heart, Loader2, Star, Eye, Zap } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -29,6 +29,7 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const { updateCartCount } = useCart();
   const { isAuthenticated } = useAuthStore();
+  const { showToast } = useToastStore();
   const router = useRouter();
 
   // Add useEffect for initial wishlist check

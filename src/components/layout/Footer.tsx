@@ -1,13 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
-import Swal from "sweetalert2";
 import { Facebook, Twitter, Instagram, Send } from "lucide-react";
-
-// Add logo import
-import logo from "@/assets/images/logo.png"; // Adjust path as needed
+import { useToastStore } from "@/store/useToastStore";
 
 interface NavLink {
   text: string;
@@ -16,15 +12,11 @@ interface NavLink {
 
 const Footer = () => {
   const [subscribeEmail, setSubscribeEmail] = useState<string>("");
+  const { showToast } = useToastStore();
 
   const handleSubscribe = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Implement subscribe logic here
-    Swal.fire({
-      title: "Success!",
-      text: `Subscribed with email: ${subscribeEmail}`,
-      icon: "success",
-    });
+    showToast(`Subscribed with email: ${subscribeEmail}`, "success");
     setSubscribeEmail("");
   };
 
@@ -34,7 +26,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Company Info */}
           <div className="space-y-6">
-            <Image src={logo} alt="Logo" width={140} height={48} />
+            <h4 className="text-white text-xl font-semibold">
+              Tech<span className="text-emerald-500">N</span>est
+            </h4>
             <div className="space-y-4 text-zinc-400 text-sm">
               <p>
                 1234 Street, Suite 500

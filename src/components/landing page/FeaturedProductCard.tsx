@@ -12,14 +12,13 @@ import {
   removeFromWishlist,
   getWishlist,
 } from "@/api/wishlist/requests";
-import Swal from "sweetalert2";
 import { AddToCartParams } from "@/types/cart";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/utils/formatPrice";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { showToast } from "@/store/toastStore";
+import { useToastStore } from "@/store/useToastStore";
 
 interface FeaturedProductCardProps {
   product: Product;
@@ -34,24 +33,11 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
   const { updateCartCount } = useCart();
   const { isAuthenticated } = useAuthStore();
   const router = useRouter();
+  const { showToast } = useToastStore();
 
   const handleAuthRequired = (action: "cart" | "wishlist") => {
     if (!isAuthenticated) {
-      Swal.fire({
-        title: "Authentication Required",
-        text: `Please login to add items to your ${action}`,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-        confirmButtonColor: "#10b981",
-        background: "#18181b",
-        color: "#fafafa",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.push("/login");
-        }
-      });
+      showToast(`Please login to add items to your ${action}`, "error", 4000);
       return false;
     }
     return true;
@@ -62,14 +48,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
     if (isAddingToCart) return;
 
     if (product.stock < 1) {
-      Swal.fire({
-        title: "Out of Stock",
-        text: "This item is currently unavailable",
-        icon: "error",
-        confirmButtonColor: "#10b981",
-        background: "#18181b",
-        color: "#fafafa",
-      });
+      showToast("This item is currently unavailable", "error", 3000);
       return;
     }
 
@@ -87,14 +66,11 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
       const newQuantity = existingItem ? existingItem.quantity + 1 : 1;
 
       if (newQuantity > product.stock) {
-        Swal.fire({
-          title: "Stock Limit Reached",
-          text: "Cannot add more of this item",
-          icon: "warning",
-          confirmButtonColor: "#10b981",
-          background: "#18181b",
-          color: "#fafafa",
-        });
+        showToast(
+          "Cannot add more of this item - stock limit reached",
+          "error",
+          3000
+        );
         return;
       }
 
@@ -131,6 +107,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({
         setIsInWishlist(isProductInWishlist);
       } catch (error) {
         console.error("Error checking wishlist status:", error);
+        showToast("Failed to load wishlist status", "error", 3000);
       }
     };
 

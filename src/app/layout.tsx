@@ -5,6 +5,7 @@ import "./globals.css";
 import LayoutWithCondition from "@/components/layout/LayoutWithCondition";
 import ClientAuthLayout from "@/components/layout/ClientLayout";
 import { CartProvider } from "@/context/CartContext";
+import { ToastContainer } from "@/components/ui/ToastContainer";
 
 const manrope = Manrope({ subsets: ["latin"], weight: "400" });
 
@@ -23,7 +24,10 @@ export default function RootLayout({
       <body className={manrope.className}>
         <ClientAuthLayout>
           <CartProvider>
-            <LayoutWithCondition>{children}</LayoutWithCondition>
+            <LayoutWithCondition>
+              {children}
+              <ToastContainer />
+            </LayoutWithCondition>
           </CartProvider>
         </ClientAuthLayout>
       </body>

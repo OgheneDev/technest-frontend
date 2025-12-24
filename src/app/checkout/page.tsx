@@ -10,6 +10,7 @@ import { ConfirmationStep } from "@/components/checkout/ConfirmationStep";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { OrderHistory } from "@/components/checkout/OrderHistory";
 import { CheckoutFooter } from "@/components/checkout/CheckoutFooter";
+import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 export default function CheckoutPage() {
   const {
@@ -33,6 +34,8 @@ export default function CheckoutPage() {
     copyToClipboard,
     showAllOrders,
     setShowAllOrders,
+    confirmationModal,
+    closeConfirmationModal,
   } = useCheckoutOperations();
 
   return (
@@ -69,7 +72,7 @@ export default function CheckoutPage() {
               {activeStep === 2 && paymentReference && (
                 <PaymentStep
                   paymentReference={paymentReference}
-                  authorizationUrl={authorizationUrl} // Pass this
+                  authorizationUrl={authorizationUrl}
                   selectedPaymentMethod={selectedPaymentMethod}
                   isVerifying={isVerifying}
                   copied={copied}
@@ -103,6 +106,24 @@ export default function CheckoutPage() {
       </main>
 
       <CheckoutFooter />
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmationModal.isOpen}
+        onClose={closeConfirmationModal}
+        onConfirm={confirmationModal.onConfirm}
+        title={confirmationModal.title}
+        message={confirmationModal.message}
+        variant={confirmationModal.variant}
+        confirmText={
+          confirmationModal.variant === "info"
+            ? "Continue to Paystack"
+            : "Yes, cancel it"
+        }
+        cancelText={
+          confirmationModal.variant === "info" ? "Go Back" : "No, keep it"
+        }
+      />
     </div>
   );
 }

@@ -1,138 +1,141 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, AlertCircle, Info, XCircle, X } from 'lucide-react';
+"use client";
 
-type ToastType = 'success' | 'error' | 'info' | 'warning';
+import React, { useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, AlertCircle, X, AlertTriangle } from "lucide-react";
 
 interface ToastProps {
   show: boolean;
   message: string;
-  type?: ToastType;
-  onClose?: () => void;
+  type: "success" | "error" | "warning";
   duration?: number;
+  onClose: () => void;
 }
 
-const toastStyles: Record<ToastType, { bg: string; border: string; icon: any }> = {
-  success: {
-    bg: 'bg-emerald-500/10 backdrop-blur-xl',
-    border: 'border-emerald-500/30',
-    icon: CheckCircle2
-  },
-  error: {
-    bg: 'bg-red-500/10 backdrop-blur-xl',
-    border: 'border-red-500/30',
-    icon: XCircle
-  },
-  warning: {
-    bg: 'bg-amber-500/10 backdrop-blur-xl',
-    border: 'border-amber-500/30',
-    icon: AlertCircle
-  },
-  info: {
-    bg: 'bg-blue-500/10 backdrop-blur-xl',
-    border: 'border-blue-500/30',
-    icon: Info
-  }
-};
-
-const iconColors: Record<ToastType, string> = {
-  success: 'text-emerald-400',
-  error: 'text-red-400',
-  warning: 'text-amber-400',
-  info: 'text-blue-400'
-};
-
-export const Toast = ({ 
-  show, 
-  message, 
-  type = 'success',
+const Toast = ({
+  show,
+  message,
+  type,
+  duration = 4000,
   onClose,
-  duration = 3000 
 }: ToastProps) => {
-  const style = toastStyles[type];
-  const IconComponent = style.icon;
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (show && duration > 0) {
       const timer = setTimeout(() => {
-        onClose?.();
+        onClose();
       }, duration);
+
       return () => clearTimeout(timer);
     }
   }, [show, duration, onClose]);
 
+  // Helper function to get styles based on type
+  const getToastStyles = () => {
+    switch (type) {
+      case "success":
+        return {
+          boxShadow: "0 20px 60px -10px rgba(16, 185, 129, 0.3)",
+          bg: "bg-gradient-to-r from-emerald-500/95 to-emerald-600/95",
+          border: "border-emerald-400/20",
+          icon: <CheckCircle2 className="h-5 w-5" />,
+        };
+      case "error":
+        return {
+          boxShadow: "0 20px 60px -10px rgba(239, 68, 68, 0.3)",
+          bg: "bg-gradient-to-r from-red-500/95 to-red-600/95",
+          border: "border-red-400/20",
+          icon: <AlertCircle className="h-5 w-5" />,
+        };
+      case "warning":
+        return {
+          boxShadow: "0 20px 60px -10px rgba(245, 158, 11, 0.3)",
+          bg: "bg-gradient-to-r from-amber-500/95 to-amber-600/95",
+          border: "border-amber-400/20",
+          icon: <AlertTriangle className="h-5 w-5" />,
+        };
+      default:
+        return {
+          boxShadow: "0 20px 60px -10px rgba(16, 185, 129, 0.3)",
+          bg: "bg-gradient-to-r from-emerald-500/95 to-emerald-600/95",
+          border: "border-emerald-400/20",
+          icon: <CheckCircle2 className="h-5 w-5" />,
+        };
+    }
+  };
+
+  const styles = getToastStyles();
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {show && (
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.95, x: '-50%' }}
-          animate={{ 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            x: '-50%',
-            transition: {
-              type: 'spring',
-              stiffness: 500,
-              damping: 30
-            }
+          initial={{ opacity: 0, y: -50, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.95 }}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 30,
+            mass: 0.8,
           }}
-          exit={{ 
-            opacity: 0, 
-            y: 20, 
-            scale: 0.95, 
-            x: '-50%',
-            transition: {
-              duration: 0.2
-            }
-          }}
-          className={`fixed bottom-6 left-1/2 transform ${style.bg} ${style.border} border backdrop-blur-xl text-white px-5 py-4 rounded-2xl shadow-2xl z-50 min-w-[320px] max-w-md`}
+          className="fixed top-6 right-6 z-50"
         >
-          <div className="flex items-center gap-3">
+          <motion.div
+            initial={{ boxShadow: "0 0 0 0 rgba(0, 0, 0, 0)" }}
+            animate={{ boxShadow: styles.boxShadow }}
+            className={`flex items-center gap-3 pl-5 pr-4 py-4 rounded-2xl backdrop-blur-md border min-w-[320px] ${styles.bg} ${styles.border} text-white`}
+          >
+            {/* Icon with animation */}
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
-              animate={{ 
-                scale: 1, 
-                rotate: 0,
-                transition: {
-                  type: 'spring',
-                  stiffness: 400,
-                  damping: 20,
-                  delay: 0.1
-                }
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 15,
+                delay: 0.1,
               }}
             >
-              <IconComponent className={`w-5 h-5 ${iconColors[type]} flex-shrink-0`} />
+              <div className="bg-white/20 p-1.5 rounded-full">
+                {styles.icon}
+              </div>
             </motion.div>
-            
-            <p className="text-sm font-medium text-gray-100 flex-1 leading-relaxed">
+
+            {/* Message */}
+            <motion.span
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15 }}
+              className="font-medium flex-1 text-sm"
+            >
               {message}
-            </p>
-            
-            {onClose && (
-              <motion.button
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={onClose}
-                className="text-gray-400 hover:text-white cursor-pointer transition-colors flex-shrink-0 ml-2"
-                aria-label="Close notification"
-              >
-                <X className="w-4 h-4" />
-              </motion.button>
-            )}
-          </div>
-          
-          {duration > 0 && (
+            </motion.span>
+
+            {/* Close button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={onClose}
+              className="p-1 hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </motion.button>
+
+            {/* Progress bar */}
             <motion.div
               initial={{ scaleX: 1 }}
               animate={{ scaleX: 0 }}
-              transition={{ duration: duration / 1000, ease: 'linear' }}
-              className={`absolute bottom-0 left-0 h-0.5 ${iconColors[type].replace('text', 'bg')} w-full origin-left rounded-full`}
-              style={{ transformOrigin: 'left' }}
+              transition={{ duration: duration / 1000, ease: "linear" }}
+              className="absolute bottom-0 left-0 right-0 h-1 bg-white/30 rounded-b-2xl origin-left"
             />
-          )}
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 };
+
+export { Toast };

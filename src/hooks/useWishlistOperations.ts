@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { getWishlist, removeFromWishlist } from "@/api/wishlist/requests";
 import { addToCart } from "@/api/cart/requests";
 import { useCart } from "@/context/CartContext";
-import { showToast } from "@/store/toastStore";
+import { useToastStore } from "@/store/useToastStore";
 import { WishlistData } from "@/types/wishlist";
 
 export const useWishlistOperations = () => {
@@ -12,6 +12,7 @@ export const useWishlistOperations = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const { showToast } = useToastStore();
   const { updateCartCount } = useCart();
 
   const fetchWishlistData = useCallback(async () => {

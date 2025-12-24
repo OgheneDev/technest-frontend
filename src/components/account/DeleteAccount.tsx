@@ -1,43 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Loader2, Trash2 } from "lucide-react";
-import Swal from "sweetalert2";
+import { useToastStore } from "@/store/useToastStore";
 
-export default function DeleteAccount() {
+interface DeleteAccountProps {
+  setConfirmationModal: Dispatch<
+    SetStateAction<{
+      isOpen: boolean;
+      title: string;
+      message: string;
+      onConfirm: () => void;
+      variant?: "danger" | "warning" | "info";
+    }>
+  >;
+}
+
+export default function DeleteAccount({
+  setConfirmationModal,
+}: DeleteAccountProps) {
   const [password, setPassword] = useState("");
   const { deleteAccount, isDeleting } = useAuthStore();
+  const { showToast } = useToastStore();
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
+    if (!password) {
+      showToast("Please enter your password to confirm", "error");
+      return;
+    }
+
+    setConfirmationModal({
+      isOpen: true,
+      title: "Are you sure?",
+      message:
+        "This action cannot be undone! All your data will be permanently deleted.",
+      onConfirm: confirmDeleteAccount,
+      variant: "danger",
+    });
+  };
+
+  const confirmDeleteAccount = async () => {
     try {
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "This action cannot be undone!",
-        icon: "warning",
-        background: "#0a0a0a",
-        color: "#fff",
-        showCancelButton: true,
-        confirmButtonColor: "#ef4444",
-        cancelButtonColor: "#404040",
-        confirmButtonText: "Yes, delete account",
-      });
-
-      if (result.isConfirmed) {
-        await deleteAccount({ password });
-      }
+      await deleteAccount({ password });
     } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text:
-          error instanceof Error ? error.message : "Failed to delete account",
-        icon: "error",
-        confirmButtonColor: "#10b981",
-        background: "#0a0a0a",
-        color: "#fff",
-      });
+      showToast(
+        error instanceof Error ? error.message : "Failed to delete account",
+        "error"
+      );
     }
   };
 
@@ -70,7 +82,7 @@ export default function DeleteAccount() {
 
         <div className="pt-2">
           <Button
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
             disabled={!password || isDeleting}
             className="w-full bg-red-600 text-sm hover:bg-red-700 cursor-pointer font-semibold text-white transition-colors"
           >

@@ -53,6 +53,7 @@ export const verifyPayment = async (reference: string) => {
 export const getCheckoutHistory = async () => {
   try {
     const response = await axiosInstance.get("/api/checkout/history");
+    console.log("Orders: ", response);
 
     if (response.status !== 200) {
       throw new Error(`Unexpected status code: ${response.status}`);

@@ -193,7 +193,7 @@ export const FiltersPanel = ({
       <div className="flex flex-col gap-3 pt-4 border-t border-zinc-800">
         <Button
           onClick={() => setIsMobileFiltersOpen(false)}
-          className="bg-emerald-500 hover:bg-emerald-600 text-white"
+          className="bg-emerald-500 text-sm hover:bg-emerald-600 text-white"
         >
           Apply Filters
         </Button>
@@ -205,7 +205,7 @@ export const FiltersPanel = ({
           <Button
             onClick={clearFilters}
             variant="outline"
-            className="border-red-500/30 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+            className="border-red-500/30 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10"
           >
             <X className="h-4 w-4 mr-2" />
             Clear All Filters

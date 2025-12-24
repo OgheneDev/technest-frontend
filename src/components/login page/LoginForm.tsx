@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Swal from "sweetalert2";
 import {
   Mail,
   Lock,
@@ -16,6 +15,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useToastStore } from "@/store/useToastStore";
 
 interface FormData {
   email: string;
@@ -26,6 +26,7 @@ const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, isLoggingIn } = useAuthStore();
+  const { showToast } = useToastStore();
 
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -54,16 +55,7 @@ const LoginForm = () => {
         password: formData.password,
       });
 
-      await Swal.fire({
-        title: "Success!",
-        text: "Logged in successfully",
-        icon: "success",
-        confirmButtonColor: "#10b981",
-        background: "#0a0a0a",
-        color: "#fff",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+      showToast("Logged in successfully", "success");
 
       router.push(from);
     } catch (err) {

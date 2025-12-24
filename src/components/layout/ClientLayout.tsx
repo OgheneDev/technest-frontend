@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Loader2 } from "lucide-react";
 import Loader from "../ui/Loader";
 
 interface ClientAuthLayoutProps {
@@ -21,6 +20,11 @@ const isResetPasswordRoute = (path: string) => {
   return path.startsWith("/reset-password");
 };
 
+// Check if route is a product detail page (dynamic)
+const isProductRoute = (path: string) => {
+  return path.startsWith("/products/");
+};
+
 export default function ClientAuthLayout({ children }: ClientAuthLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -36,7 +40,9 @@ export default function ClientAuthLayout({ children }: ClientAuthLayoutProps) {
     if (isCheckingAuth) return;
 
     const isPublicRoute =
-      PUBLIC_ROUTES.includes(pathname) || isResetPasswordRoute(pathname);
+      PUBLIC_ROUTES.includes(pathname) ||
+      isResetPasswordRoute(pathname) ||
+      isProductRoute(pathname);
     const isAuthRoute = AUTH_ROUTES.includes(pathname);
 
     // Redirect to login if trying to access protected route without auth
@@ -52,7 +58,6 @@ export default function ClientAuthLayout({ children }: ClientAuthLayoutProps) {
     }
   }, [authUser, pathname, router, isCheckingAuth]);
 
-  // Show loading spinner while checking authentication
   if (isCheckingAuth) {
     return <Loader />;
   }

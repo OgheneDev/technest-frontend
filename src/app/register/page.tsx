@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { LogIn, ArrowLeft } from "lucide-react";
 import RegisterForm from "@/components/register page/RegisterForm";
-import logo from "@/assets/images/logo.png";
 
 const SignupPage = () => {
   const [mounted, setMounted] = useState(false);
@@ -33,13 +31,9 @@ const SignupPage = () => {
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
             <div className="bg-zinc-900 p-4 rounded-xl border border-zinc-800 shadow-lg">
-              <Image
-                src={logo}
-                alt="Logo"
-                width={180}
-                height={60}
-                className="brightness-200"
-              />
+              <h4 className="text-white text-xl font-semibold">
+                Tech<span className="text-emerald-500">N</span>est
+              </h4>
             </div>
           </motion.div>
 

@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { use } from "react";
-import {
-  getProductById,
-  getProductReviews,
-  postProductReview,
-} from "@/api/products/requests";
+import { getProductById } from "@/api/products/requests";
 import { ProductImageGallery } from "@/components/product/ProductImageGallery";
 import { ProductInfo } from "@/components/product/ProductInfo";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
