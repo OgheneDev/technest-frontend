@@ -11,6 +11,7 @@ import {
   Heart,
   Search,
   LogIn,
+  ShoppingBag,
 } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -153,6 +154,13 @@ const Navbar: React.FC = () => {
                 (isAuthenticated ? (
                   <>
                     <Link
+                      href="/shop"
+                      className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"
+                    >
+                      <ShoppingBag size={20} />
+                      <span className="text-sm font-medium">Shop</span>
+                    </Link>
+                    <Link
                       href="/account"
                       className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"
                     >
@@ -195,7 +203,7 @@ const Navbar: React.FC = () => {
 
           {/* Categories Desktop */}
           <div className="hidden md:block border-t border-zinc-800/50">
-            <div className="flex items-center gap-1 py-3 overflow-x-auto">
+            <div className="flex items-center mx-auto justify-center gap-1 py-3 w-full">
               {categories.map((item) => (
                 <button
                   key={item.id}
@@ -252,7 +260,7 @@ const Navbar: React.FC = () => {
 
               <nav className="p-4">
                 <motion.ul className="space-y-2">
-                  {["account", "wishlist"].map((item, i) => (
+                  {["account", "wishlist", "shop"].map((item, i) => (
                     <motion.li
                       key={item}
                       custom={i}
@@ -262,6 +270,9 @@ const Navbar: React.FC = () => {
                         onClick={() => handleMobileMenuClick(`/${item}`)}
                         className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
                       >
+                        {item === "shop" && (
+                          <ShoppingBag size={20} className="text-emerald-400" />
+                        )}
                         {item === "account" && (
                           <User size={20} className="text-emerald-400" />
                         )}

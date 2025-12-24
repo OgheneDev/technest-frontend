@@ -260,7 +260,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-black font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-3"
+            className="w-full py-3 bg-emerald-500 cursor-pointer hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-black font-semibold text-sm rounded-lg transition-all duration-300 flex items-center justify-center gap-3"
           >
             {isSubmitting ? (
               <>

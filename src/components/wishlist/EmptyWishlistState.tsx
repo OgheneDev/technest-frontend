@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Plus } from "lucide-react";
+import { Heart, PlusCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
@@ -26,12 +26,12 @@ export function EmptyWishlistState() {
 
       <Button
         asChild
-        className="bg-emerald-500 hover:bg-emerald-400 text-black font-medium"
+        className="bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold"
         size="lg"
       >
         <Link href="/shop">
           Explore Products
-          <Plus className="ml-2 h-4 w-4" />
+          <PlusCircle className="ml-2 h-4 w-4" />
         </Link>
       </Button>
     </motion.div>

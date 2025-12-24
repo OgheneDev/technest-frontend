@@ -42,9 +42,7 @@ export const useCheckoutOperations = () => {
     const fetchCheckoutHistory = async () => {
       try {
         const response = await getCheckoutHistory();
-        // The backend returns { success: true, data: [...], count, total, etc. }
-        // So we need to access response.data (the data field in the response)
-        setCheckoutHistory(response.data || []); // FIX: Use response.data.data or response.data
+        setCheckoutHistory(response.data || []);
       } catch (err: any) {
         console.error("Error fetching checkout history:", err);
         setError("Unable to load checkout history");
@@ -52,7 +50,7 @@ export const useCheckoutOperations = () => {
     };
 
     fetchCheckoutHistory();
-  }, []); // REMOVE currentPage dependency
+  }, []);
 
   const copyToClipboard = useCallback((text: string) => {
     navigator.clipboard.writeText(text);
@@ -68,8 +66,6 @@ export const useCheckoutOperations = () => {
     });
     setTimeout(() => setCopied(false), 2000);
   }, []);
-
-  // ... rest of the hook remains the same until handleVerifyPayment
 
   const handleVerifyPayment = async () => {
     if (!paymentReference) {
@@ -99,7 +95,7 @@ export const useCheckoutOperations = () => {
           color: "#fff",
         });
 
-        // Refresh checkout history - FIX this part
+        // Refresh checkout history
         try {
           const historyResponse = await getCheckoutHistory();
           // Prepend the new checkout to existing history
@@ -110,17 +106,11 @@ export const useCheckoutOperations = () => {
           setCheckoutHistory((prev) => [verificationData, ...prev]);
         }
 
-        // Reset form
-        setShippingAddress("");
-        setSelectedPaymentMethod("paystack");
-        setPaymentReference("");
-        setAuthorizationUrl("");
+        resetCheckout();
 
         if (updateCartCount) {
           await updateCartCount();
         }
-
-        setActiveStep(3);
 
         setTimeout(() => {
           router.push(`/checkout/${verificationData._id}?success=true`);
@@ -245,8 +235,6 @@ export const useCheckoutOperations = () => {
       }
     }
   };
-
-  // REMOVE handleLoadMore function since we're not using pagination
 
   return {
     shippingAddress,

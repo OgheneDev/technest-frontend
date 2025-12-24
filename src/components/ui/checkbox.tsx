@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 
 interface CheckboxProps {
-  checked?: boolean
-  onChange?: (checked: boolean) => void
-  label?: string
-  disabled?: boolean
-  className?: string
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
+  label?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
 export function Checkbox({
@@ -30,9 +30,13 @@ export function Checkbox({
         <div
           className={`
             h-4 w-4 border rounded-sm transition-all duration-200
-            ${checked ? "bg-indigo-600 border-indigo-600" : "bg-white border-gray-300"}
+            ${
+              checked
+                ? "bg-emerald-600 border-emerald-600"
+                : "bg-white border-gray-300"
+            }
             ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-            peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-400 peer-focus-visible:ring-offset-2
+            peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-400 peer-focus-visible:ring-offset-2
             ${className}
           `}
         >
@@ -46,7 +50,11 @@ export function Checkbox({
           )}
         </div>
       </div>
-      {label && <span className={`text-sm ${disabled ? "opacity-50" : ""}`}>{label}</span>}
+      {label && (
+        <span className={`text-sm ${disabled ? "opacity-50" : ""}`}>
+          {label}
+        </span>
+      )}
     </label>
-  )
+  );
 }

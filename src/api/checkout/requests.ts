@@ -14,7 +14,7 @@ export const initializeCheckout = async (
       throw new Error(`Unexpected status code: ${response.status}`);
     }
 
-    return response.data.data; // Returns { checkout, authorizationUrl, reference, accessCode }
+    return response.data.data;
   } catch (error: any) {
     console.error("Initialize checkout error:", {
       message: error.message,
@@ -29,9 +29,6 @@ export const initializeCheckout = async (
 
 export const verifyPayment = async (reference: string) => {
   try {
-    console.log("🔍 verifyPayment called with reference:", reference);
-    console.log("🔍 Making request to:", `/api/checkout/verify/${reference}`);
-
     const response = await axiosInstance.get(
       `/api/checkout/verify/${reference}`
     );
@@ -56,14 +53,12 @@ export const verifyPayment = async (reference: string) => {
 export const getCheckoutHistory = async () => {
   try {
     const response = await axiosInstance.get("/api/checkout/history");
-    console.log("Response status:", response.status);
-    console.log("Response data:", response.data);
 
     if (response.status !== 200) {
       throw new Error(`Unexpected status code: ${response.status}`);
     }
 
-    return response.data; // Returns the full response object
+    return response.data;
   } catch (error: any) {
     console.error("Get checkout history error:", {
       message: error.message,

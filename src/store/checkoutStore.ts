@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -39,7 +41,7 @@ export const useCheckoutStore = create<CheckoutStore>()(
         }),
     }),
     {
-      name: "checkout-storage", // name in localStorage
+      name: "checkout-storage",
     }
   )
 );

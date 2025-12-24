@@ -29,6 +29,17 @@ export const FiltersPanel = ({
   const [showInStock, setShowInStock] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
+  // Close modal on escape key press
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMobileFiltersOpen) {
+        setIsMobileFiltersOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isMobileFiltersOpen]);
+
   const handleFilterChange = () => {
     onFilterChange({
       priceRange,
@@ -178,21 +189,29 @@ export const FiltersPanel = ({
         </label>
       </div>
 
-      {/* Clear Filters Button */}
-      {(selectedCategories.length > 0 ||
-        selectedRatings.length > 0 ||
-        showInStock ||
-        priceRange[0] > 0 ||
-        priceRange[1] < 1000000) && (
+      {/* Action Buttons for Mobile */}
+      <div className="flex flex-col gap-3 pt-4 border-t border-zinc-800">
         <Button
-          onClick={clearFilters}
-          variant="outline"
-          className="w-full border-red-500/30 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+          onClick={() => setIsMobileFiltersOpen(false)}
+          className="bg-emerald-500 hover:bg-emerald-600 text-white"
         >
-          <X className="h-4 w-4 mr-2" />
-          Clear All Filters
+          Apply Filters
         </Button>
-      )}
+        {(selectedCategories.length > 0 ||
+          selectedRatings.length > 0 ||
+          showInStock ||
+          priceRange[0] > 0 ||
+          priceRange[1] < 1000000) && (
+          <Button
+            onClick={clearFilters}
+            variant="outline"
+            className="border-red-500/30 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+          >
+            <X className="h-4 w-4 mr-2" />
+            Clear All Filters
+          </Button>
+        )}
+      </div>
     </div>
   );
 
@@ -225,15 +244,19 @@ export const FiltersPanel = ({
         )}
       </Button>
 
-      {/* Mobile Filters Modal */}
+      {/* Mobile Filters Modal - Fixed for fullscreen */}
       {isMobileFiltersOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-100 lg:hidden">
+          {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black/70"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setIsMobileFiltersOpen(false)}
           />
-          <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-zinc-900 border-l border-zinc-800 overflow-y-auto">
-            <div className="sticky top-0 bg-zinc-900 border-b border-zinc-800 p-4 flex items-center justify-between">
+
+          {/* Modal Content - Fullscreen on mobile */}
+          <div className="absolute inset-0 flex flex-col overflow-y-auto bg-zinc-900">
+            {/* Header */}
+            <div className="bg-zinc-900 border-b z-500 border-zinc-800 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Filter className="h-5 w-5 text-emerald-400" />
                 <h2 className="text-xl font-semibold text-white">Filters</h2>
@@ -242,12 +265,13 @@ export const FiltersPanel = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMobileFiltersOpen(false)}
-                className="text-zinc-400 hover:text-white"
+                className="text-zinc-400 hover:text-white hover:bg-zinc-800"
               >
                 <X className="h-5 w-5" />
               </Button>
             </div>
-            <div className="p-6">{filterContent}</div>
+
+            <div className="flex-1 p-6">{filterContent}</div>
           </div>
         </div>
       )}

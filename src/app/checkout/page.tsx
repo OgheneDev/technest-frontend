@@ -18,7 +18,7 @@ export default function CheckoutPage() {
     selectedPaymentMethod,
     setSelectedPaymentMethod,
     paymentReference,
-    authorizationUrl, // Add this
+    authorizationUrl,
     checkoutHistory,
     isLoading,
     isVerifying,
@@ -29,11 +29,11 @@ export default function CheckoutPage() {
     cartData,
     handleCheckout,
     handleVerifyPayment,
-    handleCancelCheckout, // Add this
+    handleCancelCheckout,
     copyToClipboard,
     showAllOrders,
     setShowAllOrders,
-  } = useCheckoutOperations(); // Remove currentPage, totalPages, handleLoadMore
+  } = useCheckoutOperations();
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -88,8 +88,7 @@ export default function CheckoutPage() {
               activeStep={activeStep}
               showAllOrders={showAllOrders}
               setShowAllOrders={setShowAllOrders}
-              onCancelCheckout={handleCancelCheckout} // Add this
-              // Remove currentPage, totalPages, and onLoadMore props
+              onCancelCheckout={handleCancelCheckout}
             />
           </div>
 
