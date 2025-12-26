@@ -74,9 +74,8 @@ export default function PaymentVerifyPage() {
             <h2 className="text-2xl font-bold text-white mb-2">
               Payment Successful!
             </h2>
-            <p className="text-zinc-400 mb-6">{message}</p>
             <p className="text-sm text-zinc-500 mb-4">
-              Redirecting to checkout...
+              Redirecting to checkout for verification...
             </p>
             <Button
               onClick={() => router.push("/checkout")}
