@@ -54,7 +54,7 @@ export function PaymentStep({
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 mb-4">
                 <ExternalLink className="h-8 w-8 text-emerald-400" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3 className="text-sm font-bold text-white mb-2">
                 Complete Payment on Paystack
               </h3>
               <p className="text-zinc-400 mb-6">
