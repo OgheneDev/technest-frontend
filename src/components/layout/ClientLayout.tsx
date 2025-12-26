@@ -10,7 +10,15 @@ interface ClientAuthLayoutProps {
 }
 
 // Routes that don't require authentication
-const PUBLIC_ROUTES = ["/", "/login", "/register", "/forgot-password", "/shop"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/shop",
+  "/contact-us",
+  "/about-us",
+];
 
 // Routes that should redirect to /shop if user is already logged in
 const AUTH_ROUTES = ["/login", "/register", "/forgot-password"];
