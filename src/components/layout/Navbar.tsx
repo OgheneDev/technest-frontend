@@ -13,7 +13,6 @@ import {
   LogIn,
   ShoppingBag,
 } from "lucide-react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -71,22 +70,6 @@ const Navbar: React.FC = () => {
       transition: { delay: i * 0.1 },
     }),
   };
-
-  useEffect(() => {
-    const fetchCartCount = async () => {
-      if (!isAuthenticated) {
-        return;
-      }
-      try {
-        // const cartData = await getCart();
-        // ...existing cart count logic...
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      }
-    };
-
-    fetchCartCount();
-  }, [isAuthenticated]);
 
   useEffect(() => {
     setMounted(true);
@@ -150,16 +133,16 @@ const Navbar: React.FC = () => {
 
             {/* Right section */}
             <div className="flex items-center gap-4">
+              <Link
+                href="/shop"
+                className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"
+              >
+                <ShoppingBag size={20} />
+                <span className="text-sm font-medium">Shop</span>
+              </Link>
               {mounted &&
                 (isAuthenticated ? (
                   <>
-                    <Link
-                      href="/shop"
-                      className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"
-                    >
-                      <ShoppingBag size={20} />
-                      <span className="text-sm font-medium">Shop</span>
-                    </Link>
                     <Link
                       href="/account"
                       className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all"

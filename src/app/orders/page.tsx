@@ -70,7 +70,7 @@ export default function OrdersPage() {
         ) : (
           <div className="space-y-4">
             {filteredOrders.map((order) => (
-              <OrdersCard order={order} />
+              <OrdersCard key={order._id} order={order} />
             ))}
           </div>
         )}

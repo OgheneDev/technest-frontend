@@ -5,7 +5,6 @@ import {
   LoginCredentials,
   RegisterCredentials,
   ResetPasswordCredentials,
-  UpdateDetailsCredentials,
   UpdatePasswordCredentials,
   DeleteAccountCredentials,
   ForgotPasswordCredentials,
@@ -84,8 +83,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       );
 
       if (response.status === 200) {
-        // Optionally auto-login after registration
-        // Or redirect to login page
         window.location.href = "/login";
       }
     } catch (error) {

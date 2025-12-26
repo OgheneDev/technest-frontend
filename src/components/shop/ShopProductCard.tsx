@@ -15,7 +15,7 @@ import {
   removeFromWishlist,
   getWishlist,
 } from "@/api/wishlist/requests";
-import Swal from "sweetalert2";
+import { ConfirmationModal } from "../ui/ConfirmationModal";
 
 interface ShopProductCardProps {
   product: Product;
@@ -31,6 +31,19 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
   const { isAuthenticated } = useAuthStore();
   const { showToast } = useToastStore();
   const router = useRouter();
+
+  const [confirmationModal, setConfirmationModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    variant?: "danger" | "warning" | "info";
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   // Add useEffect for initial wishlist check
   useEffect(() => {
@@ -53,18 +66,12 @@ export const ShopProductCard = ({ product, layout }: ShopProductCardProps) => {
 
   const handleAuthRequired = (action: "cart" | "wishlist") => {
     if (!isAuthenticated) {
-      Swal.fire({
+      setConfirmationModal({
+        isOpen: true,
         title: "Authentication Required",
-        text: `Please login to add items to your ${action}`,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-        confirmButtonColor: "#4F46E5",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.push("/login");
-        }
+        message: `Please login to add items to your ${action}`,
+        onConfirm: () => router.push("/login"),
+        variant: "info",
       });
       return false;
     }

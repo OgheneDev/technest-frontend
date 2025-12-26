@@ -35,8 +35,9 @@ export function CheckoutForm({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
+      className="w-full"
     >
-      <div className="bg-zinc-900/60 backdrop-blur-sm rounded-xl border border-zinc-800 p-6">
+      <div className="bg-zinc-900/60 w-full backdrop-blur-sm rounded-xl border border-zinc-800 p-6">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-white flex items-center gap-2">
             <Package className="h-5 w-5 text-emerald-400" />

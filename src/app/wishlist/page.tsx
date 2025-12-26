@@ -10,6 +10,7 @@ import { WishlistProductsGrid } from "@/components/wishlist/WishlistProductGrid"
 import { WishlistStats } from "@/components/wishlist/WishlistStats";
 import { WishlistBottomCTA } from "@/components/wishlist/WishlistBottomCTA";
 import { containerVariants } from "@/types/wishlist";
+import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 export default function WishlistPage() {
   const {
@@ -21,6 +22,8 @@ export default function WishlistPage() {
     handleAddToCart,
     handleRemoveFromWishlist,
     handleClearAll,
+    confirmationModal,
+    closeConfirmationModal,
   } = useWishlistOperations();
 
   useEffect(() => {
@@ -71,6 +74,17 @@ export default function WishlistPage() {
           )
         )}
       </div>
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmationModal.isOpen}
+        onClose={closeConfirmationModal}
+        onConfirm={confirmationModal.onConfirm}
+        title={confirmationModal.title}
+        message={confirmationModal.message}
+        variant={confirmationModal.variant}
+        confirmText="Confirm"
+        cancelText="Cancel"
+      />
     </div>
   );
 }

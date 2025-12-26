@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Swal from "sweetalert2";
+import { useToastStore } from "@/store/useToastStore";
 import {
   Mail,
   Lock,
@@ -59,6 +59,7 @@ const RegisterForm = () => {
     hasUpper: false,
     hasLower: false,
   });
+  const { showToast } = useToastStore();
 
   const validatePassword = (pass: string) => {
     setPasswordChecks({
@@ -104,14 +105,9 @@ const RegisterForm = () => {
         phoneNumber: formData.phoneNumber,
         role: "user",
       });
-      await Swal.fire({
-        title: "Success!",
-        text: "Your account has been created successfully",
-        icon: "success",
-        background: "#0a0a0a",
-        color: "#fff",
-        confirmButtonColor: "#10b981",
-      });
+
+      showToast("Your account has been created successfully", "success");
+
       router.push("/login");
     } catch (err) {
       const error = err as Error;

@@ -100,7 +100,7 @@ const Footer = () => {
               {[
                 { text: "Help & FAQs", path: "/contact-us" },
                 { text: "Login / Register", path: "/account" },
-                { text: "Track your Order", path: "/order-tracking" },
+                { text: "Track your Order", path: "/orders" },
               ].map((item: NavLink) => (
                 <li key={item.text}>
                   <Link

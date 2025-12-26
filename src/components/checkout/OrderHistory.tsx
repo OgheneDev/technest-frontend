@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Truck, Package, XCircle } from "lucide-react";
+import { Calendar, Truck, Package, XCircle, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/utils/formatPrice";
 import {
@@ -15,6 +15,7 @@ interface OrderHistoryProps {
   showAllOrders: boolean;
   setShowAllOrders: (show: boolean) => void;
   onCancelCheckout?: (id: string) => void;
+  onMakePayment?: (order: CheckoutHistory) => void;
   currentPage?: number;
   totalPages?: number;
   onLoadMore?: () => void;
@@ -26,6 +27,7 @@ export function OrderHistory({
   showAllOrders,
   setShowAllOrders,
   onCancelCheckout,
+  onMakePayment,
   currentPage = 1,
   totalPages = 1,
   onLoadMore,
@@ -37,6 +39,7 @@ export function OrderHistory({
     : checkoutHistory.slice(0, 3);
 
   const canCancel = (status: string) => status === "pending";
+  const canPay = (status: string) => status === "pending";
 
   return (
     <div className="bg-zinc-900/60 backdrop-blur-sm rounded-xl border border-zinc-800 p-6">
@@ -48,9 +51,9 @@ export function OrderHistory({
       </div>
 
       <div className="space-y-4">
-        {ordersToShow.map((order) => (
+        {ordersToShow.map((order, index) => (
           <div
-            key={order._id}
+            key={order._id + order.createdAt + index}
             className="p-4 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors border border-zinc-700"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -92,16 +95,31 @@ export function OrderHistory({
                   </div>
                 </div>
 
-                {canCancel(order.status) && onCancelCheckout && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onCancelCheckout(order._id)}
-                    className="mt-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 text-xs"
-                  >
-                    <XCircle className="h-3 w-3 mr-1" />
-                    Cancel
-                  </Button>
+                {/* Action buttons for pending orders */}
+                {canPay(order.status) && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {onMakePayment && (
+                      <Button
+                        size="sm"
+                        onClick={() => onMakePayment(order)}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs"
+                      >
+                        <CreditCard className="h-3 w-3 mr-1" />
+                        Make Payment
+                      </Button>
+                    )}
+                    {canCancel(order.status) && onCancelCheckout && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onCancelCheckout(order._id)}
+                        className="text-red-400 hover:text-red-300 hover:bg-red-500/10 text-xs"
+                      >
+                        <XCircle className="h-3 w-3 mr-1" />
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
                 )}
               </div>
 

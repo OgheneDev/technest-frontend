@@ -119,7 +119,7 @@ const Toast = ({
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
               onClick={onClose}
-              className="p-1 hover:bg-white/10 rounded-lg transition-colors"
+              className="p-1 hover:bg-white/10 rounded-lg cursor-pointer transition-colors"
             >
               <X className="h-4 w-4" />
             </motion.button>

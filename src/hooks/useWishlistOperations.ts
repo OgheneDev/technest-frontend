@@ -15,6 +15,28 @@ export const useWishlistOperations = () => {
   const { showToast } = useToastStore();
   const { updateCartCount } = useCart();
 
+  const [confirmationModal, setConfirmationModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    variant?: "danger" | "warning" | "info";
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
+
+  const closeConfirmationModal = () => {
+    setConfirmationModal({
+      isOpen: false,
+      title: "",
+      message: "",
+      onConfirm: () => {},
+    });
+  };
+
   const fetchWishlistData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -73,20 +95,26 @@ export const useWishlistOperations = () => {
   const handleClearAll = async () => {
     if (!wishlistData?.products.length || removingId) return;
 
-    const confirm = window.confirm(
-      "Are you sure you want to clear your entire wishlist?"
-    );
-    if (!confirm) return;
-
-    try {
-      for (const item of wishlistData.products) {
-        await removeFromWishlist(item.product._id);
-      }
-      await fetchWishlistData();
-      showToast("Wishlist cleared", "success", 2200);
-    } catch (error) {
-      showToast("Failed to clear wishlist", "error", 3500);
-    }
+    setConfirmationModal({
+      isOpen: true,
+      title: "Clear Wishlist?",
+      message:
+        "Are you sure you want to clear your wishlist? This action cannot be undone.",
+      variant: "warning",
+      onConfirm: async () => {
+        try {
+          for (const item of wishlistData.products) {
+            await removeFromWishlist(item.product._id);
+          }
+          await fetchWishlistData();
+          showToast("Wishlist cleared", "success", 2200);
+        } catch (error) {
+          showToast("Failed to clear wishlist", "error", 3500);
+        } finally {
+          closeConfirmationModal();
+        }
+      },
+    });
   };
 
   return {
@@ -99,5 +127,7 @@ export const useWishlistOperations = () => {
     handleRemoveFromWishlist,
     handleClearAll,
     setWishlistData,
+    confirmationModal,
+    closeConfirmationModal,
   };
 };

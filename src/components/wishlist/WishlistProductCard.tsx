@@ -62,13 +62,15 @@ export function WishlistProductCard({
           {/* Quick View Button */}
           <div className="absolute top-2 right-2">
             <Button
-              asChild
               size="icon"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = `/products/${product._id}`;
+              }}
               className="h-8 w-8 rounded-full bg-zinc-900/90 backdrop-blur-sm border border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 opacity-0 group-hover:opacity-100 transition-all duration-300"
             >
-              <Link href={`/products/${product._id}`}>
-                <Eye className="h-4 w-4 text-emerald-400" />
-              </Link>
+              <Eye className="h-4 w-4 text-emerald-400" />
             </Button>
           </div>
         </div>

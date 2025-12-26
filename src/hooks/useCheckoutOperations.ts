@@ -180,6 +180,58 @@ export const useCheckoutOperations = () => {
     }
   };
 
+  const handleMakePayment = async (order: CheckoutHistory) => {
+    // Restore the order details to the checkout store
+    setShippingAddress(order.shippingAddress || "");
+    setSelectedPaymentMethod(order.paymentMethod || "");
+    setPaymentReference(order.paymentReference || "");
+
+    // For Paystack payment method, we need to reinitialize checkout to get a fresh authorization URL
+    if (order.paymentMethod === "paystack") {
+      setIsLoading(true);
+
+      try {
+        // Reinitialize checkout with the same details to get a fresh payment link
+        const checkoutData = await initializeCheckout(
+          order.shippingAddress || "",
+          order.paymentMethod
+        );
+
+        setPaymentReference(checkoutData.reference || "");
+        setAuthorizationUrl(checkoutData.authorizationUrl || "");
+
+        // Move to payment step first
+        setActiveStep(2);
+
+        // Show confirmation modal for Paystack redirect (optional - user can click the button in PaymentStep)
+        setConfirmationModal({
+          isOpen: true,
+          title: "Continue to Payment",
+          message:
+            "Click 'Continue to Paystack' to complete your payment. After payment, return here to verify your transaction.",
+          variant: "info",
+          onConfirm: () => {
+            window.open(checkoutData.authorizationUrl || "", "_blank");
+          },
+        });
+
+        showToast(
+          "Payment initialized. Complete payment and verify here.",
+          "success"
+        );
+      } catch (error: any) {
+        console.error("Error reinitializing checkout:", error);
+        showToast(error.message || "Failed to initialize payment", "error");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // For other payment methods, go directly to payment step
+      setActiveStep(2);
+      showToast("Resuming payment process", "success");
+    }
+  };
+
   const handleCancelCheckout = async (checkoutId: string) => {
     setConfirmationModal({
       isOpen: true,
@@ -232,6 +284,7 @@ export const useCheckoutOperations = () => {
     handleVerifyPayment,
     handleCheckout,
     handleCancelCheckout,
+    handleMakePayment,
     copyToClipboard,
     showAllOrders,
     setShowAllOrders,

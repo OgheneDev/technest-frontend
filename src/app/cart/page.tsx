@@ -8,6 +8,7 @@ import { CartItemsList } from "@/components/cart/CartItemsList";
 import { EmptyCartState } from "@/components/cart/EmptyCartState";
 import { LoadingErrorState } from "@/components/cart/LoadingErrorState";
 import { OrderSummary } from "@/components/cart/OrderSummary";
+import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 export default function CartPage() {
   const {
@@ -18,6 +19,8 @@ export default function CartPage() {
     handleQuantityUpdate,
     handleDeleteItem,
     handleClearCart,
+    confirmationModal,
+    closeConfirmationModal,
   } = useCartOperations();
 
   useEffect(() => {
@@ -67,6 +70,18 @@ export default function CartPage() {
           )
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmationModal.isOpen}
+        onClose={closeConfirmationModal}
+        onConfirm={confirmationModal.onConfirm}
+        title={confirmationModal.title}
+        message={confirmationModal.message}
+        variant={confirmationModal.variant}
+        confirmText="Confirm"
+        cancelText="Cancel"
+      />
     </div>
   );
 }

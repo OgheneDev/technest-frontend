@@ -35,8 +35,7 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Get the redirect URL from query params, default to /shop
-  const from = searchParams.get("from") || "/";
+  const from = "/";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({

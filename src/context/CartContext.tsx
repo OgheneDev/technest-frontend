@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { getCart } from "@/api/cart/requests";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface CartProduct {
   _id: string;
@@ -41,8 +42,16 @@ const CartContext = createContext<CartContextType>({
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartData | null>(null);
   const [cartCount, setCartCount] = useState(0);
+  const { isAuthenticated, authUser } = useAuthStore();
 
   const updateCartCount = async () => {
+    // Only fetch cart if user is authenticated
+    if (!isAuthenticated) {
+      setCart(null);
+      setCartCount(0);
+      return;
+    }
+
     try {
       const cartData = await getCart();
       setCart(cartData);
@@ -62,9 +71,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Update cart when authentication state changes
   useEffect(() => {
     updateCartCount();
-  }, []);
+  }, [isAuthenticated, authUser]); // Add auth dependencies
 
   return (
     <CartContext.Provider value={{ cart, cartCount, updateCartCount }}>

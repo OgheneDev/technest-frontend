@@ -31,6 +31,7 @@ export default function CheckoutPage() {
     handleCheckout,
     handleVerifyPayment,
     handleCancelCheckout,
+    handleMakePayment,
     copyToClipboard,
     showAllOrders,
     setShowAllOrders,
@@ -51,9 +52,9 @@ export default function CheckoutPage() {
           setActiveStep={setActiveStep}
         />
 
-        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="flex flex-col gap-6 md:flex-row">
           {/* Left Column - Forms */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="flex flex-col gap-6">
             <AnimatePresence mode="wait">
               {/* Step 1: Checkout Details */}
               {activeStep === 1 && (
@@ -92,6 +93,7 @@ export default function CheckoutPage() {
               showAllOrders={showAllOrders}
               setShowAllOrders={setShowAllOrders}
               onCancelCheckout={handleCancelCheckout}
+              onMakePayment={handleMakePayment}
             />
           </div>
 
